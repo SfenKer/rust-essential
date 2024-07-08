@@ -69,7 +69,17 @@ public class GuildSettingsManager {
                                 .setLong(1, key)
                 ).stream().findFirst().map(
                         (result) -> gson.fromJson(result.entry("settings").asString(), GuildSettings.class)
-                ).orElseGet(GuildSettings::new)
+                ).orElseGet(() -> {
+
+                    this.sqLite.execute(
+                            createStatement(guildsInsertInto)
+                                    .setLong(1, key)
+                                    .setLongString(2, "{}")
+                    );
+
+                    return new GuildSettings();
+
+                })
         );
     }
 
