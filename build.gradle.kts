@@ -1,15 +1,26 @@
+import groovy.lang.Closure
+import com.palantir.gradle.gitversion.VersionDetails
 import java.lang.String.format
 
 plugins {
     id("java")
+    id("net.kyori.blossom") version "1.3.1"
+    id("com.palantir.git-version") version "3.0.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 project.group = "pl.mrstudios.essential"
 project.version = "1.0.0"
 
+val versionDetails: Closure<VersionDetails> by extra
+fun projectVersion(): String = format("%s (git/%s)", project.version, versionDetails().gitHash)
+
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+}
+
+blossom {
+    replaceToken("{version}", projectVersion())
 }
 
 repositories {

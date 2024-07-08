@@ -3,6 +3,7 @@ package pl.mrstudios.essential;
 import net.dv8tion.jda.api.JDA;
 import org.slf4j.Logger;
 import pl.mrstudios.commons.inject.Injector;
+import pl.mrstudios.essential.command.CommandAbout;
 import pl.mrstudios.essential.config.Configuration;
 import pl.mrstudios.essential.config.ConfigurationFactory;
 import pl.mrstudios.essential.database.SQLite;
@@ -78,7 +79,8 @@ public class Application {
 
                 /* Commands */
                 .commands(ofClasses(
-                        CommandCalculator.class
+                        CommandCalculator.class,
+                        CommandAbout.class
                 ))
 
                 /* Bind */
