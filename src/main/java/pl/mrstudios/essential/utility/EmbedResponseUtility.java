@@ -72,6 +72,10 @@ public class EmbedResponseUtility {
             @NotNull Consumer<EmbedBuilder> consumer
     ) {
         consumer.accept(this.embedBuilder);
+        this.embedBuilder.setDescription(
+                this.embedBuilder.getDescriptionBuilder().toString()
+                        .replaceAll("(?m)^\\s*$[\n\n]+", "")
+        );
         return this;
     }
 

@@ -70,7 +70,7 @@ public class CommandCalculator {
                                 .setDescription(
                                         """                                        
                                         ### :wave: Welcome in Raid Cost Calculator!
-                                        Using this tool, you can calculate the cost of raiding a base in Rust.
+                                        Using this tool, you can easily calculate the cost of raiding a base in Rust.
                                         
                                         ### :notebook_with_decorative_cover: Usage Guide
                                         ``1.`` Select structure from the list below.
