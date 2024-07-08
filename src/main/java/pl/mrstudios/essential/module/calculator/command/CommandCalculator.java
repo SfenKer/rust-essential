@@ -69,10 +69,10 @@ public class CommandCalculator {
                         (embedBuilder) -> embedBuilder.setColor(RED)
                                 .setDescription(
                                         """                                        
-                                        ### :wave: Welcome in Raid Cost Calculator!
+                                        ### :wave: ‌ Welcome in Raid Cost Calculator!
                                         Using this tool, you can easily calculate the cost of raiding a base in Rust.
                                         
-                                        ### :notebook_with_decorative_cover: Usage Guide
+                                        ### :notebook_with_decorative_cover: ‌ Usage Guide
                                         ``1.`` Select structure from the list below.
                                         ``2.`` Click button and provide the amount of structures.
                                         ``3.`` Done! You will see the cost of raiding the selected structure, you can also add more structures and you will see total cost.
@@ -113,7 +113,7 @@ public class CommandCalculator {
                                                 (embedBuilder) -> embedBuilder.setColor(RED)
                                                         .setDescription(
                                                                 """
-                                                                ### :warning: Error Occurred
+                                                                ### :warning: ‌ Error Occurred
                                                                 You must select structure before providing amount.
                                                                 """
                                                         )
@@ -190,10 +190,10 @@ public class CommandCalculator {
                             (embedBuilder) -> embedBuilder.setColor(RED)
                                     .setDescription(format(
                                             """
-                                            ### :notepad_spiral: Raid Calculator
+                                            ### :notepad_spiral: ‌ Raid Calculator
                                             You need ``%sx`` %s Sulfur to raid that base, with that sulfur you should make: %s
                                             
-                                            ### :notebook_with_decorative_cover: Usage Guide
+                                            ### :notebook_with_decorative_cover: ‌ Usage Guide
                                             ``1.`` Select structure from the list below.
                                             ``2.`` Click button and provide the amount of structures.
                                             ``3.`` Done! You will see the cost of raiding the selected structure, you can also add more structures and you will see total cost.
@@ -208,7 +208,7 @@ public class CommandCalculator {
                             (embedBuilder) -> embedBuilder.setColor(RED)
                                     .setDescription(
                                             """
-                                            ### :warning: Error Occurred
+                                            ### :warning: ‌ Error Occurred
                                             You must provide a number in the input.
                                             """
                                     )

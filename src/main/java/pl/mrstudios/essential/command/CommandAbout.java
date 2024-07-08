@@ -46,20 +46,20 @@ public class CommandAbout {
                                 .setThumbnail(event.getJDA().getSelfUser().getAvatarUrl())
                                 .setDescription(format(
                                         """
-                                        ### :receipt: General Information
+                                        ### :receipt: ‌ General Information
                                         **Version:** ``{version}``
                                         **JVM Version:** ``%s``
 
-                                        ### :robot: Bot Information
+                                        ### :robot: ‌ Bot Information
                                         **Uptime:** ``%s``
                                         **Latency:** ``%dms``
                                         **Servers:** ``%d servers``
 
-                                        ### :desktop: Hardware Information
+                                        ### :desktop: ‌ Hardware Information
                                         **CPU Usage:** ``%s%%``
                                         **Memory Usage:** ``%d MB``
                                         
-                                        ### :busts_in_silhouette: Support
+                                        ### :busts_in_silhouette: ‌ Support
                                         This bot is developed by MrStudios Industries, if you need help join our Official Discord server.
                                         > https://discord.com/invite/C8dF6zkYff
                                         """,

@@ -46,7 +46,7 @@ public class CommandConfigure {
                                 .setThumbnail(event.getJDA().getSelfUser().getAvatarUrl())
                                 .setDescription(format(
                                         """
-                                        ### :tools: Configuration
+                                        ### :tools: ‌ Configuration
                                         Parameter ``guild.news.channel`` has been set to %s channel.
                                         """, channel.getAsMention()
                                 ))
