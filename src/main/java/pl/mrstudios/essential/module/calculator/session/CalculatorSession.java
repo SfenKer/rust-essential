@@ -1,10 +1,10 @@
-package pl.mrstudios.essential.feature.calculator.session;
+package pl.mrstudios.essential.module.calculator.session;
 
 import com.google.gson.Gson;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import org.jetbrains.annotations.NotNull;
-import pl.mrstudios.essential.feature.calculator.resources.ItemCraftCost;
-import pl.mrstudios.essential.feature.calculator.resources.StructureRaidCost;
+import pl.mrstudios.essential.module.calculator.resources.ItemCraftCost;
+import pl.mrstudios.essential.module.calculator.resources.StructureRaidCost;
 
 import java.util.Map;
 

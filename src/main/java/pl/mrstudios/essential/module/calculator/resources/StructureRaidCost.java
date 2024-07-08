@@ -1,4 +1,4 @@
-package pl.mrstudios.essential.feature.calculator.resources;
+package pl.mrstudios.essential.module.calculator.resources;
 
 public class StructureRaidCost {
 

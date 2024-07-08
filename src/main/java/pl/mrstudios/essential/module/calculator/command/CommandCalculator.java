@@ -1,4 +1,4 @@
-package pl.mrstudios.essential.feature.calculator.command;
+package pl.mrstudios.essential.module.calculator.command;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.google.gson.Gson;
@@ -13,8 +13,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import org.jetbrains.annotations.NotNull;
-import pl.mrstudios.essential.feature.calculator.resources.StructureRaidCost;
-import pl.mrstudios.essential.feature.calculator.session.CalculatorSession;
+import pl.mrstudios.essential.module.calculator.resources.StructureRaidCost;
+import pl.mrstudios.essential.module.calculator.session.CalculatorSession;
 
 import java.text.DecimalFormat;
 import java.util.Collection;
