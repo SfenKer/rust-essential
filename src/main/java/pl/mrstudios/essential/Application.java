@@ -7,8 +7,8 @@ import pl.mrstudios.essential.command.CommandConfigure;
 import pl.mrstudios.essential.config.Configuration;
 import pl.mrstudios.essential.config.ConfigurationFactory;
 import pl.mrstudios.essential.database.SQLite;
-import pl.mrstudios.essential.module.calculator.command.CommandCalculator;
 import pl.mrstudios.essential.listener.UserInteractionListener;
+import pl.mrstudios.essential.module.calculator.command.CommandCalculator;
 import pl.mrstudios.essential.module.settings.GuildSettingsManager;
 
 import static dev.rollczi.litecommands.annotations.LiteCommandsAnnotations.ofClasses;
@@ -46,6 +46,11 @@ public class Application {
     }
 
     {
+
+        /* Shutdown */
+        getRuntime().addShutdownHook(createThread(
+                () -> this.logger.info("Application is shutting down, please wait..")
+        ));
 
         /* Configuration */
         this.configurationFactory = configurationFactory(get("config"));
@@ -93,11 +98,6 @@ public class Application {
 
                 /* Build */
                 .build();
-
-        /* Shutdown */
-        getRuntime().addShutdownHook(createThread(
-                () -> this.logger.info("Application is shutting down, please wait..")
-        ));
 
     }
 
