@@ -37,9 +37,6 @@ dependencies {
         exclude("opus-java")
     }
 
-    /* Commons */
-    implementation("pl.mrstudios.commons:commons-inject:${project.property("mrstudios.commons.version")}")
-
     /* HikariCP */
     implementation("com.zaxxer:HikariCP:${project.property("hikaricp.version")}")
 
