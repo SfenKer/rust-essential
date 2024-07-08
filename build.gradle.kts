@@ -20,6 +20,7 @@ java {
 }
 
 blossom {
+    replaceToken("{project}", project.name)
     replaceToken("{version}", projectVersion())
 }
 
@@ -58,6 +59,9 @@ dependencies {
 
     /* Okaeri Configs */
     implementation("eu.okaeri:okaeri-configs-yaml-snakeyaml:${project.property("okaeri.configs.version")}")
+
+    /* Rome */
+    implementation("com.rometools:rome:${project.property("rome.version")}")
 
     /* Lombok */
     compileOnly("org.projectlombok:lombok:${project.property("lombok.version")}")

@@ -9,6 +9,7 @@ import pl.mrstudios.essential.config.ConfigurationFactory;
 import pl.mrstudios.essential.database.SQLite;
 import pl.mrstudios.essential.listener.UserInteractionListener;
 import pl.mrstudios.essential.module.calculator.command.CommandCalculator;
+import pl.mrstudios.essential.module.news.NewsService;
 import pl.mrstudios.essential.module.settings.GuildSettingsManager;
 
 import static dev.rollczi.litecommands.annotations.LiteCommandsAnnotations.ofClasses;
@@ -98,6 +99,9 @@ public class Application {
 
                 /* Build */
                 .build();
+
+        /* Services */
+        new NewsService(this.jda, this.sqLite, this.guildSettingsManager);
 
     }
 

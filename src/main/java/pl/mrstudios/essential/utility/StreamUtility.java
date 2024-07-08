@@ -3,6 +3,7 @@ package pl.mrstudios.essential.utility;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -24,6 +25,12 @@ public class StreamUtility {
             throw new RuntimeException("Unable to read '" + resourceName + "' resource.", exception);
         }
 
+    }
+
+    public static @NotNull InputStream byteArrayInputStream(
+            byte[] bytes
+    ) {
+        return new ByteArrayInputStream(bytes);
     }
 
 }

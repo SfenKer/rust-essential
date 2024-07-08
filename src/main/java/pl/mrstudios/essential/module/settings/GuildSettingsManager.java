@@ -2,6 +2,7 @@ package pl.mrstudios.essential.module.settings;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.google.gson.Gson;
+import lombok.SneakyThrows;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import org.jetbrains.annotations.NotNull;
@@ -23,11 +24,16 @@ public class GuildSettingsManager {
     private final SQLite sqLite;
     private final Cache<Long, GuildSettings> cache;
 
+    @SneakyThrows
     public GuildSettingsManager(
             @NotNull JDA jda,
             @NotNull SQLite sqLite
     ) {
 
+        /* Await Ready */
+        jda.awaitReady();
+
+        /* Then Complete */
         this.sqLite = sqLite;
         this.cache = newBuilder()
                 .expireAfterAccess(ofMinutes(15))
@@ -63,8 +69,14 @@ public class GuildSettingsManager {
     public @NotNull GuildSettings guildSettings(
             @NotNull Guild guild
     ) {
+        return this.guildSettings(guild.getIdLong());
+    }
+
+    public @NotNull GuildSettings guildSettings(
+            @NotNull Long guildId
+    ) {
         return this.cache.get(
-                guild.getIdLong(), (key) -> this.sqLite.fetch(
+                guildId, (key) -> this.sqLite.fetch(
                         createStatement(guildsSelectByGuildId)
                                 .setLong(1, key)
                 ).stream().findFirst().map(
