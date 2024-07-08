@@ -1,0 +1,20 @@
+[
+  {
+    "id": "rocket",
+    "costs": {
+      "sulphur": 1400
+    }
+  },
+  {
+    "id": "timed_explosive_charge",
+    "costs": {
+      "sulphur": 2200
+    }
+  },
+  {
+    "id": "explosive_ammo",
+    "costs": {
+      "sulphur": 25
+    }
+  }
+]

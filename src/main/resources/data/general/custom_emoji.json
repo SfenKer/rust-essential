@@ -1,0 +1,78 @@
+[
+  {
+    "name": "rust_wood",
+    "identifier": 1259165524542361652
+  },
+  {
+    "name": "rust_stone",
+    "identifier": 1259165523258900480
+  },
+  {
+    "name": "rust_metal",
+    "identifier": 1259165519383101591
+  },
+  {
+    "name": "rust_high_quality_metal",
+    "identifier": 1259165597187702844
+  },
+  {
+    "name": "rust_metal_shop_front",
+    "identifier": 1259847273018298439
+  },
+  {
+    "name": "rust_wooden_door",
+    "identifier": 1259165716175913050
+  },
+  {
+    "name": "rust_sheet_metal_door",
+    "identifier": 1259165713554345994
+  },
+  {
+    "name": "rust_armored_door",
+    "identifier": 1259165710052229120
+  },
+  {
+    "name": "rust_garage_door",
+    "identifier": 1259165711570305036
+  },
+  {
+    "name": "rust_ladder_hatch",
+    "identifier": 1259847271437172796
+  },
+  {
+    "name": "rust_wooden_window_bars",
+    "identifier": 1259847279133593661
+  },
+  {
+    "name": "rust_metal_window_bars",
+    "identifier": 1259847274826170388
+  },
+  {
+    "name": "rust_vending_machine",
+    "identifier": 1259847276570869771
+  },
+  {
+    "name": "rust_external_wooden_wall",
+    "identifier": 1259847269453271110
+  },
+  {
+    "name": "rust_external_stone_wall",
+    "identifier": 1259847267406319739
+  },
+  {
+    "name": "rust_sulphur",
+    "identifier": 1259875899164332103
+  },
+  {
+    "name": "rust_rocket",
+    "identifier": 1259875896987353180
+  },
+  {
+    "name": "rust_timed_explosive_charge",
+    "identifier": 1259875902431690752
+  },
+  {
+    "name": "rust_explosive_ammo",
+    "identifier": 1259875895427203124
+  }
+]

@@ -1,0 +1,88 @@
+import java.lang.String.format
+
+plugins {
+    id("java")
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+}
+
+project.group = "pl.mrstudios.essential"
+project.version = "1.0.0"
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+}
+
+repositories {
+    mavenCentral()
+    maven("https://repo.mrstudios.pl/public/")
+    maven("https://repo.panda-lang.org/releases/")
+    maven("https://storehouse.okaeri.eu/repository/maven-public/")
+}
+
+dependencies {
+
+    /* JDA */
+    implementation("net.dv8tion:JDA:${project.property("jda.version")}") {
+        exclude("opus-java")
+    }
+
+    /* Commons */
+    implementation("pl.mrstudios.commons:commons-inject:${project.property("mrstudios.commons.version")}")
+
+    /* HikariCP */
+    implementation("com.zaxxer:HikariCP:${project.property("hikaricp.version")}")
+
+    /* SQLite */
+    implementation("org.xerial:sqlite-jdbc:${project.property("xerial.sqlite.version")}")
+
+    /* Logback Classic */
+    implementation("ch.qos.logback:logback-classic:${project.property("logback.classic.version")}")
+
+    /* Unirest */
+    implementation("com.konghq:unirest-java-core:${project.property("unirest.version")}")
+    implementation("com.konghq:unirest-modules-gson:${project.property("unirest.version")}")
+
+    /* Caffeine */
+    implementation("com.github.ben-manes.caffeine:caffeine:${project.property("caffeine.version")}")
+
+    /* Lite Commands */
+    implementation("dev.rollczi:litecommands-jda:${project.property("litecommands.version")}")
+
+    /* Okaeri Configs */
+    implementation("eu.okaeri:okaeri-configs-yaml-snakeyaml:${project.property("okaeri.configs.version")}")
+
+    /* Lombok */
+    compileOnly("org.projectlombok:lombok:${project.property("lombok.version")}")
+    annotationProcessor("org.projectlombok:lombok:${project.property("lombok.version")}")
+
+    /* JetBrains Annotations */
+    compileOnly("org.jetbrains:annotations:${project.property("jetbrains.annotations.version")}")
+    annotationProcessor("org.jetbrains:annotations:${project.property("jetbrains.annotations.version")}")
+
+}
+
+tasks {
+
+    withType<JavaCompile> {
+        options.encoding = "UTF-8"
+    }
+
+    withType<JavaCompile> {
+        options.encoding = "UTF-8"
+    }
+
+    jar {
+        dependsOn(shadowJar)
+        manifest {
+            attributes["Main-Class"] = "pl.mrstudios.essential.bootstrap.Bootstrap"
+        }
+    }
+
+    shadowJar {
+        dependencies {
+            isEnableRelocation = false
+            relocationPrefix = format("%s.libraries", project.group)
+        }
+    }
+
+}
