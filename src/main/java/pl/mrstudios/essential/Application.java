@@ -2,17 +2,19 @@ package pl.mrstudios.essential;
 
 import net.dv8tion.jda.api.JDA;
 import org.slf4j.Logger;
-import pl.mrstudios.commons.inject.Injector;
 import pl.mrstudios.essential.command.CommandAbout;
+import pl.mrstudios.essential.command.CommandConfigure;
 import pl.mrstudios.essential.config.Configuration;
 import pl.mrstudios.essential.config.ConfigurationFactory;
 import pl.mrstudios.essential.database.SQLite;
-import pl.mrstudios.essential.feature.calculator.command.CommandCalculator;
+import pl.mrstudios.essential.module.calculator.command.CommandCalculator;
 import pl.mrstudios.essential.listener.UserInteractionListener;
+import pl.mrstudios.essential.module.settings.GuildSettingsManager;
 
 import static dev.rollczi.litecommands.annotations.LiteCommandsAnnotations.ofClasses;
 import static dev.rollczi.litecommands.jda.LiteJDAFactory.builder;
 import static dev.rollczi.litecommands.schematic.SchematicFormat.angleBrackets;
+import static java.lang.Runtime.getRuntime;
 import static java.nio.file.Paths.get;
 import static java.util.Arrays.asList;
 import static net.dv8tion.jda.api.JDABuilder.createDefault;
@@ -21,13 +23,13 @@ import static net.dv8tion.jda.api.utils.Compression.ZLIB;
 import static net.dv8tion.jda.api.utils.cache.CacheFlag.*;
 import static org.slf4j.LoggerFactory.getLogger;
 import static pl.mrstudios.essential.config.ConfigurationFactory.configurationFactory;
+import static pl.mrstudios.essential.utility.ThreadUtility.createThread;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class Application {
 
     private final JDA jda;
     private final SQLite sqLite;
-    private final Injector injector;
 
     /* Logger */
     private final Logger logger = getLogger(Application.class);
@@ -35,6 +37,9 @@ public class Application {
     /* Configuration */
     private final Configuration configuration;
     private final ConfigurationFactory configurationFactory;
+
+    /* Managers */
+    private final GuildSettingsManager guildSettingsManager;
 
     {
         this.logger.info("Loading application, please wait...");
@@ -61,18 +66,8 @@ public class Application {
                         new UserInteractionListener()
                 ).build();
 
-        /* Injector */
-        this.injector = new Injector()
-
-                .register(JDA.class, this.jda)
-                .register(Logger.class, this.logger)
-
-                /* SQLite */
-                .register(SQLite.class, this.sqLite)
-
-                /* Configuration */
-                .register(Configuration.class, this.configuration)
-                .register(ConfigurationFactory.class, this.configurationFactory);
+        /* Managers */
+        this.guildSettingsManager = new GuildSettingsManager(this.jda, this.sqLite);
 
         /* Commands */
         builder(this.jda)
@@ -80,18 +75,29 @@ public class Application {
                 /* Commands */
                 .commands(ofClasses(
                         CommandCalculator.class,
+                        CommandConfigure.class,
                         CommandAbout.class
                 ))
 
                 /* Bind */
+                .bind(Logger.class, () -> this.logger)
+                .bind(SQLite.class, () -> this.sqLite)
+
                 .bind(Configuration.class, () -> this.configuration)
                 .bind(ConfigurationFactory.class, () -> this.configurationFactory)
+
+                .bind(GuildSettingsManager.class, () -> this.guildSettingsManager)
 
                 /* Schematic */
                 .schematicGenerator(angleBrackets())
 
                 /* Build */
                 .build();
+
+        /* Shutdown */
+        getRuntime().addShutdownHook(createThread(
+                () -> this.logger.info("Application is shutting down, please wait..")
+        ));
 
     }
 
