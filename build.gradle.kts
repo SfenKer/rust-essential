@@ -1,5 +1,5 @@
-import groovy.lang.Closure
 import com.palantir.gradle.gitversion.VersionDetails
+import groovy.lang.Closure
 import java.lang.String.format
 
 plugins {

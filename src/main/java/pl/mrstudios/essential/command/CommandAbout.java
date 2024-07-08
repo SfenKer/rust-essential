@@ -14,7 +14,6 @@ import java.time.Instant;
 
 import static java.awt.Color.RED;
 import static java.lang.String.format;
-import static java.lang.String.valueOf;
 import static java.lang.System.getProperty;
 import static java.lang.management.ManagementFactory.getMemoryMXBean;
 import static java.lang.management.ManagementFactory.getOperatingSystemMXBean;

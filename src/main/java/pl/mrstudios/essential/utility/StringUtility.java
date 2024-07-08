@@ -6,7 +6,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static java.lang.String.*;
+import static java.lang.String.format;
+import static java.lang.String.join;
 
 public class StringUtility {
 
