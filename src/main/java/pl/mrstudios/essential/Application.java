@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.JDA;
 import org.slf4j.Logger;
 import pl.mrstudios.essential.command.CommandAbout;
 import pl.mrstudios.essential.command.CommandConfigure;
+import pl.mrstudios.essential.command.CommandServerInfo;
 import pl.mrstudios.essential.config.Configuration;
 import pl.mrstudios.essential.config.ConfigurationFactory;
 import pl.mrstudios.essential.database.SQLite;
@@ -25,6 +26,7 @@ import static net.dv8tion.jda.api.utils.cache.CacheFlag.*;
 import static org.slf4j.LoggerFactory.getLogger;
 import static pl.mrstudios.essential.config.ConfigurationFactory.configurationFactory;
 import static pl.mrstudios.essential.utility.ThreadUtility.createThread;
+import static pl.mrstudios.essential.wrapper.RustMapsAPI.provideRustMapsApiKey;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class Application {
@@ -81,6 +83,7 @@ public class Application {
                 /* Commands */
                 .commands(ofClasses(
                         CommandCalculator.class,
+                        CommandServerInfo.class,
                         CommandConfigure.class,
                         CommandAbout.class
                 ))
@@ -102,6 +105,9 @@ public class Application {
 
         /* Services */
         new NewsService(this.jda, this.sqLite, this.guildSettingsManager);
+
+        /* API */
+        provideRustMapsApiKey(this.configuration.rustMapsApiKey);
 
     }
 

@@ -15,4 +15,7 @@ public class Configuration extends OkaeriConfig {
     @Comment("Token of the bot from Discord Developer Portal.")
     public @NotNull String token = "ENTER_BOT_TOKEN_HERE";
 
+    @Comment({ "", "Key for Rust Maps from Rust Maps Dashboard."})
+    public @NotNull String rustMapsApiKey = "ENTER_API_KEY_HERE";
+
 }

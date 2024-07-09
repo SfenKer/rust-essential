@@ -18,4 +18,5 @@
         <appender-ref ref="FILE" />
         <appender-ref ref="STDOUT" />
     </root>
+    <logger name="com.ibasco.agql.core" level="OFF" />
 </configuration>

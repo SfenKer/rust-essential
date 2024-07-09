@@ -63,6 +63,9 @@ dependencies {
     /* Rome */
     implementation("com.rometools:rome:${project.property("rome.version")}")
 
+    /* Source Query */
+    implementation("com.ibasco.agql:agql-source-query:${project.property("source.query.version")}")
+
     /* Lombok */
     compileOnly("org.projectlombok:lombok:${project.property("lombok.version")}")
     annotationProcessor("org.projectlombok:lombok:${project.property("lombok.version")}")
