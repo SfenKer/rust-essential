@@ -35,7 +35,7 @@ public class CommandAbout {
     }
 
     @Execute
-    public void execute(
+    public void executeDefault(
             @Context User user,
             @Context SlashCommandInteractionEvent event
     ) {
