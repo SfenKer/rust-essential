@@ -1,7 +1,6 @@
 package pl.mrstudios.essential.command;
 
 import com.github.benmanes.caffeine.cache.Cache;
-import com.ibasco.agql.core.util.Pair;
 import com.ibasco.agql.protocols.valve.source.query.SourceQueryClient;
 import com.ibasco.agql.protocols.valve.source.query.SourceQueryOptions;
 import com.ibasco.agql.protocols.valve.source.query.info.SourceServer;
@@ -10,19 +9,15 @@ import dev.rollczi.litecommands.annotations.command.Command;
 import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.description.Description;
 import dev.rollczi.litecommands.annotations.execute.Execute;
-import dev.rollczi.litecommands.annotations.optional.OptionalArg;
 import dev.rollczi.litecommands.jda.permission.DiscordPermission;
+import kotlin.Pair;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import pl.mrstudios.essential.utility.EmbedResponseUtility;
 
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 
 import static com.github.benmanes.caffeine.cache.Caffeine.newBuilder;
@@ -63,9 +58,9 @@ public class CommandServerInfo {
             @Description("Server Address")
             @NotNull String host,
 
-            @OptionalArg("port")
+            @Arg("port")
             @Description("Server Port")
-            @Nullable Integer port
+            @NotNull Optional<Integer> port
 
     ) {
 
@@ -75,9 +70,9 @@ public class CommandServerInfo {
                     SourceQueryClient client = new SourceQueryClient(this.sourceQueryOptions)
             ) {
 
-                InetSocketAddress socketAddress = new InetSocketAddress(host, ofNullable(port).orElse(28015));
+                InetSocketAddress socketAddress = new InetSocketAddress(host, port.orElse(28015));
                 Pair<SourceServer, Map<String, String>> pair = this.cache.get(
-                        format("%s:%d", host, ofNullable(port).orElse(28015)),
+                        format("%s:%d", host, port.orElse(28015)),
                         (key) -> {
                             try {
                                 return new Pair<>(
