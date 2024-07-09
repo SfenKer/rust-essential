@@ -135,14 +135,10 @@ public class CommandServerInfo {
             ofNullable(details.get("logoimage"))
                     .ifPresent(mainEmbed::setThumbnail);
 
-            ofNullable(details.get("headerimage"))
-                    .ifPresent(mainEmbed::setImage);
-
-            if (server.getMapName().equals("Procedural Map"))
-                ofNullable(mapImage(
-                        parseInt(details.get("world.size")),
-                        parseLong(details.get("world.seed"))
-                )).ifPresent(mainEmbed::setImage);
+            ofNullable(mapImage(
+                    parseInt(details.get("world.size")),
+                    parseLong(details.get("world.seed"))
+            )).ifPresent(mainEmbed::setImage);
 
             event.getHook().editOriginalEmbeds(mainEmbed.build())
                     .queue();
