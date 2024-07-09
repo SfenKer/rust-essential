@@ -11,7 +11,9 @@ import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
+import pl.mrstudios.essential.module.settings.GuildSettings;
 import pl.mrstudios.essential.module.settings.GuildSettingsManager;
+import pl.mrstudios.essential.module.settings.document.JsonDocument;
 import pl.mrstudios.essential.utility.EmbedResponseUtility;
 
 import static java.awt.Color.RED;
@@ -65,8 +67,10 @@ public class CommandConfigure {
                                     )
                     );
 
-        guildSettingsManager.guildSettings(requireNonNull(event.getGuild()))
-                .newsChannelId = textChannel.getIdLong();
+        JsonDocument<GuildSettings> settings = guildSettingsManager.guildSettings(requireNonNull(event.getGuild()));
+
+        settings.read().newsChannelId = textChannel.getIdLong();
+        settings.save();
 
         return embedResponse(event)
                 .ephemeral()

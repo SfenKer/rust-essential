@@ -1,8 +1,11 @@
 package pl.mrstudios.essential.database.statement;
 
 import org.jetbrains.annotations.NotNull;
+import pl.mrstudios.essential.database.SQLite;
+import pl.mrstudios.essential.database.result.SQLResult;
 
 import java.sql.PreparedStatement;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,7 +67,7 @@ public class SQLStatement {
         return this.query;
     }
 
-    public @NotNull PreparedStatement prepare(
+    public void prepare(
             @NotNull PreparedStatement preparedStatement
     ) {
 
@@ -95,8 +98,18 @@ public class SQLStatement {
             }
         });
 
-        return preparedStatement;
+    }
 
+    public void execute(
+            @NotNull SQLite sqLite
+    ) {
+        sqLite.execute(this);
+    }
+
+    public @NotNull Collection<SQLResult> fetch(
+            @NotNull SQLite sqLite
+    ) {
+        return sqLite.fetch(this);
     }
 
     public static @NotNull SQLStatement createStatement(

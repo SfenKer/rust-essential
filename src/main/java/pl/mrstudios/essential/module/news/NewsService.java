@@ -45,7 +45,7 @@ public class NewsService {
         this.sqLite = sqLite;
         this.executorService = newSingleThreadScheduledExecutor();
 
-        this.sqLite.execute(createStatement(newsCreateTable));
+        createStatement(newsCreateTable).execute(this.sqLite);
         this.executorService.scheduleAtFixedRate(() -> {
 
             try {
@@ -59,21 +59,19 @@ public class NewsService {
                                         .replace("\"&gt;&lt;br/&gt;", "|")
                                         .getBytes(UTF_8)
                         ))).getEntries().stream().filter(
-                                (entry) -> sqLite.fetch(
-                                        createStatement(newsSelectByUrl)
-                                                .setString(1, entry.getLink())
-                                ).isEmpty()
+                                (entry) -> createStatement(newsSelectByUrl)
+                                        .setString(1, entry.getLink())
+                                        .fetch(this.sqLite).isEmpty()
                         ).findFirst().ifPresent((entry) -> {
 
                             AtomicInteger index = new AtomicInteger();
 
-                            this.sqLite.execute(
-                                    createStatement(newsInsertInto)
-                                            .setString(1, entry.getLink())
-                            );
+                            createStatement(newsInsertInto)
+                                    .setString(1, entry.getLink())
+                                    .execute(this.sqLite);
 
                             this.jda.getGuilds().stream()
-                                    .map((guild) -> new Pair<>(guild, guildSettingsManager.guildSettings(guild)))
+                                    .map((guild) -> new Pair<>(guild, guildSettingsManager.guildSettings(guild).read()))
                                     .filter((pair) -> !isNull(pair.getSecond().newsChannelId))
                                     .forEach(
                                             (pair) -> ofNullable(pair.getFirst().getTextChannelById(pair.getSecond().newsChannelId))
