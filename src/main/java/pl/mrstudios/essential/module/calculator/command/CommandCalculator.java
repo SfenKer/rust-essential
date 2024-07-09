@@ -15,6 +15,7 @@ import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import org.jetbrains.annotations.NotNull;
 import pl.mrstudios.essential.module.calculator.resources.StructureRaidCost;
 import pl.mrstudios.essential.module.calculator.session.CalculatorSession;
+import pl.mrstudios.essential.utility.EmbedResponseUtility;
 
 import java.text.DecimalFormat;
 import java.util.Collection;
@@ -56,14 +57,14 @@ public class CommandCalculator {
             ).build();
 
     @Execute
-    public void execute(
+    public @NotNull EmbedResponseUtility execute(
             @Context User user,
             @Context SlashCommandInteractionEvent event
     ) {
 
         this.cache.invalidate(user.getIdLong());
 
-        embedResponse(event)
+        return embedResponse(event)
                 .ephemeral()
                 .embed(
                         (embedBuilder) -> embedBuilder.setColor(RED)
@@ -131,7 +132,7 @@ public class CommandCalculator {
                                     ).handler(this.modalHandler)
                                     .build();
                         }
-                ).build();
+                );
 
     }
 

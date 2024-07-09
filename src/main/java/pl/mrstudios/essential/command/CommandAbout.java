@@ -6,9 +6,9 @@ import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.description.Description;
 import dev.rollczi.litecommands.annotations.execute.Execute;
 import dev.rollczi.litecommands.jda.permission.DiscordPermission;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
+import pl.mrstudios.essential.utility.EmbedResponseUtility;
 
 import java.time.Instant;
 
@@ -35,11 +35,10 @@ public class CommandAbout {
     }
 
     @Execute
-    public void executeDefault(
-            @Context User user,
+    public @NotNull EmbedResponseUtility executeDefault(
             @Context SlashCommandInteractionEvent event
     ) {
-        embedResponse(event)
+        return embedResponse(event)
                 .ephemeral()
                 .embed(
                         (embedBuilder) -> embedBuilder.setColor(RED)
@@ -76,7 +75,7 @@ public class CommandAbout {
                                         currentCpuUsage(), currentMemoryUsage()
 
                                 ))
-                ).build();
+                );
     }
 
     protected static @NotNull String currentCpuUsage() {

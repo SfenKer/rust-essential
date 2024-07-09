@@ -13,10 +13,10 @@ import dev.rollczi.litecommands.annotations.execute.Execute;
 import dev.rollczi.litecommands.annotations.optional.OptionalArg;
 import dev.rollczi.litecommands.jda.permission.DiscordPermission;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import pl.mrstudios.essential.utility.EmbedResponseUtility;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -37,6 +37,7 @@ import static java.lang.String.join;
 import static java.time.Duration.ofMinutes;
 import static java.time.Duration.ofSeconds;
 import static java.util.Optional.ofNullable;
+import static java.util.concurrent.CompletableFuture.runAsync;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static java.util.stream.IntStream.rangeClosed;
 import static net.dv8tion.jda.api.Permission.USE_APPLICATION_COMMANDS;
@@ -54,9 +55,8 @@ public class CommandServerInfo {
             .build();
 
     @Execute
-    public void executeDefault(
+    public @NotNull EmbedResponseUtility executeDefault(
 
-            @Context User user,
             @Context SlashCommandInteractionEvent event,
 
             @Arg("host")
@@ -69,7 +69,89 @@ public class CommandServerInfo {
 
     ) {
 
-        embedResponse(event)
+        runAsync(() -> {
+
+            try (
+                    SourceQueryClient client = new SourceQueryClient(this.sourceQueryOptions)
+            ) {
+
+                InetSocketAddress socketAddress = new InetSocketAddress(host, ofNullable(port).orElse(28015));
+                Pair<SourceServer, Map<String, String>> pair = this.cache.get(
+                        format("%s:%d", host, ofNullable(port).orElse(28015)),
+                        (key) -> {
+                            try {
+                                return new Pair<>(
+                                        client.getInfo(socketAddress).get().getResult(),
+                                        client.getRules(socketAddress).get().getResult()
+                                );
+                            } catch (@NotNull Exception exception) {
+                                throw new RuntimeException("Unable to fetch server information due to exception.", exception);
+                            }
+                        }
+                );
+
+                SourceServer server = pair.getFirst();
+                Map<String, String> details = pair.getSecond();
+
+                EmbedBuilder mainEmbed = new EmbedBuilder()
+                        .setColor(
+                                (server.getNumOfPlayers() >= server.getMaxPlayers()) ?
+                                        YELLOW : GREEN
+                        ).setDescription(format(
+                                """
+                                ### :notepad_spiral: ‌ Server Information
+                                **Name:** ``%s``
+                                **Description:**
+                                ```
+                                %s
+                                ```
+                                ### :bar_chart: ‌ Statistics
+                                **Players:** ``%d/%d``
+                                **Uptime:** ``%s``
+                                """,
+                                server.getName(), readServerDescription(details),
+                                server.getNumOfPlayers(), server.getMaxPlayers(), formatDuration(ofSeconds(parseLong(
+                                        details.getOrDefault("uptime", "0")
+                                                .split("\\.")[0]
+                                )))
+
+                        ));
+
+                ofNullable(details.get("logoimage"))
+                        .ifPresent(mainEmbed::setThumbnail);
+
+                ofNullable(mapImage(
+                        parseInt(details.get("world.size")),
+                        parseLong(details.get("world.seed"))
+                )).ifPresent((image) -> {
+                    mainEmbed.setImage(image);
+                    mainEmbed.getDescriptionBuilder().append(format(
+                            """
+                            ### :map: ‌ Map
+                            Preview of ``%s`` map which server is using.
+                            """, server.getMapName()
+                    ));
+                });
+
+                event.getHook().editOriginalEmbeds(mainEmbed.build())
+                        .queue();
+
+            } catch (@NotNull Exception exception) {
+                event.getHook().editOriginalEmbeds(
+                        new EmbedBuilder()
+                                .setColor(RED)
+                                .setDescription(
+                                        """
+                                        ### :warning: ‌ Error Occurred
+                                        An error occurred while fetching information about the server.
+                                        """
+                                ).build()
+                ).queue();
+            }
+
+        });
+
+        return embedResponse(event)
                 .ephemeral()
                 .embed(
                         (embedBuilder) -> embedBuilder
@@ -80,81 +162,7 @@ public class CommandServerInfo {
                                         We are currently fetching information about the server, please wait..
                                         """
                                 )
-                ).build();
-
-        try (
-                SourceQueryClient client = new SourceQueryClient(this.sourceQueryOptions)
-        ) {
-
-            InetSocketAddress socketAddress = new InetSocketAddress(host, ofNullable(port).orElse(28015));
-            Pair<SourceServer, Map<String, String>> pair = this.cache.get(
-                    format("%s:%d", host, ofNullable(port).orElse(28015)),
-                    (key) -> {
-                        try {
-                            return new Pair<>(
-                                    client.getInfo(socketAddress).get().getResult(),
-                                    client.getRules(socketAddress).get().getResult()
-                            );
-                        } catch (@NotNull Exception exception) {
-                            throw new RuntimeException("Unable to fetch server information due to exception.", exception);
-                        }
-                    }
-            );
-
-            SourceServer server = pair.getFirst();
-            Map<String, String> details = pair.getSecond();
-
-            EmbedBuilder mainEmbed = new EmbedBuilder()
-                    .setColor(
-                            (server.getNumOfPlayers() >= server.getMaxPlayers()) ?
-                                    YELLOW : GREEN
-                    ).setDescription(format(
-                            """
-                            ### :notepad_spiral: ‌ Server Information
-                            **Name:** ``%s``
-                            **Map:** ``%s``
-                            **Description:**
-                            ```
-                            %s
-                            ```
-                            ### :bar_chart: ‌ Statistics
-                            **Players:** ``%d/%d``
-                            **Uptime:** ``%s``
-                            
-                            ### :map: ‌ Map
-                            Preview of the map which server is using.
-                            """,
-                            server.getName(), server.getMapName(), readServerDescription(details),
-                            server.getNumOfPlayers(), server.getMaxPlayers(), formatDuration(ofSeconds(parseLong(
-                                    details.getOrDefault("uptime", "0")
-                                            .split("\\.")[0]
-                            )))
-
-                    ));
-
-            ofNullable(details.get("logoimage"))
-                    .ifPresent(mainEmbed::setThumbnail);
-
-            ofNullable(mapImage(
-                    parseInt(details.get("world.size")),
-                    parseLong(details.get("world.seed"))
-            )).ifPresent(mainEmbed::setImage);
-
-            event.getHook().editOriginalEmbeds(mainEmbed.build())
-                    .queue();
-
-        } catch (@NotNull Exception exception) {
-            event.getHook().editOriginalEmbeds(
-                    new EmbedBuilder()
-                            .setColor(RED)
-                            .setDescription(
-                                    """
-                                    ### :warning: ‌ Error Occurred
-                                    An error occurred while fetching information about the server.
-                                    """
-                            ).build()
-            ).queue();
-        }
+                );
 
     }
 

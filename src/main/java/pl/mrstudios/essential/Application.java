@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import pl.mrstudios.essential.command.CommandAbout;
 import pl.mrstudios.essential.command.CommandConfigure;
 import pl.mrstudios.essential.command.CommandServerInfo;
+import pl.mrstudios.essential.command.result.EmbedResponseResult;
 import pl.mrstudios.essential.config.Configuration;
 import pl.mrstudios.essential.config.ConfigurationFactory;
 import pl.mrstudios.essential.database.SQLite;
@@ -12,6 +13,7 @@ import pl.mrstudios.essential.listener.UserInteractionListener;
 import pl.mrstudios.essential.module.calculator.command.CommandCalculator;
 import pl.mrstudios.essential.module.news.NewsService;
 import pl.mrstudios.essential.module.settings.GuildSettingsManager;
+import pl.mrstudios.essential.utility.EmbedResponseUtility;
 
 import static dev.rollczi.litecommands.annotations.LiteCommandsAnnotations.ofClasses;
 import static dev.rollczi.litecommands.jda.LiteJDAFactory.builder;
@@ -87,6 +89,9 @@ public class Application {
                         CommandConfigure.class,
                         CommandAbout.class
                 ))
+
+                /* Result */
+                .result(EmbedResponseUtility.class, new EmbedResponseResult())
 
                 /* Bind */
                 .bind(Logger.class, () -> this.logger)

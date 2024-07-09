@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 import pl.mrstudios.essential.module.settings.GuildSettingsManager;
+import pl.mrstudios.essential.utility.EmbedResponseUtility;
 
 import static java.awt.Color.RED;
 import static java.lang.String.format;
@@ -27,7 +28,7 @@ public class CommandConfigure {
 
     @Execute(name = "news-channel")
     @Description("Set channel where news will be posted.")
-    public void newsChannel(
+    public @NotNull EmbedResponseUtility newsChannel(
 
             @Context SlashCommandInteractionEvent event,
             @Bind GuildSettingsManager guildSettingsManager,
@@ -38,8 +39,8 @@ public class CommandConfigure {
 
     ) {
 
-        if (!(channel instanceof TextChannel textChannel)) {
-            embedResponse(event)
+        if (!(channel instanceof TextChannel textChannel))
+            return embedResponse(event)
                     .ephemeral()
                     .embed(
                             (embedBuilder) -> embedBuilder.setColor(RED)
@@ -49,12 +50,10 @@ public class CommandConfigure {
                                             You can only choose text channels as news channel.
                                             """
                                     )
-                    ).build();
-            return;
-        }
+                    );
 
-        if (!checkPermission(textChannel, requireNonNull(event.getGuild()).getSelfMember(), MESSAGE_SEND, MESSAGE_EMBED_LINKS)) {
-            embedResponse(event)
+        if (!checkPermission(textChannel, requireNonNull(event.getGuild()).getSelfMember(), MESSAGE_SEND, MESSAGE_EMBED_LINKS))
+            return embedResponse(event)
                     .ephemeral()
                     .embed(
                             (embedBuilder) -> embedBuilder.setColor(RED)
@@ -64,14 +63,12 @@ public class CommandConfigure {
                                             Application doesn't have permissions to send messages in that channel.
                                             """
                                     )
-                    ).build();
-            return;
-        }
+                    );
 
         guildSettingsManager.guildSettings(requireNonNull(event.getGuild()))
                 .newsChannelId = textChannel.getIdLong();
 
-        embedResponse(event)
+        return embedResponse(event)
                 .ephemeral()
                 .embed(
                         (embedBuilder) -> embedBuilder.setColor(RED)
@@ -82,7 +79,7 @@ public class CommandConfigure {
                                         Parameter ``guild.news.channel`` has been set to %s channel.
                                         """, channel.getAsMention()
                                 ))
-                ).build();
+                );
     }
 
 }

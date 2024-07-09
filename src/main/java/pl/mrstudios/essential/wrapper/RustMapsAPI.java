@@ -21,6 +21,9 @@ public class RustMapsAPI {
                         .asJson().getBody()
         ).map(JsonNode::getObject)
 
+                /* Status Code */
+                .filter((object) -> object.getJSONObject("meta").getInt("statusCode") == 200)
+
                 /* Data */
                 .filter((object) -> object.has("data"))
                 .map((object) -> object.getJSONObject("data"))
