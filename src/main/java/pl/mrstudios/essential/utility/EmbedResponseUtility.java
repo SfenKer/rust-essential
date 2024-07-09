@@ -120,7 +120,7 @@ public class EmbedResponseUtility {
                     .setComponents(partitionOf(this.components))
                     .queue();
 
-            /* Component Interaction */
+        /* Component Interaction */
         else if (!isNull(this.componentInteraction) && this.edit)
             this.componentInteraction.deferEdit()
                     .setEmbeds(this.embedBuilder.build())
@@ -137,7 +137,7 @@ public class EmbedResponseUtility {
                                     .getComponents()
                     ).queue();
 
-            /* Modal Interaction */
+        /* Modal Interaction */
         else if (!isNull(this.modalInteraction) && this.edit)
             this.modalInteraction.deferEdit()
                     .setEmbeds(this.embedBuilder.build())

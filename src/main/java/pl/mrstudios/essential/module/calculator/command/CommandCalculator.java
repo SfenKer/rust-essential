@@ -7,6 +7,7 @@ import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.description.Description;
 import dev.rollczi.litecommands.annotations.execute.Execute;
 import dev.rollczi.litecommands.jda.permission.DiscordPermission;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -108,17 +109,17 @@ public class CommandCalculator {
                             CalculatorSession session = this.cache.get(executor.getIdLong(), (key) -> new CalculatorSession(callback.getHook()));
 
                             if (isNull(session.currentStructure)) {
-                                embedResponse(callback)
-                                        .ephemeral()
-                                        .embed(
-                                                (embedBuilder) -> embedBuilder.setColor(RED)
+                                callback.deferReply(true)
+                                        .setEmbeds(
+                                                new EmbedBuilder()
+                                                        .setColor(RED)
                                                         .setDescription(
                                                                 """
                                                                 ### :warning: ‌ Error Occurred
                                                                 You must select structure before providing amount.
                                                                 """
-                                                        )
-                                        ).build();
+                                                        ).build()
+                                        ).queue();
                                 return;
                             }
 
@@ -203,17 +204,17 @@ public class CommandCalculator {
                     ).build();
 
         } catch (@NotNull Exception exception) {
-            embedResponse(callback)
-                    .ephemeral()
-                    .embed(
-                            (embedBuilder) -> embedBuilder.setColor(RED)
+            callback.deferReply(true)
+                    .setEmbeds(
+                            new EmbedBuilder()
+                                    .setColor(RED)
                                     .setDescription(
                                             """
                                             ### :warning: ‌ Error Occurred
                                             You must provide a number in the input.
                                             """
-                                    )
-                    ).build();
+                                    ).build()
+                    ).queue();
         }
     };
 
