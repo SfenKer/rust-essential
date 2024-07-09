@@ -8,6 +8,7 @@ import dev.rollczi.litecommands.annotations.description.Description;
 import dev.rollczi.litecommands.annotations.execute.Execute;
 import dev.rollczi.litecommands.jda.permission.DiscordPermission;
 import net.dv8tion.jda.api.entities.channel.Channel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 import pl.mrstudios.essential.module.settings.GuildSettingsManager;
@@ -15,7 +16,8 @@ import pl.mrstudios.essential.module.settings.GuildSettingsManager;
 import static java.awt.Color.RED;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static net.dv8tion.jda.api.Permission.MANAGE_SERVER;
+import static net.dv8tion.jda.api.Permission.*;
+import static net.dv8tion.jda.internal.utils.PermissionUtil.checkPermission;
 import static pl.mrstudios.essential.utility.EmbedResponseUtility.embedResponse;
 
 @Command(name = "configure")
@@ -36,8 +38,38 @@ public class CommandConfigure {
 
     ) {
 
+        if (!(channel instanceof TextChannel textChannel)) {
+            embedResponse(event)
+                    .ephemeral()
+                    .embed(
+                            (embedBuilder) -> embedBuilder.setColor(RED)
+                                    .setDescription(
+                                            """
+                                            ### :warning: ‌ Error Occurred
+                                            You can only choose text channels as news channel.
+                                            """
+                                    )
+                    ).build();
+            return;
+        }
+
+        if (!checkPermission(textChannel, requireNonNull(event.getGuild()).getSelfMember(), MESSAGE_SEND, MESSAGE_EMBED_LINKS)) {
+            embedResponse(event)
+                    .ephemeral()
+                    .embed(
+                            (embedBuilder) -> embedBuilder.setColor(RED)
+                                    .setDescription(
+                                            """
+                                            ### :warning: ‌ Error Occurred
+                                            Application doesn't have permissions to send messages in that channel.
+                                            """
+                                    )
+                    ).build();
+            return;
+        }
+
         guildSettingsManager.guildSettings(requireNonNull(event.getGuild()))
-                .newsChannelId = channel.getIdLong();
+                .newsChannelId = textChannel.getIdLong();
 
         embedResponse(event)
                 .ephemeral()
