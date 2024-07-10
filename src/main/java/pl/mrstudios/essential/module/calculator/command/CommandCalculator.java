@@ -174,12 +174,10 @@ public class CommandCalculator {
                         .append(" ").append(customEmoji("rocket").getFormatted())
                         .append(" Rocket");
 
-
             if (session.bombs > 0)
                 stringBuilder.append("\n").append("\u200C \u200C \u200C").append("``").append(this.decimalFormat.format(session.bombs)).append("x").append("``")
                         .append(" ").append(customEmoji("timed_explosive_charge").getFormatted())
                         .append(" Timed Explosive Charge");
-
 
             if (session.explosiveAmmo > 0)
                 stringBuilder.append("\n").append("\u200C \u200C \u200C").append("``").append(this.decimalFormat.format(session.explosiveAmmo)).append("x").append("``")
@@ -202,6 +200,8 @@ public class CommandCalculator {
                                             """, this.decimalFormat.format(session.totalSulphurNeeded()), customEmoji("sulphur").getFormatted(), stringBuilder
                                     ))
                     ).build();
+
+            session.interactionHook = callback.getHook();
 
         } catch (@NotNull Exception exception) {
             callback.deferReply(true)
