@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import org.jetbrains.annotations.NotNull;
 import pl.mrstudios.essential.utility.EmbedResponseUtility;
 
+import java.text.DecimalFormat;
 import java.time.Instant;
 
 import static java.awt.Color.RED;
@@ -52,7 +53,7 @@ public class CommandAbout {
                                         ### :robot: ‌ Bot Information
                                         **Uptime:** ``%s``
                                         **Latency:** ``%dms``
-                                        **Servers:** ``%d servers``
+                                        **Servers:** ``%s servers``
 
                                         ### :desktop: ‌ Hardware Information
                                         **CPU Usage:** ``%s%%``
@@ -69,7 +70,7 @@ public class CommandAbout {
                                         /* Bot Information */
                                         formatDuration(between(this.applicationStartTime, now())),
                                         event.getJDA().getGatewayPing(),
-                                        event.getJDA().getGuilds().size(),
+                                        decimalFormat.format(event.getJDA().getGuilds().size()),
 
                                         /* Hardware Information */
                                         currentCpuUsage(), currentMemoryUsage()
@@ -86,5 +87,7 @@ public class CommandAbout {
     protected static @NotNull Integer currentMemoryUsage() {
         return (int) (getMemoryMXBean().getHeapMemoryUsage().getUsed()) / 1_048_576;
     }
+
+    protected final DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
 }
