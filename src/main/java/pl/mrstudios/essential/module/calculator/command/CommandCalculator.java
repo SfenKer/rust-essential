@@ -48,7 +48,7 @@ import static pl.mrstudios.essential.utility.StreamUtility.readResource;
 public class CommandCalculator {
 
     private final Cache<Long, CalculatorSession> cache = newBuilder()
-            .expireAfterAccess(ofMinutes(5))
+            .expireAfterWrite(ofMinutes(10))
             .removalListener((key, value, cause) -> ofNullable(value)
                     .map(CalculatorSession.class::cast)
                     .ifPresent(
