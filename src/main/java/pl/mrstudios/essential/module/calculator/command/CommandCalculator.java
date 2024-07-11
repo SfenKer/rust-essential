@@ -48,13 +48,16 @@ import static pl.mrstudios.essential.utility.StreamUtility.readResource;
 public class CommandCalculator {
 
     private final Cache<Long, CalculatorSession> cache = newBuilder()
-            .expireAfterWrite(ofMinutes(10))
-            .removalListener((key, value, cause) -> ofNullable(value)
-                    .map(CalculatorSession.class::cast)
-                    .ifPresent(
-                            (session) -> session.interactionHook.editOriginalComponents()
-                                    .queue()
-                    )
+            .expireAfterAccess(ofMinutes(5))
+            .removalListener(
+                    (key, value, cause) -> ofNullable(value)
+                            .map(CalculatorSession.class::cast)
+                            .filter((session) -> !isNull(session.interactionHook))
+                            .filter((session) -> !session.interactionHook.isExpired())
+                            .ifPresent(
+                                    (session) -> session.interactionHook.editOriginalComponents()
+                                            .queue()
+                            )
             ).build();
 
     @Execute
@@ -132,6 +135,7 @@ public class CommandCalculator {
                                                     .build()
                                     ).handler(this.modalHandler)
                                     .build();
+
                         }
                 );
 
@@ -200,8 +204,6 @@ public class CommandCalculator {
                                             """, this.decimalFormat.format(session.totalSulphurNeeded()), customEmoji("sulphur").getFormatted(), stringBuilder
                                     ))
                     ).build();
-
-            session.interactionHook = callback.getHook();
 
         } catch (@NotNull Exception exception) {
             callback.deferReply(true)
