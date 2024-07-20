@@ -27,7 +27,7 @@ import static pl.mrstudios.essential.utility.EmbedResponseUtility.embedResponse;
 import static pl.mrstudios.essential.utility.StreamUtility.readResource;
 
 @Command(name = "changelog")
-@Description("Read changelog of Rust Essential")
+@Description("Display changelog of Rust Essential.")
 @DiscordPermission(USE_APPLICATION_COMMANDS)
 public class CommandChangelog {
 

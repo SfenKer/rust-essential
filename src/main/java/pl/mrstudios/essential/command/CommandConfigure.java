@@ -24,7 +24,7 @@ import static net.dv8tion.jda.internal.utils.PermissionUtil.checkPermission;
 import static pl.mrstudios.essential.utility.EmbedResponseUtility.embedResponse;
 
 @Command(name = "configure")
-@Description("Configure bot for your server.")
+@Description("Configure settings of Rust Essential.")
 @DiscordPermission(MANAGE_SERVER)
 public class CommandConfigure {
 

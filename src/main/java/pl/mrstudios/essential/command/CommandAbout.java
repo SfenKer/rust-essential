@@ -25,7 +25,7 @@ import static pl.mrstudios.essential.utility.EmbedResponseUtility.embedResponse;
 import static pl.mrstudios.essential.utility.StringUtility.formatDuration;
 
 @Command(name = "about")
-@Description("Show information about bot.")
+@Description("Show information about Rust Essential.")
 @DiscordPermission(USE_APPLICATION_COMMANDS)
 public class CommandAbout {
 

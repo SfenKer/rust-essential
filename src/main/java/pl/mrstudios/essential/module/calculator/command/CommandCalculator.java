@@ -43,7 +43,7 @@ import static pl.mrstudios.essential.utility.ModalResponseUtility.modalResponse;
 import static pl.mrstudios.essential.utility.StreamUtility.readResource;
 
 @Command(name = "calculator")
-@Description("Calculator of Raid Cost")
+@Description("Calculator of Raid Cost.")
 @DiscordPermission(USE_APPLICATION_COMMANDS)
 public class CommandCalculator {
 
