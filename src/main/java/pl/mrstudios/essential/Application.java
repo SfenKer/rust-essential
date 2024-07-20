@@ -11,6 +11,7 @@ import pl.mrstudios.essential.config.ConfigurationFactory;
 import pl.mrstudios.essential.database.SQLite;
 import pl.mrstudios.essential.listener.UserInteractionListener;
 import pl.mrstudios.essential.module.calculator.command.CommandCalculator;
+import pl.mrstudios.essential.module.changelog.command.CommandChangelog;
 import pl.mrstudios.essential.module.news.NewsService;
 import pl.mrstudios.essential.module.settings.GuildSettingsManager;
 import pl.mrstudios.essential.utility.EmbedResponseUtility;
@@ -87,6 +88,7 @@ public class Application {
                         CommandCalculator.class,
                         CommandServerInfo.class,
                         CommandConfigure.class,
+                        CommandChangelog.class,
                         CommandAbout.class
                 ))
 

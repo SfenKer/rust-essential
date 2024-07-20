@@ -1,0 +1,45 @@
+[
+  {
+    "title": "Minor Update",
+    "version": "1.1.0",
+    "date": "20 July 2024",
+    "changes": {
+      "Added": [
+        "Added ``/changelog`` command.",
+        "Added ''Satchel Explosive Charge'' to ``/calculator`` command."
+      ],
+      "Fixed": [
+        "Fixed ``/serverinfo`` command displaying map preview."
+      ],
+      "Improvements": [
+        "Improved ``/calculator`` command calculation schema."
+      ]
+    }
+  },
+  {
+    "title": "Fixes and Improvements",
+    "version": "1.0.1",
+    "date": "12 July 2024",
+    "changes": {
+      "Fixed": [
+        "Fixed saving guild settings in database.",
+        "Fixed issues with ``/calculator`` command.",
+        "Fixed ``/serverinfo`` command problems with fetching server information."
+      ]
+    }
+  },
+  {
+    "title": "Project Release",
+    "version": "1.0.0",
+    "date": "8 July 2024",
+    "changes": {
+      "Added": [
+        "Added ``/about`` command.",
+        "Added ``/calculator`` command.",
+        "Added ``/serverinfo`` command.",
+        "Added configurable guild settings.",
+        "Added RSS news feed from ``https://rust.facepunch.com/rss/news``."
+      ]
+    }
+  }
+]
