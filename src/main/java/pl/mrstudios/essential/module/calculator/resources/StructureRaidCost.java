@@ -10,6 +10,7 @@ public class StructureRaidCost {
     public static class Costs {
         public Integer rocket;
         public Integer bomb;
+        public Integer satchel;
         public Integer explosive;
     }
 

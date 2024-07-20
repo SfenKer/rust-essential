@@ -74,5 +74,9 @@
   {
     "name": "rust_explosive_ammo",
     "identifier": 1259875895427203124
+  },
+  {
+    "name": "rust_satchel_explosive_charge",
+    "identifier": 1264282990800932884
   }
 ]

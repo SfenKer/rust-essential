@@ -12,6 +12,12 @@
     }
   },
   {
+    "id": "satchel_explosive_charge",
+    "costs": {
+      "sulphur": 480
+    }
+  },
+  {
     "id": "explosive_ammo",
     "costs": {
       "sulphur": 25

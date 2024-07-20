@@ -172,6 +172,7 @@ public class CommandCalculator {
             session.rockets += (session.currentStructure.costs.rocket * amount);
             session.bombs += (session.currentStructure.costs.bomb * amount);
             session.explosiveAmmo += (session.currentStructure.costs.explosive * amount);
+            session.satchels += (session.currentStructure.costs.satchel * amount);
 
             if (session.rockets > 0)
                 stringBuilder.append("\n").append("\u200C \u200C \u200C").append("``").append(this.decimalFormat.format(session.rockets)).append("x").append("``")
@@ -182,6 +183,11 @@ public class CommandCalculator {
                 stringBuilder.append("\n").append("\u200C \u200C \u200C").append("``").append(this.decimalFormat.format(session.bombs)).append("x").append("``")
                         .append(" ").append(customEmoji("timed_explosive_charge").getFormatted())
                         .append(" Timed Explosive Charge");
+
+            if (session.satchels > 0)
+                stringBuilder.append("\n").append("\u200C \u200C \u200C").append("``").append(this.decimalFormat.format(session.satchels)).append("x").append("``")
+                        .append(" ").append(customEmoji("satchel_explosive_charge").getFormatted())
+                        .append(" Satchel Explosive Charge");
 
             if (session.explosiveAmmo > 0)
                 stringBuilder.append("\n").append("\u200C \u200C \u200C").append("``").append(this.decimalFormat.format(session.explosiveAmmo)).append("x").append("``")

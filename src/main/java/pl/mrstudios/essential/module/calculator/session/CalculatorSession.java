@@ -18,6 +18,7 @@ public class CalculatorSession {
 
     public Integer rockets;
     public Integer bombs;
+    public Integer satchels;
     public Integer explosiveAmmo;
 
     /* Interaction Hook */
@@ -32,6 +33,7 @@ public class CalculatorSession {
 
         this.rockets = 0;
         this.bombs = 0;
+        this.satchels = 0;
         this.explosiveAmmo = 0;
 
         /* Interaction Hook */
@@ -42,6 +44,7 @@ public class CalculatorSession {
     public @NotNull Integer totalSulphurNeeded() {
         return this.rockets * itemCraftCosts.get("rocket").costs.sulphur +
                 this.bombs * itemCraftCosts.get("timed_explosive_charge").costs.sulphur +
+                this.satchels * itemCraftCosts.get("satchel_explosive_charge").costs.sulphur +
                 this.explosiveAmmo * itemCraftCosts.get("explosive_ammo").costs.sulphur;
     }
 

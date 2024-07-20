@@ -4,9 +4,10 @@
     "name": "Wooden Wall",
     "emoji": 1259165524542361652,
     "costs": {
-      "rocket": 1,
+      "rocket": 0,
       "bomb": 0,
-      "explosive": 2
+      "satchel": 3,
+      "explosive": 0
     }
   },
   {
@@ -16,6 +17,7 @@
     "costs": {
       "rocket": 4,
       "bomb": 0,
+      "satchel": 0,
       "explosive": 0
     }
   },
@@ -26,6 +28,7 @@
     "costs": {
       "rocket": 8,
       "bomb": 0,
+      "satchel": 0,
       "explosive": 0
     }
   },
@@ -36,6 +39,7 @@
     "costs": {
       "rocket": 16,
       "bomb": 0,
+      "satchel": 0,
       "explosive": 0
     }
   },
@@ -46,6 +50,7 @@
     "costs": {
       "rocket": 6,
       "bomb": 0,
+      "satchel": 0,
       "explosive": 0
     }
   },
@@ -56,6 +61,7 @@
     "costs": {
       "rocket": 0,
       "bomb": 0,
+      "satchel": 0,
       "explosive": 19
     }
   },
@@ -66,6 +72,7 @@
     "costs": {
       "rocket": 1,
       "bomb": 0,
+      "satchel": 0,
       "explosive": 8
     }
   },
@@ -74,8 +81,9 @@
     "name": "Armored Door",
     "emoji": 1259165710052229120,
     "costs": {
-      "rocket": 0,
+      "rocket": 1,
       "bomb": 2,
+      "satchel": 0,
       "explosive": 0
     }
   },
@@ -86,6 +94,7 @@
     "costs": {
       "rocket": 3,
       "bomb": 0,
+      "satchel": 0,
       "explosive": 0
     }
   },
@@ -96,6 +105,7 @@
     "costs": {
       "rocket": 1,
       "bomb": 0,
+      "satchel": 0,
       "explosive": 8
     }
   },
@@ -106,6 +116,7 @@
     "costs": {
       "rocket": 0,
       "bomb": 0,
+      "satchel": 0,
       "explosive": 50
     }
   },
@@ -116,6 +127,7 @@
     "costs": {
       "rocket": 4,
       "bomb": 0,
+      "satchel": 0,
       "explosive": 0
     }
   },
@@ -126,6 +138,7 @@
     "costs": {
       "rocket": 2,
       "bomb": 2,
+      "satchel": 0,
       "explosive": 0
     }
   },
@@ -136,6 +149,7 @@
     "costs": {
       "rocket": 2,
       "bomb": 0,
+      "satchel": 0,
       "explosive": 4
     }
   },
@@ -146,6 +160,7 @@
     "costs": {
       "rocket": 4,
       "bomb": 0,
+      "satchel": 0,
       "explosive": 0
     }
   }
