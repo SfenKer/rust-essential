@@ -85,7 +85,7 @@ public class CommandAbout {
     }
 
     protected static @NotNull Integer currentMemoryUsage() {
-        return (int) (getMemoryMXBean().getHeapMemoryUsage().getUsed()) / 1_048_576;
+        return (int) (getMemoryMXBean().getNonHeapMemoryUsage().getUsed()) / 1_048_576;
     }
 
     protected final DecimalFormat decimalFormat = new DecimalFormat("#,###");
