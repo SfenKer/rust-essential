@@ -80,7 +80,7 @@ public class CommandAbout {
     }
 
     protected static @NotNull String currentCpuUsage() {
-        return format("%.2f", ((OperatingSystemMXBean) getOperatingSystemMXBean()).getProcessCpuLoad())
+        return format("%.2f", ((OperatingSystemMXBean) getOperatingSystemMXBean()).getCpuLoad())
                 .replace('.', ',');
     }
 
