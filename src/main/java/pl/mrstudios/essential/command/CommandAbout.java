@@ -80,12 +80,12 @@ public class CommandAbout {
     }
 
     protected static @NotNull String currentCpuUsage() {
-        return format("%.2f", ((OperatingSystemMXBean) getOperatingSystemMXBean()).getProcessCpuLoad())
+        return format("%.2f", ((OperatingSystemMXBean) getOperatingSystemMXBean()).getCpuLoad())
                 .replace('.', ',');
     }
 
     protected static @NotNull Integer currentMemoryUsage() {
-        return (int) (getMemoryMXBean().getHeapMemoryUsage().getUsed()) / 1_048_576;
+        return (int) (getMemoryMXBean().getNonHeapMemoryUsage().getUsed()) / 1_048_576;
     }
 
     protected final DecimalFormat decimalFormat = new DecimalFormat("#,###");

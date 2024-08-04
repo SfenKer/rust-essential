@@ -1,6 +1,16 @@
 [
   {
     "title": "Fixes and Improvements",
+    "version": "1.1.2",
+    "date": "4 August 2024",
+    "changes": {
+      "Fixed": [
+        "Fixed displaying resource usage in ``/about`` command."
+      ]
+    }
+  },
+  {
+    "title": "Fixes and Improvements",
     "version": "1.1.1",
     "date": "21 July 2024",
     "changes": {
