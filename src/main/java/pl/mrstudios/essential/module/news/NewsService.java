@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
-import pl.mrstudios.essential.database.SQLite;
+import pl.mrstudios.commons.sql.SqlConnection;
 import pl.mrstudios.essential.module.settings.GuildSettingsManager;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -24,7 +24,7 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 import static kong.unirest.core.Unirest.get;
 import static net.dv8tion.jda.api.interactions.components.buttons.Button.link;
 import static org.slf4j.LoggerFactory.getLogger;
-import static pl.mrstudios.essential.database.statement.SQLStatement.createStatement;
+import static pl.mrstudios.commons.sql.statement.SqlStatement.createStatement;
 import static pl.mrstudios.essential.module.news.NewsSqlRepository.*;
 import static pl.mrstudios.essential.utility.StreamUtility.byteArrayInputStream;
 
@@ -32,20 +32,20 @@ import static pl.mrstudios.essential.utility.StreamUtility.byteArrayInputStream;
 public class NewsService {
 
     private final JDA jda;
-    private final SQLite sqLite;
+    private final SqlConnection sqlConnection;
     private final ScheduledExecutorService executorService;
 
     public NewsService(
             @NotNull JDA jda,
-            @NotNull SQLite sqLite,
+            @NotNull SqlConnection sqlConnection,
             @NotNull GuildSettingsManager guildSettingsManager
     ) {
 
         this.jda = jda;
-        this.sqLite = sqLite;
+        this.sqlConnection = sqlConnection;
         this.executorService = newSingleThreadScheduledExecutor();
 
-        createStatement(newsCreateTable).execute(this.sqLite);
+        createStatement(newsCreateTable).execute(this.sqlConnection);
         this.executorService.scheduleAtFixedRate(() -> {
 
             try {
@@ -61,14 +61,14 @@ public class NewsService {
                         ))).getEntries().stream().filter(
                                 (entry) -> createStatement(newsSelectByUrl)
                                         .setString(1, entry.getLink())
-                                        .fetch(this.sqLite).isEmpty()
+                                        .fetch(this.sqlConnection).isEmpty()
                         ).findFirst().ifPresent((entry) -> {
 
                             AtomicInteger index = new AtomicInteger();
 
                             createStatement(newsInsertInto)
                                     .setString(1, entry.getLink())
-                                    .execute(this.sqLite);
+                                    .execute(this.sqlConnection);
 
                             this.jda.getGuilds().stream()
                                     .map((guild) -> new Pair<>(guild, guildSettingsManager.guildSettings(guild).read()))
