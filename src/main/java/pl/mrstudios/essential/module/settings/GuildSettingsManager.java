@@ -6,36 +6,36 @@ import lombok.SneakyThrows;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import org.jetbrains.annotations.NotNull;
-import pl.mrstudios.essential.database.SQLite;
+import pl.mrstudios.commons.sql.SqlConnection;
 import pl.mrstudios.essential.module.settings.document.JsonDocument;
 
 import static com.github.benmanes.caffeine.cache.Caffeine.newBuilder;
 import static java.time.Duration.ofMinutes;
-import static pl.mrstudios.essential.database.statement.SQLStatement.createStatement;
+import static pl.mrstudios.commons.sql.statement.SqlStatement.createStatement;
 import static pl.mrstudios.essential.module.settings.GuildSettingsSqlRepository.*;
 
 public class GuildSettingsManager {
 
-    private final SQLite sqLite;
+    private final SqlConnection sqlConnection;
     private final Cache<Long, JsonDocument<GuildSettings>> cache;
 
     @SneakyThrows
     public GuildSettingsManager(
             @NotNull JDA jda,
-            @NotNull SQLite sqLite
+            @NotNull SqlConnection sqlConnection
     ) {
 
         /* Await Ready */
         jda.awaitReady();
 
         /* Then Complete */
-        this.sqLite = sqLite;
+        this.sqlConnection = sqlConnection;
         this.cache = newBuilder()
                 .expireAfterAccess(ofMinutes(5))
                 .build();
 
-        createStatement(guildsCreateTable).execute(sqLite);
-        createStatement(guildsSelectAllRecords).fetch(sqLite)
+        createStatement(guildsCreateTable).execute(this.sqlConnection);
+        createStatement(guildsSelectAllRecords).fetch(this.sqlConnection)
                 .stream().map((result) -> result.entry("guildId").asLong())
                 .filter(
                         (guildId) -> jda.getGuilds().stream()
@@ -43,7 +43,7 @@ public class GuildSettingsManager {
                 ).forEach(
                         (guildId) -> createStatement(guildsDeleteEntry)
                                 .setLong(1, guildId)
-                                .execute(this.sqLite)
+                                .execute(this.sqlConnection)
                 );
 
     }
@@ -60,7 +60,7 @@ public class GuildSettingsManager {
         return this.cache.get(guildId, (key) -> new JsonDocument<>() {
 
             private final GuildSettings settings = createStatement(guildsSelectByGuildId)
-                    .setLong(1, key).fetch(sqLite).stream().findFirst()
+                    .setLong(1, key).fetch(sqlConnection).stream().findFirst()
                     .map(
                             (result) -> gson.fromJson(result.entry("settings").asString(), GuildSettings.class)
                     ).orElseGet(() -> {
@@ -68,7 +68,7 @@ public class GuildSettingsManager {
                         createStatement(guildsInsertInto)
                                 .setLong(1, key)
                                 .setLongString(2, "{}")
-                                .execute(sqLite);
+                                .execute(sqlConnection);
 
                         return new GuildSettings();
 
@@ -84,7 +84,7 @@ public class GuildSettingsManager {
                 createStatement(guildsUpdateSettings)
                         .setLongString(1, gson.toJson(this.settings))
                         .setLong(2, guildId)
-                        .execute(sqLite);
+                        .execute(sqlConnection);
             }
 
         });

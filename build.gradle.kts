@@ -10,7 +10,7 @@ plugins {
 }
 
 project.group = "pl.mrstudios.essential"
-project.version = "1.1.2"
+project.version = "1.2.0"
 
 val versionDetails: Closure<VersionDetails> by extra
 fun projectVersion(): String = format("%s (git/%s)", project.version, versionDetails().gitHash)
@@ -26,6 +26,7 @@ blossom {
 
 repositories {
     mavenCentral()
+    maven("https://repo.mrstudios.pl/public/")
     maven("https://repo.panda-lang.org/releases/")
     maven("https://storehouse.okaeri.eu/repository/maven-public/")
 }
@@ -36,6 +37,9 @@ dependencies {
     implementation("net.dv8tion:JDA:${project.property("jda.version")}") {
         exclude("opus-java")
     }
+
+    /* Commons */
+    implementation("pl.mrstudios.commons:commons-sql:${project.property("commons.version")}")
 
     /* HikariCP */
     implementation("com.zaxxer:HikariCP:${project.property("hikaricp.version")}")

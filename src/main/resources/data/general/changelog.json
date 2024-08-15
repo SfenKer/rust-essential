@@ -1,5 +1,29 @@
 [
   {
+    "title": "Minor Update",
+    "version": "1.2.0",
+    "date": "15 August 2024",
+    "changes": {
+      "Added": [
+        "Added ``Explosives Set`` in ``/calculator`` command to select type of explosives."
+      ],
+      "General": [
+        "Updated external libraries to latest versions.",
+        "Replaced own database management library with `commons-sql`."
+      ]
+    }
+  },
+  {
+    "title": "Fixes and Improvements",
+    "version": "1.1.1",
+    "date": "21 July 2024",
+    "changes": {
+      "Improvements": [
+        "Improved command description."
+      ]
+    }
+  },
+  {
     "title": "Fixes and Improvements",
     "version": "1.1.2",
     "date": "4 August 2024",
