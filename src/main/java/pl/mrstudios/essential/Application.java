@@ -23,7 +23,6 @@ import java.nio.file.Path;
 import static dev.rollczi.litecommands.annotations.LiteCommandsAnnotations.ofClasses;
 import static dev.rollczi.litecommands.jda.LiteJDAFactory.builder;
 import static dev.rollczi.litecommands.schematic.SchematicFormat.angleBrackets;
-import static java.lang.Class.forName;
 import static java.lang.Runtime.getRuntime;
 import static java.nio.file.Files.*;
 import static java.nio.file.Paths.get;
