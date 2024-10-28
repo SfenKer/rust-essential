@@ -6,7 +6,7 @@ import pl.mrstudios.essential.Application;
 public class Bootstrap {
 
     public static void main(
-            @NotNull String[] arguments
+        @NotNull String[] arguments
     ) {
         new Application();
     }

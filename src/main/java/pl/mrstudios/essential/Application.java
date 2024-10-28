@@ -62,7 +62,7 @@ public class Application {
 
         /* Shutdown */
         getRuntime().addShutdownHook(createThread(
-                () -> this.logger.info("Application is shutting down, please wait..")
+            () -> this.logger.info("Application is shutting down, please wait..")
         ));
 
         /* Configuration */
@@ -86,15 +86,15 @@ public class Application {
 
         /* JDA */
         this.jda = createDefault(this.configuration.token)
-                .disableCache(asList(
-                        ACTIVITY, CLIENT_STATUS, FORUM_TAGS, ONLINE_STATUS,
-                        SCHEDULED_EVENTS, STICKER
-                ))
-                .setCompression(ZLIB)
-                .setActivity(playing("Rust"))
-                .addEventListeners(
-                        new UserInteractionListener()
-                ).build();
+            .disableCache(asList(
+                ACTIVITY, CLIENT_STATUS, FORUM_TAGS, ONLINE_STATUS,
+                SCHEDULED_EVENTS, STICKER
+            ))
+            .setCompression(ZLIB)
+            .setActivity(playing("Rust"))
+            .addEventListeners(
+                new UserInteractionListener()
+            ).build();
 
         /* Managers */
         this.guildSettingsManager = new GuildSettingsManager(this.jda, this.sqlConnection);
@@ -102,32 +102,32 @@ public class Application {
         /* Commands */
         builder(this.jda)
 
-                /* Commands */
-                .commands(ofClasses(
-                        CommandCalculator.class,
-                        CommandServerInfo.class,
-                        CommandConfigure.class,
-                        CommandChangelog.class,
-                        CommandAbout.class
-                ))
+            /* Commands */
+            .commands(ofClasses(
+                CommandCalculator.class,
+                CommandServerInfo.class,
+                CommandConfigure.class,
+                CommandChangelog.class,
+                CommandAbout.class
+            ))
 
-                /* Result */
-                .result(EmbedResponseUtility.class, new EmbedResponseResult())
+            /* Result */
+            .result(EmbedResponseUtility.class, new EmbedResponseResult())
 
-                /* Bind */
-                .bind(Logger.class, () -> this.logger)
-                .bind(SqlConnection.class, () -> this.sqlConnection)
+            /* Bind */
+            .bind(Logger.class, () -> this.logger)
+            .bind(SqlConnection.class, () -> this.sqlConnection)
 
-                .bind(Configuration.class, () -> this.configuration)
-                .bind(ConfigurationFactory.class, () -> this.configurationFactory)
+            .bind(Configuration.class, () -> this.configuration)
+            .bind(ConfigurationFactory.class, () -> this.configurationFactory)
 
-                .bind(GuildSettingsManager.class, () -> this.guildSettingsManager)
+            .bind(GuildSettingsManager.class, () -> this.guildSettingsManager)
 
-                /* Schematic */
-                .schematicGenerator(angleBrackets())
+            /* Schematic */
+            .schematicGenerator(angleBrackets())
 
-                /* Build */
-                .build();
+            /* Build */
+            .build();
 
         /* Services */
         new NewsService(this.jda, this.sqlConnection, this.guildSettingsManager);

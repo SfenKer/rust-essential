@@ -37,51 +37,51 @@ public class CommandAbout {
 
     @Execute
     public @NotNull EmbedResponseUtility executeDefault(
-            @Context SlashCommandInteractionEvent event
+        @Context SlashCommandInteractionEvent event
     ) {
         return embedResponse(event)
-                .ephemeral()
-                .embed(
-                        (embedBuilder) -> embedBuilder.setColor(RED)
-                                .setThumbnail(event.getJDA().getSelfUser().getAvatarUrl())
-                                .setDescription(format(
-                                        """
-                                        ### :receipt: ‌ General Information
-                                        **Version:** ``{version}``
-                                        **JVM Version:** ``%s``
+            .ephemeral()
+            .embed(
+                (embedBuilder) -> embedBuilder.setColor(RED)
+                    .setThumbnail(event.getJDA().getSelfUser().getAvatarUrl())
+                    .setDescription(format(
+                        """
+                        ### :receipt: ‌ General Information
+                        **Version:** ``{version}``
+                        **JVM Version:** ``%s``
 
-                                        ### :robot: ‌ Bot Information
-                                        **Uptime:** ``%s``
-                                        **Latency:** ``%dms``
-                                        **Servers:** ``%s servers``
+                        ### :robot: ‌ Bot Information
+                        **Uptime:** ``%s``
+                        **Latency:** ``%dms``
+                        **Servers:** ``%s servers``
 
-                                        ### :desktop: ‌ Hardware Information
-                                        **CPU Usage:** ``%s%%``
-                                        **Memory Usage:** ``%d MB``
-                                        
-                                        ### :busts_in_silhouette: ‌ Support
-                                        This bot is developed by MrStudios Industries, if you need help join our Official Discord server.
-                                        > https://discord.com/invite/C8dF6zkYff
-                                        """,
+                        ### :desktop: ‌ Hardware Information
+                        **CPU Usage:** ``%s%%``
+                        **Memory Usage:** ``%d MB``
 
-                                        /* General Information */
-                                        getProperty("java.version"),
+                        ### :busts_in_silhouette: ‌ Support
+                        This bot is developed by MrStudios Industries, if you need help join our Official Discord server.
+                        > https://discord.com/invite/C8dF6zkYff
+                        """,
 
-                                        /* Bot Information */
-                                        formatDuration(between(this.applicationStartTime, now())),
-                                        event.getJDA().getGatewayPing(),
-                                        decimalFormat.format(event.getJDA().getGuilds().size()),
+                        /* General Information */
+                        getProperty("java.version"),
 
-                                        /* Hardware Information */
-                                        currentCpuUsage(), currentMemoryUsage()
+                        /* Bot Information */
+                        formatDuration(between(this.applicationStartTime, now())),
+                        event.getJDA().getGatewayPing(),
+                        decimalFormat.format(event.getJDA().getGuilds().size()),
 
-                                ))
-                );
+                        /* Hardware Information */
+                        currentCpuUsage(), currentMemoryUsage()
+
+                    ))
+            );
     }
 
     protected static @NotNull String currentCpuUsage() {
         return format("%.2f", ((OperatingSystemMXBean) getOperatingSystemMXBean()).getCpuLoad())
-                .replace('.', ',');
+            .replace('.', ',');
     }
 
     protected static @NotNull Integer currentMemoryUsage() {

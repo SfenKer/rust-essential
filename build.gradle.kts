@@ -28,7 +28,7 @@ blossom {
 repositories {
     mavenCentral()
     maven("https://repo.mrstudios.pl/public/")
-    maven("https://repo.panda-lang.org/releases/")
+    maven("https://repo.eternalcode.pl/snapshots/")
     maven("https://storehouse.okaeri.eu/repository/maven-public/")
 }
 

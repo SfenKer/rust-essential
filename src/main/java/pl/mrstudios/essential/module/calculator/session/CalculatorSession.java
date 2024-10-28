@@ -34,16 +34,16 @@ public class CalculatorSession {
 
     public @NotNull Integer totalSulphurNeeded() {
         return this.rockets * itemCraftCosts.get("rocket").costs.sulphur +
-                this.bombs * itemCraftCosts.get("timed_explosive_charge").costs.sulphur +
-                this.satchels * itemCraftCosts.get("satchel_explosive_charge").costs.sulphur +
-                this.explosiveAmmo * itemCraftCosts.get("explosive_ammo").costs.sulphur;
+            this.bombs * itemCraftCosts.get("timed_explosive_charge").costs.sulphur +
+            this.satchels * itemCraftCosts.get("satchel_explosive_charge").costs.sulphur +
+            this.explosiveAmmo * itemCraftCosts.get("explosive_ammo").costs.sulphur;
     }
 
     protected static final Gson gson = new Gson();
     protected static final Map<String, ItemCraftCost> itemCraftCosts = ofEntries(
-            stream(gson.fromJson(readResource("data/rust/calculator/item_craft_cost.json"), ItemCraftCost[].class))
-                    .map((value) -> entry(value.id, value))
-                    .toArray(Map.Entry[]::new)
+        stream(gson.fromJson(readResource("data/rust/calculator/item_craft_cost.json"), ItemCraftCost[].class))
+            .map((value) -> entry(value.id, value))
+            .toArray(Map.Entry[]::new)
     );
 
 }

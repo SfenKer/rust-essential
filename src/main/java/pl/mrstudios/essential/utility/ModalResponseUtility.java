@@ -19,35 +19,35 @@ public class ModalResponseUtility {
     private final ComponentInteraction componentInteraction;
 
     public ModalResponseUtility(
-            @NotNull ComponentInteraction componentInteraction
+        @NotNull ComponentInteraction componentInteraction
     ) {
         this.componentInteraction = componentInteraction;
         this.modalBuilder = create("a", "b");
     }
 
     public @NotNull ModalResponseUtility id(
-            @NotNull String id
+        @NotNull String id
     ) {
         this.modalBuilder.setId(id);
         return this;
     }
 
     public @NotNull ModalResponseUtility title(
-            @NotNull String title
+        @NotNull String title
     ) {
         this.modalBuilder.setTitle(title);
         return this;
     }
 
     public @NotNull ModalResponseUtility handler(
-            @NotNull BiConsumer<User, ModalInteractionEvent> consumer
+        @NotNull BiConsumer<User, ModalInteractionEvent> consumer
     ) {
         modalInteractions.put(this.modalBuilder.getId(), consumer);
         return this;
     }
 
     public @NotNull ModalResponseUtility components(
-            @NotNull TextInput... inputs
+        @NotNull TextInput... inputs
     ) {
         this.modalBuilder.addComponents(partitionOf(inputs));
         return this;
@@ -58,7 +58,7 @@ public class ModalResponseUtility {
     }
 
     public static @NotNull ModalResponseUtility modalResponse(
-            @NotNull ComponentInteraction event
+        @NotNull ComponentInteraction event
     ) {
         return new ModalResponseUtility(event);
     }

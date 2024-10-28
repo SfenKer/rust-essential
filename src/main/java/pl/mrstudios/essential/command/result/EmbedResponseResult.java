@@ -11,9 +11,9 @@ public class EmbedResponseResult implements ResultHandler<User, EmbedResponseUti
 
     @Override
     public void handle(
-            @NotNull Invocation<User> invocation,
-            @NotNull EmbedResponseUtility response,
-            @NotNull ResultHandlerChain<User> resultChain
+        @NotNull Invocation<User> invocation,
+        @NotNull EmbedResponseUtility response,
+        @NotNull ResultHandlerChain<User> resultChain
     ) {
         response.build();
     }

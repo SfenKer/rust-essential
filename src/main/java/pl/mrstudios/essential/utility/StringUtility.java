@@ -12,7 +12,7 @@ import static java.lang.String.join;
 public class StringUtility {
 
     public static @NotNull String formatDuration(
-            @NotNull Duration duration
+        @NotNull Duration duration
     ) {
 
         Collection<String> collection = new ArrayList<>();
@@ -34,9 +34,9 @@ public class StringUtility {
     }
 
     public static @NotNull String pluralize(
-            @NotNull Number count,
-            @NotNull String singular,
-            @NotNull String plural
+        @NotNull Number count,
+        @NotNull String singular,
+        @NotNull String plural
     ) {
         return format("%s %s", count, (count.longValue() == 1) ? singular : plural);
     }

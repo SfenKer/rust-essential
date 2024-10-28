@@ -46,152 +46,152 @@ import static pl.mrstudios.essential.utility.StreamUtility.readResource;
 public class CommandCalculator {
 
     private final Cache<Long, CalculatorSession> cache = newBuilder()
-            .expireAfterAccess(ofMinutes(5))
-            .build();
+        .expireAfterAccess(ofMinutes(5))
+        .build();
 
     @Execute
     public @NotNull EmbedResponseUtility execute(
-            @Context User user,
-            @Context SlashCommandInteractionEvent event
+        @Context User user,
+        @Context SlashCommandInteractionEvent event
     ) {
 
         this.cache.invalidate(user.getIdLong());
 
         return embedResponse(event)
-                .ephemeral()
-                .embed(
-                        (embedBuilder) -> embedBuilder.setColor(RED)
-                                .setDescription(
-                                        """                                        
-                                        ### :wave: ‌ Welcome in Raid Cost Calculator!
-                                        Using this tool, you can easily calculate the cost of raiding a base in Rust.
-                                        
-                                        ### :notebook_with_decorative_cover: ‌ Usage Guide
-                                        ``1.`` Select explosives set for calculations.
-                                        ``2.`` Select structure from the list below.
-                                        ``3.`` Click button and provide the amount of structures.
-                                        ``4.`` Done! You will see the cost of raiding the selected structure, you can also add more structures and you will see total cost.
+            .ephemeral()
+            .embed(
+                (embedBuilder) -> embedBuilder.setColor(RED)
+                    .setDescription(
+                        """
+                        ### :wave: ‌ Welcome in Raid Cost Calculator!
+                        Using this tool, you can easily calculate the cost of raiding a base in Rust.
+
+                        ### :notebook_with_decorative_cover: ‌ Usage Guide
+                        ``1.`` Select explosives set for calculations.
+                        ``2.`` Select structure from the list below.
+                        ``3.`` Click button and provide the amount of structures.
+                        ``4.`` Done! You will see the cost of raiding the selected structure, you can also add more structures and you will see total cost.
+                        """
+                    )
+            ).component(
+                create("calculator:explosive_set")
+                    .setPlaceholder("Select Explosive Set")
+                    .addOptions(
+                        stream(this.structureExplosivesSets)
+                            .map(
+                                (explosiveSet) -> of(explosiveSet.name, format("calculator:explosive_set:%s", explosiveSet.id))
+                                    .withEmoji(fromCustom(format("rust_%s", explosiveSet.id), explosiveSet.emoji, false))
+                            ).toList()
+                    ).build(),
+                (executor, callback) -> {
+
+                    CalculatorSession session = this.cache.get(executor.getIdLong(), (key) -> new CalculatorSession());
+
+                    session.currentExplosivesSet = stream(this.structureExplosivesSets)
+                        .filter(
+                            (set) -> callback.getValues()
+                                .getFirst()
+                                .replace("calculator:explosive_set:", "")
+                                .equals(set.id)
+                        ).findFirst()
+                        .orElseThrow();
+
+                    ofNullable(session.currentStructure)
+                        .ifPresent(
+                            (currentStructure) -> session.currentStructure = stream(session.currentExplosivesSet.structures)
+                                .filter((structure) -> structure.id.equals(currentStructure.id))
+                                .findFirst().orElseThrow()
+                        );
+
+                    callback.editSelectMenu(
+                        callback.getSelectMenu()
+                            .createCopy()
+                            .setDefaultValues(callback.getValues())
+                            .build()
+                    ).queue();
+
+                }
+            ).component(
+                create("calculator:structure")
+                    .setPlaceholder("Select Structure")
+                    .addOptions(
+                        stream(this.structureExplosivesSets)
+                            .findFirst().stream()
+                            .flatMap((explosiveSet) -> stream(explosiveSet.structures))
+                            .map(
+                                (structure) -> of(structure.name, format("calculator:structure:%s", structure.id))
+                                    .withEmoji(fromCustom(format("rust_%s", structure.id), structure.emoji, false))
+                            ).toList()
+                    ).build(),
+                (executor, callback) -> {
+
+                    CalculatorSession session = this.cache.get(executor.getIdLong(), (key) -> new CalculatorSession());
+
+                    ofNullable(session.currentExplosivesSet)
+                        .ifPresentOrElse(
+                            (explosiveSet) -> session.currentStructure = stream(session.currentExplosivesSet.structures)
+                                .filter(
+                                    (structure) -> callback.getValues()
+                                        .getFirst()
+                                        .replace("calculator:structure:", "")
+                                        .equals(structure.id)
+                                ).findFirst()
+                                .orElseThrow(),
+                            () -> callback.deferReply(true)
+                                .setEmbeds(
+                                    new EmbedBuilder()
+                                        .setColor(RED)
+                                        .setDescription(
+                                            """
+                                            ### :warning: ‌ Error Occurred
+                                            You must select explosives set before selecting structure.
+                                            """
+                                        ).build()
+                                ).queue()
+                        );
+
+                    if (!callback.isAcknowledged())
+                        callback.editSelectMenu(
+                            callback.getSelectMenu()
+                                .createCopy()
+                                .setDefaultValues(callback.getValues())
+                                .build()
+                        ).queue();
+
+                }
+            ).component(
+                success("calculator:provide_amount", "Provide Amount"),
+                (executor, callback) -> {
+
+                    CalculatorSession session = this.cache.get(executor.getIdLong(), (key) -> new CalculatorSession());
+
+                    if (isNull(session.currentStructure)) {
+                        callback.deferReply(true)
+                            .setEmbeds(
+                                new EmbedBuilder()
+                                    .setColor(RED)
+                                    .setDescription(
                                         """
-                                )
-                ).component(
-                        create("calculator:explosive_set")
-                                .setPlaceholder("Select Explosive Set")
-                                .addOptions(
-                                        stream(this.structureExplosivesSets)
-                                                .map(
-                                                        (explosiveSet) -> of(explosiveSet.name, format("calculator:explosive_set:%s", explosiveSet.id))
-                                                                .withEmoji(fromCustom(format("rust_%s", explosiveSet.id), explosiveSet.emoji, false))
-                                                ).toList()
-                                ).build(),
-                        (executor, callback) -> {
-
-                            CalculatorSession session = this.cache.get(executor.getIdLong(), (key) -> new CalculatorSession());
-
-                            session.currentExplosivesSet = stream(this.structureExplosivesSets)
-                                    .filter(
-                                            (set) -> callback.getValues()
-                                                    .getFirst()
-                                                    .replace("calculator:explosive_set:", "")
-                                                    .equals(set.id)
-                                    ).findFirst()
-                                    .orElseThrow();
-
-                            ofNullable(session.currentStructure)
-                                    .ifPresent(
-                                            (currentStructure) -> session.currentStructure = stream(session.currentExplosivesSet.structures)
-                                                    .filter((structure) -> structure.id.equals(currentStructure.id))
-                                                    .findFirst().orElseThrow()
-                                    );
-
-                            callback.editSelectMenu(
-                                    callback.getSelectMenu()
-                                            .createCopy()
-                                            .setDefaultValues(callback.getValues())
-                                            .build()
+                                        ### :warning: ‌ Error Occurred
+                                        You must select structure before providing amount.
+                                        """
+                                    ).build()
                             ).queue();
+                        return;
+                    }
 
-                        }
-                ).component(
-                        create("calculator:structure")
-                                .setPlaceholder("Select Structure")
-                                .addOptions(
-                                        stream(this.structureExplosivesSets)
-                                                .findFirst().stream()
-                                                .flatMap((explosiveSet) -> stream(explosiveSet.structures))
-                                                .map(
-                                                        (structure) -> of(structure.name, format("calculator:structure:%s", structure.id))
-                                                                .withEmoji(fromCustom(format("rust_%s", structure.id), structure.emoji, false))
-                                                ).toList()
-                                ).build(),
-                        (executor, callback) -> {
+                    modalResponse(callback)
+                        .id("calculator:modal:provide_amount")
+                        .title("Calculator")
+                        .components(
+                            TextInput.create("calculator:modal:provide_amount:amount", "Amount", SHORT)
+                                .setRequired(true)
+                                .build()
+                        ).handler(this.modalHandler)
+                        .build();
 
-                            CalculatorSession session = this.cache.get(executor.getIdLong(), (key) -> new CalculatorSession());
-
-                            ofNullable(session.currentExplosivesSet)
-                                    .ifPresentOrElse(
-                                            (explosiveSet) -> session.currentStructure = stream(session.currentExplosivesSet.structures)
-                                                    .filter(
-                                                            (structure) -> callback.getValues()
-                                                                    .getFirst()
-                                                                    .replace("calculator:structure:", "")
-                                                                    .equals(structure.id)
-                                                    ).findFirst()
-                                                    .orElseThrow(),
-                                            () -> callback.deferReply(true)
-                                                    .setEmbeds(
-                                                            new EmbedBuilder()
-                                                                    .setColor(RED)
-                                                                    .setDescription(
-                                                                            """
-                                                                            ### :warning: ‌ Error Occurred
-                                                                            You must select explosives set before selecting structure.
-                                                                            """
-                                                                    ).build()
-                                                    ).queue()
-                                    );
-
-                            if (!callback.isAcknowledged())
-                                callback.editSelectMenu(
-                                        callback.getSelectMenu()
-                                                .createCopy()
-                                                .setDefaultValues(callback.getValues())
-                                                .build()
-                                ).queue();
-
-                        }
-                ).component(
-                        success("calculator:provide_amount", "Provide Amount"),
-                        (executor, callback) -> {
-
-                            CalculatorSession session = this.cache.get(executor.getIdLong(), (key) -> new CalculatorSession());
-
-                            if (isNull(session.currentStructure)) {
-                                callback.deferReply(true)
-                                        .setEmbeds(
-                                                new EmbedBuilder()
-                                                        .setColor(RED)
-                                                        .setDescription(
-                                                                """
-                                                                ### :warning: ‌ Error Occurred
-                                                                You must select structure before providing amount.
-                                                                """
-                                                        ).build()
-                                        ).queue();
-                                return;
-                            }
-
-                            modalResponse(callback)
-                                    .id("calculator:modal:provide_amount")
-                                    .title("Calculator")
-                                    .components(
-                                            TextInput.create("calculator:modal:provide_amount:amount", "Amount", SHORT)
-                                                    .setRequired(true)
-                                                    .build()
-                                    ).handler(this.modalHandler)
-                                    .build();
-
-                        }
-                );
+                }
+            );
 
     }
 
@@ -199,8 +199,8 @@ public class CommandCalculator {
 
     protected final Gson gson = new Gson();
     protected final StructureExplosivesSet[] structureExplosivesSets = gson.fromJson(
-            readResource("data/rust/calculator/structure_explosives_set.json"),
-            StructureExplosivesSet[].class
+        readResource("data/rust/calculator/structure_explosives_set.json"),
+        StructureExplosivesSet[].class
     );
 
     /* Modal Handler */
@@ -220,53 +220,53 @@ public class CommandCalculator {
 
             if (session.rockets > 0)
                 stringBuilder.append("\n").append("\u200C \u200C \u200C").append("``").append(this.decimalFormat.format(session.rockets)).append("x").append("``")
-                        .append(" ").append(customEmoji("rocket").getFormatted())
-                        .append(" Rocket");
+                    .append(" ").append(customEmoji("rocket").getFormatted())
+                    .append(" Rocket");
 
             if (session.bombs > 0)
                 stringBuilder.append("\n").append("\u200C \u200C \u200C").append("``").append(this.decimalFormat.format(session.bombs)).append("x").append("``")
-                        .append(" ").append(customEmoji("timed_explosive_charge").getFormatted())
-                        .append(" Timed Explosive Charge");
+                    .append(" ").append(customEmoji("timed_explosive_charge").getFormatted())
+                    .append(" Timed Explosive Charge");
 
             if (session.satchels > 0)
                 stringBuilder.append("\n").append("\u200C \u200C \u200C").append("``").append(this.decimalFormat.format(session.satchels)).append("x").append("``")
-                        .append(" ").append(customEmoji("satchel_explosive_charge").getFormatted())
-                        .append(" Satchel Explosive Charge");
+                    .append(" ").append(customEmoji("satchel_explosive_charge").getFormatted())
+                    .append(" Satchel Explosive Charge");
 
             if (session.explosiveAmmo > 0)
                 stringBuilder.append("\n").append("\u200C \u200C \u200C").append("``").append(this.decimalFormat.format(session.explosiveAmmo)).append("x").append("``")
-                        .append(" ").append(customEmoji("explosive_ammo").getFormatted())
-                        .append(" Explosive Ammo");
+                    .append(" ").append(customEmoji("explosive_ammo").getFormatted())
+                    .append(" Explosive Ammo");
 
             embedResponse(callback)
-                    .deferEdit()
-                    .embed(
-                            (embedBuilder) -> embedBuilder.setColor(RED)
-                                    .setDescription(format(
-                                            """
-                                            ### :notepad_spiral: ‌ Raid Calculator
-                                            You need ``%sx`` %s Sulfur to raid that base, with that sulfur you should make: %s
-                                            
-                                            ### :notebook_with_decorative_cover: ‌ Usage Guide
-                                            ``1.`` Select structure from the list below.
-                                            ``2.`` Click button and provide the amount of structures.
-                                            ``3.`` Done! You will see the cost of raiding the selected structure, you can also add more structures and you will see total cost.
-                                            """, this.decimalFormat.format(session.totalSulphurNeeded()), customEmoji("sulphur").getFormatted(), stringBuilder
-                                    ))
-                    ).build();
+                .deferEdit()
+                .embed(
+                    (embedBuilder) -> embedBuilder.setColor(RED)
+                        .setDescription(format(
+                            """
+                            ### :notepad_spiral: ‌ Raid Calculator
+                            You need ``%sx`` %s Sulfur to raid that base, with that sulfur you should make: %s
+
+                            ### :notebook_with_decorative_cover: ‌ Usage Guide
+                            ``1.`` Select structure from the list below.
+                            ``2.`` Click button and provide the amount of structures.
+                            ``3.`` Done! You will see the cost of raiding the selected structure, you can also add more structures and you will see total cost.
+                            """, this.decimalFormat.format(session.totalSulphurNeeded()), customEmoji("sulphur").getFormatted(), stringBuilder
+                        ))
+                ).build();
 
         } catch (@NotNull Exception exception) {
             callback.deferReply(true)
-                    .setEmbeds(
-                            new EmbedBuilder()
-                                    .setColor(RED)
-                                    .setDescription(
-                                            """
-                                            ### :warning: ‌ Error Occurred
-                                            You must provide a number in the input.
-                                            """
-                                    ).build()
-                    ).queue();
+                .setEmbeds(
+                    new EmbedBuilder()
+                        .setColor(RED)
+                        .setDescription(
+                            """
+                            ### :warning: ‌ Error Occurred
+                            You must provide a number in the input.
+                            """
+                        ).build()
+                ).queue();
         }
     };
 

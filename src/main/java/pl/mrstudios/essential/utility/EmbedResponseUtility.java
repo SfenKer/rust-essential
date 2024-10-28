@@ -37,21 +37,21 @@ public class EmbedResponseUtility {
     private final Collection<ActionComponent> components;
 
     public EmbedResponseUtility(
-            @NotNull CommandInteraction commandInteraction
+        @NotNull CommandInteraction commandInteraction
     ) {
         this();
         this.commandInteraction = commandInteraction;
     }
 
     public EmbedResponseUtility(
-            @NotNull ComponentInteraction componentInteraction
+        @NotNull ComponentInteraction componentInteraction
     ) {
         this();
         this.componentInteraction = componentInteraction;
     }
 
     public EmbedResponseUtility(
-            @NotNull ModalInteraction modalInteraction
+        @NotNull ModalInteraction modalInteraction
     ) {
         this();
         this.modalInteraction = modalInteraction;
@@ -69,19 +69,19 @@ public class EmbedResponseUtility {
     }
 
     public @NotNull EmbedResponseUtility embed(
-            @NotNull Consumer<EmbedBuilder> consumer
+        @NotNull Consumer<EmbedBuilder> consumer
     ) {
         consumer.accept(this.embedBuilder);
         this.embedBuilder.setDescription(
-                this.embedBuilder.getDescriptionBuilder().toString()
-                        .replaceAll("(?m)^\\s*$[\n\n]+", "")
+            this.embedBuilder.getDescriptionBuilder().toString()
+                .replaceAll("(?m)^\\s*$[\n\n]+", "")
         );
         return this;
     }
 
     public @NotNull EmbedResponseUtility component(
-            @NotNull Button component,
-            @NotNull BiConsumer<User, ButtonInteractionEvent> consumer
+        @NotNull Button component,
+        @NotNull BiConsumer<User, ButtonInteractionEvent> consumer
     ) {
         this.components.add(component);
         buttonInteractions.put(component.getId(), consumer);
@@ -89,8 +89,8 @@ public class EmbedResponseUtility {
     }
 
     public @NotNull EmbedResponseUtility component(
-            @NotNull StringSelectMenu component,
-            @NotNull BiConsumer<User, StringSelectInteractionEvent> consumer
+        @NotNull StringSelectMenu component,
+        @NotNull BiConsumer<User, StringSelectInteractionEvent> consumer
     ) {
         this.components.add(component);
         menuInteractions.put(component.getId(), consumer);
@@ -116,60 +116,60 @@ public class EmbedResponseUtility {
 
         if (!isNull(this.commandInteraction))
             this.commandInteraction.deferReply(this.ephemeral)
-                    .setEmbeds(this.embedBuilder.build())
-                    .setComponents(partitionOf(this.components))
-                    .queue();
+                .setEmbeds(this.embedBuilder.build())
+                .setComponents(partitionOf(this.components))
+                .queue();
 
-        /* Component Interaction */
+            /* Component Interaction */
         else if (!isNull(this.componentInteraction) && this.edit)
             this.componentInteraction.deferEdit()
-                    .setEmbeds(this.embedBuilder.build())
-                    .setComponents(
-                            (this.editComponents) ? partitionOf(this.components) : this.componentInteraction.getMessage()
-                                    .getComponents()
-                    ).queue();
+                .setEmbeds(this.embedBuilder.build())
+                .setComponents(
+                    (this.editComponents) ? partitionOf(this.components) : this.componentInteraction.getMessage()
+                        .getComponents()
+                ).queue();
 
         else if (!isNull(this.componentInteraction))
             this.componentInteraction.deferReply(this.ephemeral)
-                    .setEmbeds(this.embedBuilder.build())
-                    .setComponents(
-                            (this.editComponents) ? partitionOf(this.components) : this.componentInteraction.getMessage()
-                                    .getComponents()
-                    ).queue();
+                .setEmbeds(this.embedBuilder.build())
+                .setComponents(
+                    (this.editComponents) ? partitionOf(this.components) : this.componentInteraction.getMessage()
+                        .getComponents()
+                ).queue();
 
-        /* Modal Interaction */
+            /* Modal Interaction */
         else if (!isNull(this.modalInteraction) && this.edit)
             this.modalInteraction.deferEdit()
-                    .setEmbeds(this.embedBuilder.build())
-                    .setComponents(
-                            (this.editComponents) ? partitionOf(this.components) : requireNonNull(this.modalInteraction.getMessage())
-                                    .getComponents()
-                    ).queue();
+                .setEmbeds(this.embedBuilder.build())
+                .setComponents(
+                    (this.editComponents) ? partitionOf(this.components) : requireNonNull(this.modalInteraction.getMessage())
+                        .getComponents()
+                ).queue();
 
         else if (!isNull(this.modalInteraction))
             this.modalInteraction.deferReply(this.ephemeral)
-                    .setEmbeds(this.embedBuilder.build())
-                    .setComponents(
-                            (this.editComponents) ? partitionOf(this.components) : requireNonNull(this.modalInteraction.getMessage())
-                                    .getComponents()
-                    ).queue();
+                .setEmbeds(this.embedBuilder.build())
+                .setComponents(
+                    (this.editComponents) ? partitionOf(this.components) : requireNonNull(this.modalInteraction.getMessage())
+                        .getComponents()
+                ).queue();
 
     }
 
     public static @NotNull EmbedResponseUtility embedResponse(
-            @NotNull CommandInteraction event
+        @NotNull CommandInteraction event
     ) {
         return new EmbedResponseUtility(event);
     }
 
     public static @NotNull EmbedResponseUtility embedResponse(
-            @NotNull ComponentInteraction event
+        @NotNull ComponentInteraction event
     ) {
         return new EmbedResponseUtility(event);
     }
 
     public static @NotNull EmbedResponseUtility embedResponse(
-            @NotNull ModalInteraction event
+        @NotNull ModalInteraction event
     ) {
         return new EmbedResponseUtility(event);
     }

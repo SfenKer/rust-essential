@@ -33,60 +33,60 @@ public class CommandChangelog {
 
     @Execute
     public @NotNull EmbedResponseUtility execute(
-            @Context SlashCommandInteractionEvent event
+        @Context SlashCommandInteractionEvent event
     ) {
         return embedResponse(event)
-                .ephemeral()
-                .embed(
-                        (embedBuilder) -> embedBuilder.setColor(RED)
-                                .setDescription(this.changelogs.getFirst().toString())
-                                .build()
-                ).component(
-                        this.changelogSelectMenu,
-                        (executor, callback) -> {
+            .ephemeral()
+            .embed(
+                (embedBuilder) -> embedBuilder.setColor(RED)
+                    .setDescription(this.changelogs.getFirst().toString())
+                    .build()
+            ).component(
+                this.changelogSelectMenu,
+                (executor, callback) -> {
 
-                            callback.editSelectMenu(
-                                    callback.getSelectMenu()
-                                            .createCopy()
-                                            .setDefaultValues(callback.getValues())
-                                            .build()
-                            ).queue();
+                    callback.editSelectMenu(
+                        callback.getSelectMenu()
+                            .createCopy()
+                            .setDefaultValues(callback.getValues())
+                            .build()
+                    ).queue();
 
-                            callback.getHook().editOriginalEmbeds(
-                                    new EmbedBuilder()
-                                            .setColor(RED)
-                                            .setDescription(
-                                                    this.changelogs.stream()
-                                                            .filter(
-                                                                    (entry) -> callback.getValues()
-                                                                            .getFirst()
-                                                                            .replace("changelog:display:", "")
-                                                                            .equals(entry.version)
-                                                            ).findFirst().orElseThrow()
-                                                            .toString()
-                                            ).build()
-                            ).queue();
+                    callback.getHook().editOriginalEmbeds(
+                        new EmbedBuilder()
+                            .setColor(RED)
+                            .setDescription(
+                                this.changelogs.stream()
+                                    .filter(
+                                        (entry) -> callback.getValues()
+                                            .getFirst()
+                                            .replace("changelog:display:", "")
+                                            .equals(entry.version)
+                                    ).findFirst().orElseThrow()
+                                    .toString()
+                            ).build()
+                    ).queue();
 
-                        }
-                );
+                }
+            );
     }
 
     protected final Gson gson = new Gson();
     protected final List<Changelog> changelogs = stream(gson.fromJson(
-            readResource("data/general/changelog.json"),
-            Changelog[].class
+        readResource("data/general/changelog.json"),
+        Changelog[].class
     )).toList();
 
     protected final StringSelectMenu changelogSelectMenu = create("changelog:version")
-            .setPlaceholder("Select Version")
-            .addOptions(
-                    this.changelogs.stream()
-                            .limit(OPTIONS_MAX_AMOUNT)
-                            .map(
-                                    (changelog) -> of(format("%s (v%s)", changelog.title, changelog.version), format("changelog:display:%s", changelog.version))
-                                            .withEmoji(fromUnicode("🗒️"))
-                            ).toList()
-            )
-            .build();
+        .setPlaceholder("Select Version")
+        .addOptions(
+            this.changelogs.stream()
+                .limit(OPTIONS_MAX_AMOUNT)
+                .map(
+                    (changelog) -> of(format("%s (v%s)", changelog.title, changelog.version), format("changelog:display:%s", changelog.version))
+                        .withEmoji(fromUnicode("🗒️"))
+                ).toList()
+        )
+        .build();
 
 }

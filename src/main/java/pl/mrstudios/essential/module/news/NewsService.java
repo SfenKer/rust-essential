@@ -39,9 +39,9 @@ public class NewsService {
     private final ScheduledExecutorService executorService;
 
     public NewsService(
-            @NotNull JDA jda,
-            @NotNull SqlConnection sqlConnection,
-            @NotNull GuildSettingsManager guildSettingsManager
+        @NotNull JDA jda,
+        @NotNull SqlConnection sqlConnection,
+        @NotNull GuildSettingsManager guildSettingsManager
     ) {
 
         this.jda = jda;
@@ -54,50 +54,50 @@ public class NewsService {
             try {
 
                 new SyndFeedInput()
-                        .build(new XmlReader(byteArrayInputStream(
-                                get(rssFeedUrl)
-                                        .header("User-Agent", "News Reader/1.0.0 (in: '{project}')")
-                                        .asString().getBody()
-                                        .replace("&lt;img src=\"", "")
-                                        .replace("\"&gt;&lt;br/&gt;", "|")
-                                        .getBytes(UTF_8)
-                        ))).getEntries().stream().filter(
-                                (entry) -> createStatement(newsSelectByUrl)
-                                        .setString(1, entry.getLink())
-                                        .fetch(this.sqlConnection).isEmpty()
-                        ).findFirst().ifPresent((entry) -> {
+                    .build(new XmlReader(byteArrayInputStream(
+                        get(rssFeedUrl)
+                            .header("User-Agent", "News Reader/1.0.0 (in: '{project}')")
+                            .asString().getBody()
+                            .replace("&lt;img src=\"", "")
+                            .replace("\"&gt;&lt;br/&gt;", "|")
+                            .getBytes(UTF_8)
+                    ))).getEntries().stream().filter(
+                        (entry) -> createStatement(newsSelectByUrl)
+                            .setString(1, entry.getLink())
+                            .fetch(this.sqlConnection).isEmpty()
+                    ).findFirst().ifPresent((entry) -> {
 
-                            AtomicInteger index = new AtomicInteger();
+                        AtomicInteger index = new AtomicInteger();
 
-                            createStatement(newsInsertInto)
-                                    .setString(1, entry.getLink())
-                                    .execute(this.sqlConnection);
+                        createStatement(newsInsertInto)
+                            .setString(1, entry.getLink())
+                            .execute(this.sqlConnection);
 
-                            this.jda.getGuilds().stream()
-                                    .map((guild) -> new Pair<>(guild, guildSettingsManager.guildSettings(guild).read()))
-                                    .filter((pair) -> !isNull(pair.getSecond().newsChannelId))
-                                    .forEach(
-                                            (pair) -> ofNullable(pair.getFirst().getTextChannelById(pair.getSecond().newsChannelId))
-                                                    .filter((channel) -> checkPermission(channel, pair.getFirst().getSelfMember(), MESSAGE_SEND, MESSAGE_EMBED_LINKS))
-                                                    .ifPresent(
-                                                            (channel) -> channel.sendMessageEmbeds(
-                                                                    new EmbedBuilder()
-                                                                            .setColor(RED)
-                                                                            .setDescription(format(
-                                                                                    """
-                                                                                    ### :newspaper: ‌ %s
-                                                                                    %s
-                                                                                    """, entry.getTitle(), entry.getDescription().getValue().split("\\|")[1]
-                                                                            ))
-                                                                            .setImage(entry.getDescription().getValue().split("\\|")[0])
-                                                                            .build()
-                                                            ).addActionRow(
-                                                                    link(entry.getLink(), "Article Link")
-                                                            ).queueAfter(index.incrementAndGet() * 200L, MILLISECONDS)
-                                                    )
-                                    );
+                        this.jda.getGuilds().stream()
+                            .map((guild) -> new Pair<>(guild, guildSettingsManager.guildSettings(guild).read()))
+                            .filter((pair) -> !isNull(pair.getSecond().newsChannelId))
+                            .forEach(
+                                (pair) -> ofNullable(pair.getFirst().getTextChannelById(pair.getSecond().newsChannelId))
+                                    .filter((channel) -> checkPermission(channel, pair.getFirst().getSelfMember(), MESSAGE_SEND, MESSAGE_EMBED_LINKS))
+                                    .ifPresent(
+                                        (channel) -> channel.sendMessageEmbeds(
+                                            new EmbedBuilder()
+                                                .setColor(RED)
+                                                .setDescription(format(
+                                                    """
+                                                    ### :newspaper: ‌ %s
+                                                    %s
+                                                    """, entry.getTitle(), entry.getDescription().getValue().split("\\|")[1]
+                                                ))
+                                                .setImage(entry.getDescription().getValue().split("\\|")[0])
+                                                .build()
+                                        ).addActionRow(
+                                            link(entry.getLink(), "Article Link")
+                                        ).queueAfter(index.incrementAndGet() * 200L, MILLISECONDS)
+                                    )
+                            );
 
-                        });
+                    });
 
 
             } catch (@NotNull Exception exception) {

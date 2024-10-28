@@ -20,22 +20,22 @@ import static pl.mrstudios.essential.utility.StreamUtility.readResource;
 public class EmojiUtility {
 
     public static @NotNull Emoji customEmoji(
-            @NotNull String name
+        @NotNull String name
     ) {
         return ofNullable(customEmoji.get(format("rust_%s", name)))
-                .orElseThrow();
+            .orElseThrow();
     }
 
     protected static final Gson gson = new Gson();
     protected static final Map<String, Emoji> customEmoji = ofEntries(
-            gson.fromJson(readResource("data/general/custom_emoji.json"), JsonArray.class)
-                    .asList().stream()
-                    .map(JsonElement::getAsJsonObject)
-                    .map((object) -> new Pair<>(
-                            object.get("identifier").getAsLong(),
-                            object.get("name").getAsString()
-                    )).map((pair) -> entry(pair.getSecond(), fromCustom(pair.getSecond(), pair.getFirst(), false)))
-                    .toArray(Map.Entry[]::new)
+        gson.fromJson(readResource("data/general/custom_emoji.json"), JsonArray.class)
+            .asList().stream()
+            .map(JsonElement::getAsJsonObject)
+            .map((object) -> new Pair<>(
+                object.get("identifier").getAsLong(),
+                object.get("name").getAsString()
+            )).map((pair) -> entry(pair.getSecond(), fromCustom(pair.getSecond(), pair.getFirst(), false)))
+            .toArray(Map.Entry[]::new)
     );
 
 }

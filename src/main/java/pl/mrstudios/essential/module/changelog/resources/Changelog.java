@@ -19,14 +19,14 @@ public class Changelog {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("## :notepad_spiral: ‌ ").append(this.title).append(" ")
-                .append("(v").append(this.version).append(")")
-                .append("\n").append("Version was released on ``").append(this.date).append("``.");
+            .append("(v").append(this.version).append(")")
+            .append("\n").append("Version was released on ``").append(this.date).append("``.");
 
         this.changes.forEach((category, changes) -> {
             stringBuilder.append("\n### ").append(category);
             asList(changes).forEach(
-                    (change) -> stringBuilder.append("\n- ")
-                            .append(change)
+                (change) -> stringBuilder.append("\n- ")
+                    .append(change)
             );
         });
 

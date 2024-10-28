@@ -32,40 +32,40 @@ public class CommandConfigure {
     @Description("Set channel where news will be posted.")
     public @NotNull EmbedResponseUtility newsChannel(
 
-            @Context SlashCommandInteractionEvent event,
-            @Bind GuildSettingsManager guildSettingsManager,
+        @Context SlashCommandInteractionEvent event,
+        @Bind GuildSettingsManager guildSettingsManager,
 
-            @Arg("channel")
-            @Description("Channel where news will be posted.")
-            @NotNull Channel channel
+        @Arg("channel")
+        @Description("Channel where news will be posted.")
+        @NotNull Channel channel
 
     ) {
 
         if (!(channel instanceof TextChannel textChannel))
             return embedResponse(event)
-                    .ephemeral()
-                    .embed(
-                            (embedBuilder) -> embedBuilder.setColor(RED)
-                                    .setDescription(
-                                            """
-                                            ### :warning: ‌ Error Occurred
-                                            You can only choose text channels as news channel.
-                                            """
-                                    )
-                    );
+                .ephemeral()
+                .embed(
+                    (embedBuilder) -> embedBuilder.setColor(RED)
+                        .setDescription(
+                            """
+                            ### :warning: ‌ Error Occurred
+                            You can only choose text channels as news channel.
+                            """
+                        )
+                );
 
         if (!checkPermission(textChannel, requireNonNull(event.getGuild()).getSelfMember(), MESSAGE_SEND, MESSAGE_EMBED_LINKS))
             return embedResponse(event)
-                    .ephemeral()
-                    .embed(
-                            (embedBuilder) -> embedBuilder.setColor(RED)
-                                    .setDescription(
-                                            """
-                                            ### :warning: ‌ Error Occurred
-                                            Application doesn't have permissions to send messages in that channel.
-                                            """
-                                    )
-                    );
+                .ephemeral()
+                .embed(
+                    (embedBuilder) -> embedBuilder.setColor(RED)
+                        .setDescription(
+                            """
+                            ### :warning: ‌ Error Occurred
+                            Application doesn't have permissions to send messages in that channel.
+                            """
+                        )
+                );
 
         JsonDocument<GuildSettings> settings = guildSettingsManager.guildSettings(requireNonNull(event.getGuild()));
 
@@ -73,17 +73,17 @@ public class CommandConfigure {
         settings.save();
 
         return embedResponse(event)
-                .ephemeral()
-                .embed(
-                        (embedBuilder) -> embedBuilder.setColor(RED)
-                                .setThumbnail(event.getJDA().getSelfUser().getAvatarUrl())
-                                .setDescription(format(
-                                        """
-                                        ### :tools: ‌ Configuration
-                                        Parameter ``guild.news.channel`` has been set to %s channel.
-                                        """, channel.getAsMention()
-                                ))
-                );
+            .ephemeral()
+            .embed(
+                (embedBuilder) -> embedBuilder.setColor(RED)
+                    .setThumbnail(event.getJDA().getSelfUser().getAvatarUrl())
+                    .setDescription(format(
+                        """
+                        ### :tools: ‌ Configuration
+                        Parameter ``guild.news.channel`` has been set to %s channel.
+                        """, channel.getAsMention()
+                    ))
+            );
     }
 
 }

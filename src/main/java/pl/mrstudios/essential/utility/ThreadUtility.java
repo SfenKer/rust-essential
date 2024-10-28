@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 public class ThreadUtility {
 
     public static @NotNull Thread createThread(
-            @NotNull Runnable runnable
+        @NotNull Runnable runnable
     ) {
         return new Thread(runnable);
     }

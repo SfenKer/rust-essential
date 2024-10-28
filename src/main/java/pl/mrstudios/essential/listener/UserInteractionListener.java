@@ -15,35 +15,35 @@ public class UserInteractionListener extends ListenerAdapter {
 
     @Override
     public void onButtonInteraction(
-            @NotNull ButtonInteractionEvent event
+        @NotNull ButtonInteractionEvent event
     ) {
         buttonInteractions.keySet()
-                .stream().filter(event.getComponentId()::equals)
-                .map(buttonInteractions::get).forEach(
-                        (consumer) -> consumer.accept(event.getUser(), event)
-                );
+            .stream().filter(event.getComponentId()::equals)
+            .map(buttonInteractions::get).forEach(
+                (consumer) -> consumer.accept(event.getUser(), event)
+            );
     }
 
     @Override
     public void onStringSelectInteraction(
-            @NotNull StringSelectInteractionEvent event
+        @NotNull StringSelectInteractionEvent event
     ) {
         menuInteractions.keySet()
-                .stream().filter(event.getComponentId()::equals)
-                .map(menuInteractions::get).forEach(
-                        (consumer) -> consumer.accept(event.getUser(), event)
-                );
+            .stream().filter(event.getComponentId()::equals)
+            .map(menuInteractions::get).forEach(
+                (consumer) -> consumer.accept(event.getUser(), event)
+            );
     }
 
     @Override
     public void onModalInteraction(
-            @NotNull ModalInteractionEvent event
+        @NotNull ModalInteractionEvent event
     ) {
         modalInteractions.keySet()
-                .stream().filter(event.getModalId()::equals)
-                .map(modalInteractions::get).forEach(
-                        (consumer) -> consumer.accept(event.getUser(), event)
-                );
+            .stream().filter(event.getModalId()::equals)
+            .map(modalInteractions::get).forEach(
+                (consumer) -> consumer.accept(event.getUser(), event)
+            );
     }
 
     public final static Map<String, BiConsumer<User, ModalInteractionEvent>> modalInteractions = new ConcurrentHashMap<>();
