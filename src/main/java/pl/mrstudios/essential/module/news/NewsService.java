@@ -22,7 +22,10 @@ import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static kong.unirest.core.Unirest.get;
+import static net.dv8tion.jda.api.Permission.MESSAGE_EMBED_LINKS;
+import static net.dv8tion.jda.api.Permission.MESSAGE_SEND;
 import static net.dv8tion.jda.api.interactions.components.buttons.Button.link;
+import static net.dv8tion.jda.internal.utils.PermissionUtil.checkPermission;
 import static org.slf4j.LoggerFactory.getLogger;
 import static pl.mrstudios.commons.sql.statement.SqlStatement.createStatement;
 import static pl.mrstudios.essential.module.news.NewsSqlRepository.*;
@@ -75,6 +78,7 @@ public class NewsService {
                                     .filter((pair) -> !isNull(pair.getSecond().newsChannelId))
                                     .forEach(
                                             (pair) -> ofNullable(pair.getFirst().getTextChannelById(pair.getSecond().newsChannelId))
+                                                    .filter((channel) -> checkPermission(channel, pair.getFirst().getSelfMember(), MESSAGE_SEND, MESSAGE_EMBED_LINKS))
                                                     .ifPresent(
                                                             (channel) -> channel.sendMessageEmbeds(
                                                                     new EmbedBuilder()
