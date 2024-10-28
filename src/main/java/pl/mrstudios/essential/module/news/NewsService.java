@@ -100,7 +100,7 @@ public class NewsService {
                 logger.error("Exception occurred while fetching news.", exception);
             }
 
-        }, 0, 5, MINUTES);
+        }, 0, 15, MINUTES);
 
     }
 

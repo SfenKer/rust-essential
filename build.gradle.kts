@@ -1,22 +1,23 @@
 import com.palantir.gradle.gitversion.VersionDetails
 import groovy.lang.Closure
 import java.lang.String.format
+import org.gradle.jvm.toolchain.JavaLanguageVersion.of
 
 plugins {
     id("java")
     id("net.kyori.blossom") version "1.3.1"
-    id("com.palantir.git-version") version "3.0.0"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.gradleup.shadow") version "8.3.3"
+    id("com.palantir.git-version") version "3.1.0"
 }
 
 project.group = "pl.mrstudios.essential"
-project.version = "1.2.0"
+project.version = "1.2.1"
 
 val versionDetails: Closure<VersionDetails> by extra
 fun projectVersion(): String = format("%s (git/%s)", project.version, versionDetails().gitHash)
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(of(21))
 }
 
 blossom {
@@ -81,11 +82,7 @@ dependencies {
 
 tasks {
 
-    withType<JavaCompile> {
-        options.encoding = "UTF-8"
-    }
-
-    withType<JavaCompile> {
+    compileJava {
         options.encoding = "UTF-8"
     }
 

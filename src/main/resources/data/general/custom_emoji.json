@@ -1,82 +1,82 @@
 [
   {
     "name": "rust_wood",
-    "identifier": 1259165524542361652
+    "identifier": 1300428624977203260
   },
   {
     "name": "rust_stone",
-    "identifier": 1259165523258900480
+    "identifier": 1300428584338325524
   },
   {
     "name": "rust_metal",
-    "identifier": 1259165519383101591
+    "identifier": 1300428526373044255
   },
   {
     "name": "rust_high_quality_metal",
-    "identifier": 1259165597187702844
+    "identifier": 1300428506123210782
   },
   {
     "name": "rust_metal_shop_front",
-    "identifier": 1259847273018298439
+    "identifier": 1300428534971502604
   },
   {
     "name": "rust_wooden_door",
-    "identifier": 1259165716175913050
+    "identifier": 1300428637400465448
   },
   {
     "name": "rust_sheet_metal_door",
-    "identifier": 1259165713554345994
+    "identifier": 1300428570572754954
   },
   {
     "name": "rust_armored_door",
-    "identifier": 1259165710052229120
+    "identifier": 1300428456139427880
   },
   {
     "name": "rust_garage_door",
-    "identifier": 1259165711570305036
+    "identifier": 1300428499429097482
   },
   {
     "name": "rust_ladder_hatch",
-    "identifier": 1259847271437172796
+    "identifier": 1300428513379356742
   },
   {
     "name": "rust_wooden_window_bars",
-    "identifier": 1259847279133593661
+    "identifier": 1300428647689228390
   },
   {
     "name": "rust_metal_window_bars",
-    "identifier": 1259847274826170388
+    "identifier": 1300428541783179314
   },
   {
     "name": "rust_vending_machine",
-    "identifier": 1259847276570869771
+    "identifier": 1300428620594020503
   },
   {
     "name": "rust_external_wooden_wall",
-    "identifier": 1259847269453271110
+    "identifier": 1300428492206506005
   },
   {
     "name": "rust_external_stone_wall",
-    "identifier": 1259847267406319739
+    "identifier": 1300428483079438407
   },
   {
     "name": "rust_sulphur",
-    "identifier": 1259875899164332103
+    "identifier": 1300428595117948949
   },
   {
     "name": "rust_rocket",
-    "identifier": 1259875896987353180
+    "identifier": 1300428554051387512
   },
   {
     "name": "rust_timed_explosive_charge",
-    "identifier": 1259875902431690752
+    "identifier": 1300428605297524826
   },
   {
     "name": "rust_explosive_ammo",
-    "identifier": 1259875895427203124
+    "identifier": 1300428472476237874
   },
   {
     "name": "rust_satchel_explosive_charge",
-    "identifier": 1264282990800932884
+    "identifier": 1300428562150723634
   }
 ]
