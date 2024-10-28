@@ -1,7 +1,7 @@
 import com.palantir.gradle.gitversion.VersionDetails
 import groovy.lang.Closure
-import java.lang.String.format
 import org.gradle.jvm.toolchain.JavaLanguageVersion.of
+import java.lang.String.format
 
 plugins {
     id("java")
