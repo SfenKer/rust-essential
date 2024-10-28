@@ -35,48 +35,48 @@ repositories {
 dependencies {
 
     /* JDA */
-    implementation("net.dv8tion:JDA:${project.property("jda.version")}") {
+    implementation("net.dv8tion:JDA:${property("jda.version")}") {
         exclude("opus-java")
     }
 
     /* Commons */
-    implementation("pl.mrstudios.commons:commons-sql:${project.property("commons.version")}")
+    implementation("pl.mrstudios.commons:commons-sql:${property("commons.version")}")
 
     /* HikariCP */
-    implementation("com.zaxxer:HikariCP:${project.property("hikaricp.version")}")
+    implementation("com.zaxxer:HikariCP:${property("hikaricp.version")}")
 
     /* SQLite */
-    implementation("org.xerial:sqlite-jdbc:${project.property("xerial.sqlite.version")}")
+    implementation("org.xerial:sqlite-jdbc:${property("xerial.sqlite.version")}")
 
     /* Logback Classic */
-    implementation("ch.qos.logback:logback-classic:${project.property("logback.classic.version")}")
+    implementation("ch.qos.logback:logback-classic:${property("logback.classic.version")}")
 
     /* Unirest */
-    implementation("com.konghq:unirest-java-core:${project.property("unirest.version")}")
-    implementation("com.konghq:unirest-modules-gson:${project.property("unirest.version")}")
+    implementation("com.konghq:unirest-java-core:${property("unirest.version")}")
+    implementation("com.konghq:unirest-modules-gson:${property("unirest.version")}")
 
     /* Caffeine */
-    implementation("com.github.ben-manes.caffeine:caffeine:${project.property("caffeine.version")}")
+    implementation("com.github.ben-manes.caffeine:caffeine:${property("caffeine.version")}")
 
     /* Lite Commands */
-    implementation("dev.rollczi:litecommands-jda:${project.property("litecommands.version")}")
+    implementation("dev.rollczi:litecommands-jda:${property("litecommands.version")}")
 
     /* Okaeri Configs */
-    implementation("eu.okaeri:okaeri-configs-yaml-snakeyaml:${project.property("okaeri.configs.version")}")
+    implementation("eu.okaeri:okaeri-configs-yaml-snakeyaml:${property("okaeri.configs.version")}")
 
     /* Rome */
-    implementation("com.rometools:rome:${project.property("rome.version")}")
+    implementation("com.rometools:rome:${property("rome.version")}")
 
     /* Source Query */
-    implementation("com.ibasco.agql:agql-source-query:${project.property("source.query.version")}")
+    implementation("com.ibasco.agql:agql-source-query:${property("source.query.version")}")
 
     /* Lombok */
-    compileOnly("org.projectlombok:lombok:${project.property("lombok.version")}")
-    annotationProcessor("org.projectlombok:lombok:${project.property("lombok.version")}")
+    compileOnly("org.projectlombok:lombok:${property("lombok.version")}")
+    annotationProcessor("org.projectlombok:lombok:${property("lombok.version")}")
 
     /* JetBrains Annotations */
-    compileOnly("org.jetbrains:annotations:${project.property("jetbrains.annotations.version")}")
-    annotationProcessor("org.jetbrains:annotations:${project.property("jetbrains.annotations.version")}")
+    compileOnly("org.jetbrains:annotations:${property("jetbrains.annotations.version")}")
+    annotationProcessor("org.jetbrains:annotations:${property("jetbrains.annotations.version")}")
 
 }
 
@@ -84,6 +84,10 @@ tasks {
 
     compileJava {
         options.encoding = "UTF-8"
+    }
+
+    processResources {
+        filteringCharset = "UTF-8"
     }
 
     jar {
