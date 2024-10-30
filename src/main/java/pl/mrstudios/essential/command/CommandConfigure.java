@@ -7,9 +7,9 @@ import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.description.Description;
 import dev.rollczi.litecommands.annotations.execute.Execute;
 import dev.rollczi.litecommands.jda.permission.DiscordPermission;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 import pl.mrstudios.essential.builder.EmbedResponseBuilder;
 import pl.mrstudios.essential.module.settings.GuildSettings;
@@ -18,7 +18,6 @@ import pl.mrstudios.essential.module.settings.document.JsonDocument;
 
 import static java.awt.Color.RED;
 import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
 import static net.dv8tion.jda.api.Permission.*;
 import static net.dv8tion.jda.internal.utils.PermissionUtil.checkPermission;
 import static pl.mrstudios.essential.builder.EmbedResponseBuilder.embedResponse;
@@ -32,7 +31,7 @@ public class CommandConfigure {
     @Description("Set channel where news will be posted.")
     public @NotNull EmbedResponseBuilder newsChannel(
 
-        @Context SlashCommandInteractionEvent event,
+        @Context Guild guild,
         @Bind GuildSettingsManager guildSettingsManager,
 
         @Arg("channel")
@@ -54,7 +53,7 @@ public class CommandConfigure {
                         )
                 );
 
-        if (!checkPermission(textChannel, requireNonNull(event.getGuild()).getSelfMember(), MESSAGE_SEND, MESSAGE_EMBED_LINKS))
+        if (!checkPermission(textChannel, guild.getSelfMember(), MESSAGE_SEND, MESSAGE_EMBED_LINKS))
             return embedResponse()
                 .ephemeral()
                 .embed(
@@ -67,7 +66,7 @@ public class CommandConfigure {
                         )
                 );
 
-        JsonDocument<GuildSettings> settings = guildSettingsManager.guildSettings(requireNonNull(event.getGuild()));
+        JsonDocument<GuildSettings> settings = guildSettingsManager.guildSettings(guild);
 
         settings.read().newsChannelId = textChannel.getIdLong();
         settings.save();
@@ -76,7 +75,7 @@ public class CommandConfigure {
             .ephemeral()
             .embed(
                 (embedBuilder) -> embedBuilder.setColor(RED)
-                    .setThumbnail(event.getJDA().getSelfUser().getAvatarUrl())
+                    .setThumbnail(guild.getSelfMember().getAvatarUrl())
                     .setDescription(format(
                         """
                         ### :tools: ‌ Configuration

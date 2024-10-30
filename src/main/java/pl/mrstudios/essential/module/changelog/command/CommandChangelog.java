@@ -2,11 +2,9 @@ package pl.mrstudios.essential.module.changelog.command;
 
 import com.google.gson.Gson;
 import dev.rollczi.litecommands.annotations.command.Command;
-import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.description.Description;
 import dev.rollczi.litecommands.annotations.execute.Execute;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import org.jetbrains.annotations.NotNull;
 import pl.mrstudios.essential.builder.EmbedResponseBuilder;
@@ -29,9 +27,7 @@ import static pl.mrstudios.essential.utility.StreamUtility.readResource;
 public class CommandChangelog {
 
     @Execute
-    public @NotNull EmbedResponseBuilder execute(
-        @Context SlashCommandInteractionEvent event
-    ) {
+    public @NotNull EmbedResponseBuilder executeDefault() {
         return embedResponse()
             .ephemeral()
             .embed(

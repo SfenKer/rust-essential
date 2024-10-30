@@ -46,7 +46,7 @@ public class CommandCalculator {
         .build();
 
     @Execute
-    public @NotNull EmbedResponseBuilder execute(
+    public @NotNull EmbedResponseBuilder executeDefault(
         @Context User user
     ) {
 

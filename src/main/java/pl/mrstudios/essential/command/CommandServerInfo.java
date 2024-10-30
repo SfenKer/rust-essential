@@ -45,6 +45,7 @@ import static pl.mrstudios.essential.wrapper.RustMapsAPI.mapImage;
 @Description("Show status and information about server.")
 public class CommandServerInfo {
 
+    /* Cache */
     private final Cache<String, Pair<SourceServer, Map<String, String>>> cache = newBuilder()
         .expireAfterWrite(ofMinutes(15))
         .build();
