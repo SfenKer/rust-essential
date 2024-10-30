@@ -5,10 +5,9 @@ import dev.rollczi.litecommands.annotations.command.Command;
 import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.description.Description;
 import dev.rollczi.litecommands.annotations.execute.Execute;
-import dev.rollczi.litecommands.jda.permission.DiscordPermission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
-import pl.mrstudios.essential.utility.EmbedResponseUtility;
+import pl.mrstudios.essential.builder.EmbedResponseBuilder;
 
 import java.text.DecimalFormat;
 import java.time.Instant;
@@ -20,13 +19,11 @@ import static java.lang.management.ManagementFactory.getMemoryMXBean;
 import static java.lang.management.ManagementFactory.getOperatingSystemMXBean;
 import static java.time.Duration.between;
 import static java.time.Instant.now;
-import static net.dv8tion.jda.api.Permission.USE_APPLICATION_COMMANDS;
-import static pl.mrstudios.essential.utility.EmbedResponseUtility.embedResponse;
+import static pl.mrstudios.essential.builder.EmbedResponseBuilder.embedResponse;
 import static pl.mrstudios.essential.utility.StringUtility.formatDuration;
 
 @Command(name = "about")
 @Description("Show information about Rust Essential.")
-@DiscordPermission(USE_APPLICATION_COMMANDS)
 public class CommandAbout {
 
     private final Instant applicationStartTime;
@@ -36,10 +33,10 @@ public class CommandAbout {
     }
 
     @Execute
-    public @NotNull EmbedResponseUtility executeDefault(
+    public @NotNull EmbedResponseBuilder executeDefault(
         @Context SlashCommandInteractionEvent event
     ) {
-        return embedResponse(event)
+        return embedResponse()
             .ephemeral()
             .embed(
                 (embedBuilder) -> embedBuilder.setColor(RED)
@@ -91,3 +88,4 @@ public class CommandAbout {
     protected final DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
 }
+

@@ -9,15 +9,17 @@ import dev.rollczi.litecommands.annotations.command.Command;
 import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.description.Description;
 import dev.rollczi.litecommands.annotations.execute.Execute;
-import dev.rollczi.litecommands.jda.permission.DiscordPermission;
 import kotlin.Pair;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
-import pl.mrstudios.essential.utility.EmbedResponseUtility;
+import pl.mrstudios.essential.builder.EmbedResponseBuilder;
 
 import java.net.InetSocketAddress;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
 import static com.github.benmanes.caffeine.cache.Caffeine.newBuilder;
@@ -35,14 +37,12 @@ import static java.util.Optional.ofNullable;
 import static java.util.concurrent.CompletableFuture.runAsync;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static java.util.stream.IntStream.rangeClosed;
-import static net.dv8tion.jda.api.Permission.USE_APPLICATION_COMMANDS;
-import static pl.mrstudios.essential.utility.EmbedResponseUtility.embedResponse;
+import static pl.mrstudios.essential.builder.EmbedResponseBuilder.embedResponse;
 import static pl.mrstudios.essential.utility.StringUtility.formatDuration;
 import static pl.mrstudios.essential.wrapper.RustMapsAPI.mapImage;
 
 @Command(name = "serverinfo")
 @Description("Show status and information about server.")
-@DiscordPermission(USE_APPLICATION_COMMANDS)
 public class CommandServerInfo {
 
     private final Cache<String, Pair<SourceServer, Map<String, String>>> cache = newBuilder()
@@ -50,7 +50,7 @@ public class CommandServerInfo {
         .build();
 
     @Execute
-    public @NotNull EmbedResponseUtility executeDefault(
+    public @NotNull EmbedResponseBuilder executeDefault(
 
         @Context SlashCommandInteractionEvent event,
 
@@ -60,7 +60,7 @@ public class CommandServerInfo {
 
         @Arg("port")
         @Description("Server Port")
-        @NotNull Optional<Integer> port
+        @NotNull Integer port
 
     ) {
 
@@ -70,9 +70,9 @@ public class CommandServerInfo {
                 SourceQueryClient client = new SourceQueryClient(this.sourceQueryOptions)
             ) {
 
-                InetSocketAddress socketAddress = new InetSocketAddress(host, port.orElse(28015));
+                InetSocketAddress socketAddress = new InetSocketAddress(host, port);
                 Pair<SourceServer, Map<String, String>> pair = this.cache.get(
-                    format("%s:%d", host, port.orElse(28015)),
+                    format("%s:%d", host, port),
                     (key) -> {
                         try {
                             return new Pair<>(
@@ -147,7 +147,7 @@ public class CommandServerInfo {
 
         });
 
-        return embedResponse(event)
+        return embedResponse()
             .ephemeral()
             .embed(
                 (embedBuilder) -> embedBuilder

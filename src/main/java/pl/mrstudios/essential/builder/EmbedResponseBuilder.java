@@ -1,4 +1,4 @@
-package pl.mrstudios.essential.utility;
+package pl.mrstudios.essential.builder;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
@@ -23,7 +23,8 @@ import static net.dv8tion.jda.api.interactions.components.ActionRow.partitionOf;
 import static pl.mrstudios.essential.listener.UserInteractionListener.buttonInteractions;
 import static pl.mrstudios.essential.listener.UserInteractionListener.menuInteractions;
 
-public class EmbedResponseUtility {
+@SuppressWarnings("RegExpDuplicateCharacterInClass")
+public class EmbedResponseBuilder {
 
     private ModalInteraction modalInteraction;
     private CommandInteraction commandInteraction;
@@ -36,28 +37,7 @@ public class EmbedResponseUtility {
     private final EmbedBuilder embedBuilder;
     private final Collection<ActionComponent> components;
 
-    public EmbedResponseUtility(
-        @NotNull CommandInteraction commandInteraction
-    ) {
-        this();
-        this.commandInteraction = commandInteraction;
-    }
-
-    public EmbedResponseUtility(
-        @NotNull ComponentInteraction componentInteraction
-    ) {
-        this();
-        this.componentInteraction = componentInteraction;
-    }
-
-    public EmbedResponseUtility(
-        @NotNull ModalInteraction modalInteraction
-    ) {
-        this();
-        this.modalInteraction = modalInteraction;
-    }
-
-    private EmbedResponseUtility() {
+    private EmbedResponseBuilder() {
 
         /* Default Values */
         this.edit = false;
@@ -68,7 +48,7 @@ public class EmbedResponseUtility {
 
     }
 
-    public @NotNull EmbedResponseUtility embed(
+    public @NotNull EmbedResponseBuilder embed(
         @NotNull Consumer<EmbedBuilder> consumer
     ) {
         consumer.accept(this.embedBuilder);
@@ -79,7 +59,7 @@ public class EmbedResponseUtility {
         return this;
     }
 
-    public @NotNull EmbedResponseUtility component(
+    public @NotNull EmbedResponseBuilder component(
         @NotNull Button component,
         @NotNull BiConsumer<User, ButtonInteractionEvent> consumer
     ) {
@@ -88,7 +68,7 @@ public class EmbedResponseUtility {
         return this;
     }
 
-    public @NotNull EmbedResponseUtility component(
+    public @NotNull EmbedResponseBuilder component(
         @NotNull StringSelectMenu component,
         @NotNull BiConsumer<User, StringSelectInteractionEvent> consumer
     ) {
@@ -97,18 +77,39 @@ public class EmbedResponseUtility {
         return this;
     }
 
-    public @NotNull EmbedResponseUtility ephemeral() {
+    public @NotNull EmbedResponseBuilder ephemeral() {
         this.ephemeral = !this.ephemeral;
         return this;
     }
 
-    public @NotNull EmbedResponseUtility deferEdit() {
+    public @NotNull EmbedResponseBuilder deferEdit() {
         this.edit = !this.edit;
         return this;
     }
 
-    public @NotNull EmbedResponseUtility editComponents() {
+    public @NotNull EmbedResponseBuilder editComponents() {
         this.editComponents = !this.editComponents;
+        return this;
+    }
+
+    public @NotNull EmbedResponseBuilder applyEvent(
+        @NotNull CommandInteraction event
+    ) {
+        this.commandInteraction = event;
+        return this;
+    }
+
+    public @NotNull EmbedResponseBuilder applyEvent(
+        @NotNull ComponentInteraction event
+    ) {
+        this.componentInteraction = event;
+        return this;
+    }
+
+    public @NotNull EmbedResponseBuilder applyEvent(
+        @NotNull ModalInteraction event
+    ) {
+        this.modalInteraction = event;
         return this;
     }
 
@@ -120,7 +121,7 @@ public class EmbedResponseUtility {
                 .setComponents(partitionOf(this.components))
                 .queue();
 
-            /* Component Interaction */
+        /* Component Interaction */
         else if (!isNull(this.componentInteraction) && this.edit)
             this.componentInteraction.deferEdit()
                 .setEmbeds(this.embedBuilder.build())
@@ -137,7 +138,7 @@ public class EmbedResponseUtility {
                         .getComponents()
                 ).queue();
 
-            /* Modal Interaction */
+        /* Modal Interaction */
         else if (!isNull(this.modalInteraction) && this.edit)
             this.modalInteraction.deferEdit()
                 .setEmbeds(this.embedBuilder.build())
@@ -149,29 +150,12 @@ public class EmbedResponseUtility {
         else if (!isNull(this.modalInteraction))
             this.modalInteraction.deferReply(this.ephemeral)
                 .setEmbeds(this.embedBuilder.build())
-                .setComponents(
-                    (this.editComponents) ? partitionOf(this.components) : requireNonNull(this.modalInteraction.getMessage())
-                        .getComponents()
-                ).queue();
+                .queue();
 
     }
 
-    public static @NotNull EmbedResponseUtility embedResponse(
-        @NotNull CommandInteraction event
-    ) {
-        return new EmbedResponseUtility(event);
-    }
-
-    public static @NotNull EmbedResponseUtility embedResponse(
-        @NotNull ComponentInteraction event
-    ) {
-        return new EmbedResponseUtility(event);
-    }
-
-    public static @NotNull EmbedResponseUtility embedResponse(
-        @NotNull ModalInteraction event
-    ) {
-        return new EmbedResponseUtility(event);
+    public static @NotNull EmbedResponseBuilder embedResponse() {
+        return new EmbedResponseBuilder();
     }
 
 }

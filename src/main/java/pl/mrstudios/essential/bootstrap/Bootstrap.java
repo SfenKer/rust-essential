@@ -1,7 +1,7 @@
 package pl.mrstudios.essential.bootstrap;
 
 import org.jetbrains.annotations.NotNull;
-import pl.mrstudios.essential.Application;
+import pl.mrstudios.essential.bot.Application;
 
 public class Bootstrap {
 

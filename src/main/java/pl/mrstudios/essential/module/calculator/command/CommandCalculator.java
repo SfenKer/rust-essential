@@ -6,16 +6,14 @@ import dev.rollczi.litecommands.annotations.command.Command;
 import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.description.Description;
 import dev.rollczi.litecommands.annotations.execute.Execute;
-import dev.rollczi.litecommands.jda.permission.DiscordPermission;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import org.jetbrains.annotations.NotNull;
+import pl.mrstudios.essential.builder.EmbedResponseBuilder;
 import pl.mrstudios.essential.module.calculator.resources.StructureExplosivesSet;
 import pl.mrstudios.essential.module.calculator.session.CalculatorSession;
-import pl.mrstudios.essential.utility.EmbedResponseUtility;
 
 import java.text.DecimalFormat;
 import java.util.function.BiConsumer;
@@ -29,20 +27,18 @@ import static java.util.Arrays.stream;
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 import static java.util.Optional.ofNullable;
-import static net.dv8tion.jda.api.Permission.USE_APPLICATION_COMMANDS;
 import static net.dv8tion.jda.api.entities.emoji.Emoji.fromCustom;
 import static net.dv8tion.jda.api.interactions.components.buttons.Button.success;
 import static net.dv8tion.jda.api.interactions.components.selections.SelectOption.of;
 import static net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu.create;
 import static net.dv8tion.jda.api.interactions.components.text.TextInputStyle.SHORT;
-import static pl.mrstudios.essential.utility.EmbedResponseUtility.embedResponse;
+import static pl.mrstudios.essential.builder.EmbedResponseBuilder.embedResponse;
 import static pl.mrstudios.essential.utility.EmojiUtility.customEmoji;
 import static pl.mrstudios.essential.utility.ModalResponseUtility.modalResponse;
 import static pl.mrstudios.essential.utility.StreamUtility.readResource;
 
 @Command(name = "calculator")
 @Description("Calculator of Raid Cost.")
-@DiscordPermission(USE_APPLICATION_COMMANDS)
 public class CommandCalculator {
 
     private final Cache<Long, CalculatorSession> cache = newBuilder()
@@ -50,14 +46,13 @@ public class CommandCalculator {
         .build();
 
     @Execute
-    public @NotNull EmbedResponseUtility execute(
-        @Context User user,
-        @Context SlashCommandInteractionEvent event
+    public @NotNull EmbedResponseBuilder execute(
+        @Context User user
     ) {
 
         this.cache.invalidate(user.getIdLong());
 
-        return embedResponse(event)
+        return embedResponse()
             .ephemeral()
             .embed(
                 (embedBuilder) -> embedBuilder.setColor(RED)
@@ -238,8 +233,9 @@ public class CommandCalculator {
                     .append(" ").append(customEmoji("explosive_ammo").getFormatted())
                     .append(" Explosive Ammo");
 
-            embedResponse(callback)
+            embedResponse()
                 .deferEdit()
+                .applyEvent(callback)
                 .embed(
                     (embedBuilder) -> embedBuilder.setColor(RED)
                         .setDescription(format(
@@ -256,17 +252,18 @@ public class CommandCalculator {
                 ).build();
 
         } catch (@NotNull Exception exception) {
-            callback.deferReply(true)
-                .setEmbeds(
-                    new EmbedBuilder()
-                        .setColor(RED)
+            embedResponse()
+                .ephemeral()
+                .applyEvent(callback)
+                .embed(
+                    (embedBuilder) -> embedBuilder.setColor(RED)
                         .setDescription(
                             """
                             ### :warning: ‌ Error Occurred
                             You must provide a number in the input.
                             """
-                        ).build()
-                ).queue();
+                        )
+                ).build();
         }
     };
 

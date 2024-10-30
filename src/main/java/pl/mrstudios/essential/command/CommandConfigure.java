@@ -11,26 +11,26 @@ import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
+import pl.mrstudios.essential.builder.EmbedResponseBuilder;
 import pl.mrstudios.essential.module.settings.GuildSettings;
 import pl.mrstudios.essential.module.settings.GuildSettingsManager;
 import pl.mrstudios.essential.module.settings.document.JsonDocument;
-import pl.mrstudios.essential.utility.EmbedResponseUtility;
 
 import static java.awt.Color.RED;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static net.dv8tion.jda.api.Permission.*;
 import static net.dv8tion.jda.internal.utils.PermissionUtil.checkPermission;
-import static pl.mrstudios.essential.utility.EmbedResponseUtility.embedResponse;
+import static pl.mrstudios.essential.builder.EmbedResponseBuilder.embedResponse;
 
 @Command(name = "configure")
-@Description("Configure settings of Rust Essential.")
 @DiscordPermission(MANAGE_SERVER)
+@Description("Configure settings of Rust Essential.")
 public class CommandConfigure {
 
     @Execute(name = "news-channel")
     @Description("Set channel where news will be posted.")
-    public @NotNull EmbedResponseUtility newsChannel(
+    public @NotNull EmbedResponseBuilder newsChannel(
 
         @Context SlashCommandInteractionEvent event,
         @Bind GuildSettingsManager guildSettingsManager,
@@ -42,7 +42,7 @@ public class CommandConfigure {
     ) {
 
         if (!(channel instanceof TextChannel textChannel))
-            return embedResponse(event)
+            return embedResponse()
                 .ephemeral()
                 .embed(
                     (embedBuilder) -> embedBuilder.setColor(RED)
@@ -55,7 +55,7 @@ public class CommandConfigure {
                 );
 
         if (!checkPermission(textChannel, requireNonNull(event.getGuild()).getSelfMember(), MESSAGE_SEND, MESSAGE_EMBED_LINKS))
-            return embedResponse(event)
+            return embedResponse()
                 .ephemeral()
                 .embed(
                     (embedBuilder) -> embedBuilder.setColor(RED)
@@ -72,7 +72,7 @@ public class CommandConfigure {
         settings.read().newsChannelId = textChannel.getIdLong();
         settings.save();
 
-        return embedResponse(event)
+        return embedResponse()
             .ephemeral()
             .embed(
                 (embedBuilder) -> embedBuilder.setColor(RED)

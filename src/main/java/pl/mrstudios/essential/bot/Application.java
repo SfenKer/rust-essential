@@ -1,10 +1,11 @@
-package pl.mrstudios.essential;
+package pl.mrstudios.essential.bot;
 
 import com.zaxxer.hikari.HikariConfig;
 import net.dv8tion.jda.api.JDA;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import pl.mrstudios.commons.sql.SqlConnection;
+import pl.mrstudios.essential.builder.EmbedResponseBuilder;
 import pl.mrstudios.essential.command.CommandAbout;
 import pl.mrstudios.essential.command.CommandConfigure;
 import pl.mrstudios.essential.command.CommandServerInfo;
@@ -16,7 +17,6 @@ import pl.mrstudios.essential.module.calculator.command.CommandCalculator;
 import pl.mrstudios.essential.module.changelog.command.CommandChangelog;
 import pl.mrstudios.essential.module.news.NewsService;
 import pl.mrstudios.essential.module.settings.GuildSettingsManager;
-import pl.mrstudios.essential.utility.EmbedResponseUtility;
 
 import java.nio.file.Path;
 
@@ -36,7 +36,7 @@ import static pl.mrstudios.essential.config.ConfigurationFactory.configurationFa
 import static pl.mrstudios.essential.utility.ThreadUtility.createThread;
 import static pl.mrstudios.essential.wrapper.RustMapsAPI.provideRustMapsApiKey;
 
-@SuppressWarnings("FieldCanBeLocal")
+@SuppressWarnings({ "FieldCanBeLocal", "UnstableApiUsage" })
 public class Application {
 
     private final JDA jda;
@@ -112,7 +112,7 @@ public class Application {
             ))
 
             /* Result */
-            .result(EmbedResponseUtility.class, new EmbedResponseResult())
+            .result(EmbedResponseBuilder.class, new EmbedResponseResult())
 
             /* Bind */
             .bind(Logger.class, () -> this.logger)
