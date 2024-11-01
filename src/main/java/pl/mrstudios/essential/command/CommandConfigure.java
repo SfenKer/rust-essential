@@ -22,7 +22,6 @@ import static java.lang.String.format;
 import static net.dv8tion.jda.api.Permission.*;
 import static net.dv8tion.jda.internal.utils.PermissionUtil.checkPermission;
 import static pl.mrstudios.essential.service.settings.setting.GuildSetting.GUILD_NEWS_CHANNEL;
-import static pl.mrstudios.essential.service.settings.setting.GuildSettingContainer.guildSettingContainer;
 import static pl.mrstudios.essential.utility.builder.EmbedResponseBuilder.embedResponse;
 
 @Command(name = "configure")
