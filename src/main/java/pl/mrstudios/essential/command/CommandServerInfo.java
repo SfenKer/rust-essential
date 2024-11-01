@@ -7,6 +7,7 @@ import com.ibasco.agql.protocols.valve.source.query.info.SourceServer;
 import dev.rollczi.litecommands.annotations.argument.Arg;
 import dev.rollczi.litecommands.annotations.command.Command;
 import dev.rollczi.litecommands.annotations.context.Context;
+import dev.rollczi.litecommands.annotations.cooldown.Cooldown;
 import dev.rollczi.litecommands.annotations.description.Description;
 import dev.rollczi.litecommands.annotations.execute.Execute;
 import kotlin.Pair;
@@ -33,10 +34,12 @@ import static java.lang.String.format;
 import static java.lang.String.join;
 import static java.time.Duration.ofMinutes;
 import static java.time.Duration.ofSeconds;
+import static java.time.temporal.ChronoUnit.SECONDS;
 import static java.util.Optional.ofNullable;
 import static java.util.concurrent.CompletableFuture.runAsync;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static java.util.stream.IntStream.rangeClosed;
+import static pl.mrstudios.essential.utility.EmbedUtility.embedBuilder;
 import static pl.mrstudios.essential.utility.StringUtility.formatDuration;
 import static pl.mrstudios.essential.utility.builder.EmbedResponseBuilder.embedResponse;
 import static pl.mrstudios.essential.wrapper.RustMapsWrapper.mapImage;
@@ -45,12 +48,8 @@ import static pl.mrstudios.essential.wrapper.RustMapsWrapper.mapImage;
 @Description("Show status and information about server.")
 public class CommandServerInfo {
 
-    /* Cache */
-    private final Cache<String, Pair<SourceServer, Map<String, String>>> cache = newBuilder()
-        .expireAfterWrite(ofMinutes(15))
-        .build();
-
     @Execute
+    @Cooldown(key = "/serverinfo", count = 15, unit = SECONDS)
     public @NotNull EmbedResponseBuilder executeDefault(
 
         @Context SlashCommandInteractionEvent event,
@@ -135,7 +134,7 @@ public class CommandServerInfo {
 
             } catch (@NotNull Exception exception) {
                 event.getHook().editOriginalEmbeds(
-                    new EmbedBuilder()
+                    embedBuilder()
                         .setColor(RED)
                         .setDescription(
                             """
@@ -187,6 +186,12 @@ public class CommandServerInfo {
 
     }
 
+    /* Cache */
+    private final Cache<String, Pair<SourceServer, Map<String, String>>> cache = newBuilder()
+        .expireAfterWrite(ofMinutes(15))
+        .build();
+
+    /* Executor Service */
     private final ExecutorService executorService = newCachedThreadPool();
     private final SourceQueryOptions sourceQueryOptions = builder()
         .option(READ_TIMEOUT, 5000)
