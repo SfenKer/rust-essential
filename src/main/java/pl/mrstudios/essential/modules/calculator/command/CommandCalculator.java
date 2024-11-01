@@ -1,4 +1,4 @@
-package pl.mrstudios.essential.module.calculator.command;
+package pl.mrstudios.essential.modules.calculator.command;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.google.gson.Gson;
@@ -11,8 +11,8 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import org.jetbrains.annotations.NotNull;
-import pl.mrstudios.essential.module.calculator.resources.StructureExplosivesSet;
-import pl.mrstudios.essential.module.calculator.session.CalculatorSession;
+import pl.mrstudios.essential.modules.calculator.resources.StructureExplosivesSet;
+import pl.mrstudios.essential.modules.calculator.session.CalculatorSession;
 import pl.mrstudios.essential.utility.builder.EmbedResponseBuilder;
 
 import java.text.DecimalFormat;
@@ -190,16 +190,16 @@ public class CommandCalculator {
 
     }
 
-    protected final DecimalFormat decimalFormat = new DecimalFormat("#,###");
+    private final DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
-    protected final Gson gson = new Gson();
-    protected final StructureExplosivesSet[] structureExplosivesSets = gson.fromJson(
+    private final Gson gson = new Gson();
+    private final StructureExplosivesSet[] structureExplosivesSets = gson.fromJson(
         readResource("data/rust/calculator/structure_explosives_set.json"),
         StructureExplosivesSet[].class
     );
 
     /* Modal Handler */
-    protected final BiConsumer<User, ModalInteractionEvent> modalHandler = (executor, callback) -> {
+    private final BiConsumer<User, ModalInteractionEvent> modalHandler = (executor, callback) -> {
 
         CalculatorSession session = this.cache.get(executor.getIdLong(), (key) -> new CalculatorSession());
 

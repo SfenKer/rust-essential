@@ -26,8 +26,8 @@ public class EmojiUtility {
             .orElseThrow();
     }
 
-    protected static final Gson gson = new Gson();
-    protected static final Map<String, Emoji> customEmoji = ofEntries(
+    private static final Gson gson = new Gson();
+    private static final Map<String, Emoji> customEmoji = ofEntries(
         gson.fromJson(readResource("data/general/custom_emoji.json"), JsonArray.class)
             .asList().stream()
             .map(JsonElement::getAsJsonObject)

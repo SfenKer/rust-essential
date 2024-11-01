@@ -39,7 +39,7 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
 import static java.util.stream.IntStream.rangeClosed;
 import static pl.mrstudios.essential.utility.StringUtility.formatDuration;
 import static pl.mrstudios.essential.utility.builder.EmbedResponseBuilder.embedResponse;
-import static pl.mrstudios.essential.wrapper.RustMapsAPI.mapImage;
+import static pl.mrstudios.essential.wrapper.RustMapsWrapper.mapImage;
 
 @Command(name = "serverinfo")
 @Description("Show status and information about server.")
@@ -163,7 +163,7 @@ public class CommandServerInfo {
 
     }
 
-    protected static @NotNull String readServerDescription(
+    private static @NotNull String readServerDescription(
         @NotNull Map<String, String> details
     ) {
 
@@ -187,8 +187,8 @@ public class CommandServerInfo {
 
     }
 
-    protected final ExecutorService executorService = newCachedThreadPool();
-    protected final SourceQueryOptions sourceQueryOptions = builder()
+    private final ExecutorService executorService = newCachedThreadPool();
+    private final SourceQueryOptions sourceQueryOptions = builder()
         .option(READ_TIMEOUT, 5000)
         .option(THREAD_EXECUTOR_SERVICE, this.executorService)
         .option(RESOURCE_LEAK_DETECTOR_LEVEL, DISABLED)

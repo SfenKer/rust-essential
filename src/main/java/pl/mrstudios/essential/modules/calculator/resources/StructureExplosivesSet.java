@@ -1,4 +1,4 @@
-package pl.mrstudios.essential.module.calculator.resources;
+package pl.mrstudios.essential.modules.calculator.resources;
 
 public class StructureExplosivesSet {
 

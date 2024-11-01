@@ -1,4 +1,4 @@
-package pl.mrstudios.essential.module.settings.setting;
+package pl.mrstudios.essential.service.settings.setting;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class GuildSettingEntry {
+public class GuildSettingContainer {
 
     @SerializedName("key")
     private @NotNull GuildSetting key;
@@ -31,17 +31,17 @@ public class GuildSettingEntry {
         this.value = value;
     }
 
-    public static @NotNull GuildSettingEntry guildSettingEntry(
+    public static @NotNull GuildSettingContainer guildSettingEntry(
         @NotNull GuildSetting key
     ) {
-        return new GuildSettingEntry(key, null);
+        return new GuildSettingContainer(key, null);
     }
 
-    public static @NotNull GuildSettingEntry guildSettingEntry(
+    public static @NotNull GuildSettingContainer guildSettingEntry(
         @NotNull GuildSetting key,
         @Nullable Object value
     ) {
-        return new GuildSettingEntry(key, value);
+        return new GuildSettingContainer(key, value);
     }
 
 }

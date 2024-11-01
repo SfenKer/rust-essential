@@ -11,8 +11,8 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.jetbrains.annotations.NotNull;
-import pl.mrstudios.essential.module.settings.GuildSettingsManager;
-import pl.mrstudios.essential.module.settings.setting.GuildSettingEntry;
+import pl.mrstudios.essential.service.settings.GuildSettingsService;
+import pl.mrstudios.essential.service.settings.setting.GuildSettingContainer;
 import pl.mrstudios.essential.utility.builder.EmbedResponseBuilder;
 
 import java.util.Collection;
@@ -21,8 +21,8 @@ import static java.awt.Color.RED;
 import static java.lang.String.format;
 import static net.dv8tion.jda.api.Permission.*;
 import static net.dv8tion.jda.internal.utils.PermissionUtil.checkPermission;
-import static pl.mrstudios.essential.module.settings.setting.GuildSetting.GUILD_NEWS_CHANNEL;
-import static pl.mrstudios.essential.module.settings.setting.GuildSettingEntry.guildSettingEntry;
+import static pl.mrstudios.essential.service.settings.setting.GuildSetting.GUILD_NEWS_CHANNEL;
+import static pl.mrstudios.essential.service.settings.setting.GuildSettingContainer.guildSettingEntry;
 import static pl.mrstudios.essential.utility.builder.EmbedResponseBuilder.embedResponse;
 
 @Command(name = "configure")
@@ -35,7 +35,7 @@ public class CommandConfigure {
     public @NotNull EmbedResponseBuilder newsChannel(
 
         @Context Guild guild,
-        @Bind GuildSettingsManager guildSettingsManager,
+        @Bind GuildSettingsService guildSettingsService,
 
         @Arg("channel")
         @Description("Channel where news will be posted.")
@@ -69,16 +69,16 @@ public class CommandConfigure {
                         )
                 );
 
-        Collection<GuildSettingEntry> settings = guildSettingsManager.fetchSettings(guild);
-        GuildSettingEntry guildSettingEntry = settings.stream()
+        Collection<GuildSettingContainer> settings = guildSettingsService.fetchSettings(guild);
+        GuildSettingContainer container = settings.stream()
             .filter((entry) -> entry.key() == GUILD_NEWS_CHANNEL)
             .findFirst().orElse(guildSettingEntry(GUILD_NEWS_CHANNEL));
 
-        guildSettingEntry.value(textChannel.getIdLong());
+        container.value(textChannel.getIdLong());
         if (settings.stream().noneMatch((entry) -> entry.key() == GUILD_NEWS_CHANNEL))
-            settings.add(guildSettingEntry);
+            settings.add(container);
 
-        guildSettingsManager.updateSettings(guild, settings);
+        guildSettingsService.updateSettings(guild, settings);
 
         return embedResponse()
             .ephemeral()

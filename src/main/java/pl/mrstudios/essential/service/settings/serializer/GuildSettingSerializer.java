@@ -1,12 +1,12 @@
-package pl.mrstudios.essential.module.settings.serializer;
+package pl.mrstudios.essential.service.settings.serializer;
 
 import com.google.gson.*;
 import org.jetbrains.annotations.NotNull;
-import pl.mrstudios.essential.module.settings.setting.GuildSetting;
+import pl.mrstudios.essential.service.settings.setting.GuildSetting;
 
 import java.lang.reflect.Type;
 
-import static pl.mrstudios.essential.module.settings.setting.GuildSetting.fromId;
+import static pl.mrstudios.essential.service.settings.setting.GuildSetting.fromId;
 
 public class GuildSettingSerializer implements JsonSerializer<GuildSetting>, JsonDeserializer<GuildSetting> {
 

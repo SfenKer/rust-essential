@@ -1,4 +1,4 @@
-package pl.mrstudios.essential.module.settings.setting;
+package pl.mrstudios.essential.service.settings.setting;
 
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;

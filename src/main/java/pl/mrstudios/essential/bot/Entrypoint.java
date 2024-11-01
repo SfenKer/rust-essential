@@ -11,11 +11,11 @@ import pl.mrstudios.essential.command.CommandServerInfo;
 import pl.mrstudios.essential.command.result.EmbedResponseResult;
 import pl.mrstudios.essential.config.Configuration;
 import pl.mrstudios.essential.config.ConfigurationFactory;
+import pl.mrstudios.essential.modules.calculator.command.CommandCalculator;
+import pl.mrstudios.essential.modules.changelog.command.CommandChangelog;
 import pl.mrstudios.essential.listener.UserInteractionListener;
-import pl.mrstudios.essential.module.calculator.command.CommandCalculator;
-import pl.mrstudios.essential.module.changelog.command.CommandChangelog;
-import pl.mrstudios.essential.module.news.NewsService;
-import pl.mrstudios.essential.module.settings.GuildSettingsManager;
+import pl.mrstudios.essential.service.news.NewsService;
+import pl.mrstudios.essential.service.settings.GuildSettingsService;
 import pl.mrstudios.essential.utility.builder.EmbedResponseBuilder;
 
 import java.nio.file.Path;
@@ -34,7 +34,7 @@ import static net.dv8tion.jda.api.utils.cache.CacheFlag.*;
 import static org.slf4j.LoggerFactory.getLogger;
 import static pl.mrstudios.essential.config.ConfigurationFactory.configurationFactory;
 import static pl.mrstudios.essential.utility.ThreadUtility.createThread;
-import static pl.mrstudios.essential.wrapper.RustMapsAPI.provideRustMapsApiKey;
+import static pl.mrstudios.essential.wrapper.RustMapsWrapper.provideRustMapsApiKey;
 
 @SuppressWarnings({ "FieldCanBeLocal", "UnstableApiUsage" })
 public class Entrypoint {
@@ -52,7 +52,7 @@ public class Entrypoint {
     private final ConfigurationFactory configurationFactory;
 
     /* Managers */
-    private final GuildSettingsManager guildSettingsManager;
+    private final GuildSettingsService guildSettingsService;
 
     {
         this.logger.info("Loading application, please wait...");
@@ -97,7 +97,7 @@ public class Entrypoint {
             ).build();
 
         /* Managers */
-        this.guildSettingsManager = new GuildSettingsManager(this.jda, this.sqlConnection);
+        this.guildSettingsService = new GuildSettingsService(this.jda, this.sqlConnection);
 
         /* Commands */
         builder(this.jda)
@@ -121,7 +121,7 @@ public class Entrypoint {
             .bind(Configuration.class, () -> this.configuration)
             .bind(ConfigurationFactory.class, () -> this.configurationFactory)
 
-            .bind(GuildSettingsManager.class, () -> this.guildSettingsManager)
+            .bind(GuildSettingsService.class, () -> this.guildSettingsService)
 
             /* Schematic */
             .schematicGenerator(angleBrackets())
@@ -130,7 +130,7 @@ public class Entrypoint {
             .build();
 
         /* Services */
-        new NewsService(this.jda, this.sqlConnection, this.guildSettingsManager);
+        new NewsService(this.jda, this.sqlConnection, this.guildSettingsService);
 
         /* API */
         provideRustMapsApiKey(this.configuration.rustMapsApiKey);
@@ -141,7 +141,7 @@ public class Entrypoint {
         this.logger.info("Application was loaded successfully.");
     }
 
-    protected static final Path DATABASE_DIR_PATH = get("database");
-    protected static final Path DATABASE_FILE_PATH = get("database/", "database.db");
+    private static final Path DATABASE_DIR_PATH = get("database");
+    private static final Path DATABASE_FILE_PATH = get("database/", "database.db");
 
 }

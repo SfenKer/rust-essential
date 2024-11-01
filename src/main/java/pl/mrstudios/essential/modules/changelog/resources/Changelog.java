@@ -1,4 +1,4 @@
-package pl.mrstudios.essential.module.changelog.resources;
+package pl.mrstudios.essential.modules.changelog.resources;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -76,16 +76,16 @@ public class CommandAbout {
             );
     }
 
-    protected static @NotNull String currentCpuUsage() {
+    private static @NotNull String currentCpuUsage() {
         return format("%.2f", ((OperatingSystemMXBean) getOperatingSystemMXBean()).getCpuLoad())
             .replace('.', ',');
     }
 
-    protected static @NotNull Integer currentMemoryUsage() {
+    private static @NotNull Integer currentMemoryUsage() {
         return (int) (getMemoryMXBean().getNonHeapMemoryUsage().getUsed()) / 1_048_576;
     }
 
-    protected final DecimalFormat decimalFormat = new DecimalFormat("#,###");
+    private final DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
 }
 

@@ -1,4 +1,4 @@
-package pl.mrstudios.essential.module.settings;
+package pl.mrstudios.essential.service.settings;
 
 public class GuildSettingsSqlRepository {
 

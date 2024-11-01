@@ -1,4 +1,4 @@
-package pl.mrstudios.essential.module.news;
+package pl.mrstudios.essential.service.news;
 
 public class NewsSqlRepository {
 
