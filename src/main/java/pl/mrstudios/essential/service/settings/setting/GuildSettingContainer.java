@@ -31,13 +31,13 @@ public class GuildSettingContainer {
         this.value = value;
     }
 
-    public static @NotNull GuildSettingContainer guildSettingEntry(
+    public static @NotNull GuildSettingContainer guildSettingContainer(
         @NotNull GuildSetting key
     ) {
         return new GuildSettingContainer(key, null);
     }
 
-    public static @NotNull GuildSettingContainer guildSettingEntry(
+    public static @NotNull GuildSettingContainer guildSettingContainer(
         @NotNull GuildSetting key,
         @Nullable Object value
     ) {

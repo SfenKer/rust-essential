@@ -22,7 +22,7 @@ import static java.lang.String.format;
 import static net.dv8tion.jda.api.Permission.*;
 import static net.dv8tion.jda.internal.utils.PermissionUtil.checkPermission;
 import static pl.mrstudios.essential.service.settings.setting.GuildSetting.GUILD_NEWS_CHANNEL;
-import static pl.mrstudios.essential.service.settings.setting.GuildSettingContainer.guildSettingEntry;
+import static pl.mrstudios.essential.service.settings.setting.GuildSettingContainer.guildSettingContainer;
 import static pl.mrstudios.essential.utility.builder.EmbedResponseBuilder.embedResponse;
 
 @Command(name = "configure")
@@ -72,7 +72,7 @@ public class CommandConfigure {
         Collection<GuildSettingContainer> settings = guildSettingsService.fetchSettings(guild);
         GuildSettingContainer container = settings.stream()
             .filter((entry) -> entry.key() == GUILD_NEWS_CHANNEL)
-            .findFirst().orElse(guildSettingEntry(GUILD_NEWS_CHANNEL));
+            .findFirst().orElse(GuildSettingContainer.guildSettingContainer(GUILD_NEWS_CHANNEL));
 
         container.value(textChannel.getIdLong());
         if (settings.stream().noneMatch((entry) -> entry.key() == GUILD_NEWS_CHANNEL))
