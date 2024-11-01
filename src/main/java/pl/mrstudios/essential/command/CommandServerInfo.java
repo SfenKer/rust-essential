@@ -89,7 +89,7 @@ public class CommandServerInfo {
                 SourceServer server = pair.getFirst();
                 Map<String, String> details = pair.getSecond();
 
-                EmbedBuilder mainEmbed = new EmbedBuilder()
+                EmbedBuilder embedBuilder = new EmbedBuilder()
                     .setColor(
                         (server.getNumOfPlayers() >= server.getMaxPlayers()) ?
                             YELLOW : GREEN
@@ -114,15 +114,15 @@ public class CommandServerInfo {
                     ));
 
                 ofNullable(details.get("logoimage"))
-                    .ifPresent(mainEmbed::setThumbnail);
+                    .ifPresent(embedBuilder::setThumbnail);
 
                 if (server.getMapName().equals("Procedural Map"))
                     ofNullable(mapImage(
                         parseInt(details.get("world.size")),
                         parseLong(details.get("world.seed"))
                     )).ifPresent((image) -> {
-                        mainEmbed.setImage(image);
-                        mainEmbed.getDescriptionBuilder().append(format(
+                        embedBuilder.setImage(image);
+                        embedBuilder.getDescriptionBuilder().append(format(
                             """
                             ### :map: ‌ Map
                             Preview of ``%s`` map which server is using.
@@ -130,7 +130,7 @@ public class CommandServerInfo {
                         ));
                     });
 
-                event.getHook().editOriginalEmbeds(mainEmbed.build())
+                event.getHook().editOriginalEmbeds(embedBuilder.build())
                     .queue();
 
             } catch (@NotNull Exception exception) {
