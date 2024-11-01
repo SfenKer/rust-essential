@@ -7,7 +7,7 @@ import dev.rollczi.litecommands.annotations.execute.Execute;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import org.jetbrains.annotations.NotNull;
-import pl.mrstudios.essential.builder.EmbedResponseBuilder;
+import pl.mrstudios.essential.utility.builder.EmbedResponseBuilder;
 import pl.mrstudios.essential.module.changelog.resources.Changelog;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import static net.dv8tion.jda.api.entities.emoji.Emoji.fromUnicode;
 import static net.dv8tion.jda.api.interactions.components.selections.SelectMenu.OPTIONS_MAX_AMOUNT;
 import static net.dv8tion.jda.api.interactions.components.selections.SelectOption.of;
 import static net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu.create;
-import static pl.mrstudios.essential.builder.EmbedResponseBuilder.embedResponse;
+import static pl.mrstudios.essential.utility.builder.EmbedResponseBuilder.embedResponse;
 import static pl.mrstudios.essential.utility.StreamUtility.readResource;
 
 @Command(name = "changelog")

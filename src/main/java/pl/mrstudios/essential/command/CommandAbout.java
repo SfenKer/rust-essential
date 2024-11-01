@@ -7,7 +7,7 @@ import dev.rollczi.litecommands.annotations.description.Description;
 import dev.rollczi.litecommands.annotations.execute.Execute;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
-import pl.mrstudios.essential.builder.EmbedResponseBuilder;
+import pl.mrstudios.essential.utility.builder.EmbedResponseBuilder;
 
 import java.text.DecimalFormat;
 import java.time.Instant;
@@ -19,7 +19,7 @@ import static java.lang.management.ManagementFactory.getMemoryMXBean;
 import static java.lang.management.ManagementFactory.getOperatingSystemMXBean;
 import static java.time.Duration.between;
 import static java.time.Instant.now;
-import static pl.mrstudios.essential.builder.EmbedResponseBuilder.embedResponse;
+import static pl.mrstudios.essential.utility.builder.EmbedResponseBuilder.embedResponse;
 import static pl.mrstudios.essential.utility.StringUtility.formatDuration;
 
 @Command(name = "about")

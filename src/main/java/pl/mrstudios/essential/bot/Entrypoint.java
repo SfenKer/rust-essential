@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.JDA;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import pl.mrstudios.commons.sql.SqlConnection;
-import pl.mrstudios.essential.builder.EmbedResponseBuilder;
+import pl.mrstudios.essential.utility.builder.EmbedResponseBuilder;
 import pl.mrstudios.essential.command.CommandAbout;
 import pl.mrstudios.essential.command.CommandConfigure;
 import pl.mrstudios.essential.command.CommandServerInfo;
@@ -37,7 +37,7 @@ import static pl.mrstudios.essential.utility.ThreadUtility.createThread;
 import static pl.mrstudios.essential.wrapper.RustMapsAPI.provideRustMapsApiKey;
 
 @SuppressWarnings({ "FieldCanBeLocal", "UnstableApiUsage" })
-public class Application {
+public class Entrypoint {
 
     private final JDA jda;
 
@@ -45,7 +45,7 @@ public class Application {
     private final SqlConnection sqlConnection;
 
     /* Logger */
-    private final Logger logger = getLogger(Application.class);
+    private final Logger logger = getLogger(Entrypoint.class);
 
     /* Configuration */
     private final Configuration configuration;

@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import org.jetbrains.annotations.NotNull;
-import pl.mrstudios.essential.builder.EmbedResponseBuilder;
+import pl.mrstudios.essential.utility.builder.EmbedResponseBuilder;
 import pl.mrstudios.essential.module.calculator.resources.StructureExplosivesSet;
 import pl.mrstudios.essential.module.calculator.session.CalculatorSession;
 
@@ -32,9 +32,9 @@ import static net.dv8tion.jda.api.interactions.components.buttons.Button.success
 import static net.dv8tion.jda.api.interactions.components.selections.SelectOption.of;
 import static net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu.create;
 import static net.dv8tion.jda.api.interactions.components.text.TextInputStyle.SHORT;
-import static pl.mrstudios.essential.builder.EmbedResponseBuilder.embedResponse;
+import static pl.mrstudios.essential.utility.builder.EmbedResponseBuilder.embedResponse;
 import static pl.mrstudios.essential.utility.EmojiUtility.customEmoji;
-import static pl.mrstudios.essential.utility.ModalResponseUtility.modalResponse;
+import static pl.mrstudios.essential.utility.builder.ModalResponseBuilder.modalResponseBuilder;
 import static pl.mrstudios.essential.utility.StreamUtility.readResource;
 
 @Command(name = "calculator")
@@ -175,7 +175,7 @@ public class CommandCalculator {
                         return;
                     }
 
-                    modalResponse(callback)
+                    modalResponseBuilder(callback)
                         .id("calculator:modal:provide_amount")
                         .title("Calculator")
                         .components(

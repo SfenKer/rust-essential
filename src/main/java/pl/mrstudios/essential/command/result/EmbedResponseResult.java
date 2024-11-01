@@ -6,7 +6,7 @@ import dev.rollczi.litecommands.invocation.Invocation;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
-import pl.mrstudios.essential.builder.EmbedResponseBuilder;
+import pl.mrstudios.essential.utility.builder.EmbedResponseBuilder;
 
 public class EmbedResponseResult implements ResultHandler<User, EmbedResponseBuilder> {
 

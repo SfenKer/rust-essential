@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.jetbrains.annotations.NotNull;
-import pl.mrstudios.essential.builder.EmbedResponseBuilder;
+import pl.mrstudios.essential.utility.builder.EmbedResponseBuilder;
 import pl.mrstudios.essential.module.settings.GuildSettings;
 import pl.mrstudios.essential.module.settings.GuildSettingsManager;
 import pl.mrstudios.essential.module.settings.document.JsonDocument;
@@ -20,7 +20,7 @@ import static java.awt.Color.RED;
 import static java.lang.String.format;
 import static net.dv8tion.jda.api.Permission.*;
 import static net.dv8tion.jda.internal.utils.PermissionUtil.checkPermission;
-import static pl.mrstudios.essential.builder.EmbedResponseBuilder.embedResponse;
+import static pl.mrstudios.essential.utility.builder.EmbedResponseBuilder.embedResponse;
 
 @Command(name = "configure")
 @DiscordPermission(MANAGE_SERVER)

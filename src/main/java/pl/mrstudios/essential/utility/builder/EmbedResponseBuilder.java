@@ -1,4 +1,4 @@
-package pl.mrstudios.essential.builder;
+package pl.mrstudios.essential.utility.builder;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;

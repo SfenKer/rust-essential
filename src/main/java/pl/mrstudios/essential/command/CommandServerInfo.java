@@ -13,7 +13,7 @@ import kotlin.Pair;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
-import pl.mrstudios.essential.builder.EmbedResponseBuilder;
+import pl.mrstudios.essential.utility.builder.EmbedResponseBuilder;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ import static java.util.Optional.ofNullable;
 import static java.util.concurrent.CompletableFuture.runAsync;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static java.util.stream.IntStream.rangeClosed;
-import static pl.mrstudios.essential.builder.EmbedResponseBuilder.embedResponse;
+import static pl.mrstudios.essential.utility.builder.EmbedResponseBuilder.embedResponse;
 import static pl.mrstudios.essential.utility.StringUtility.formatDuration;
 import static pl.mrstudios.essential.wrapper.RustMapsAPI.mapImage;
 
