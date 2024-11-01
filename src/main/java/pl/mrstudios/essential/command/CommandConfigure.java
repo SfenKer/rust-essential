@@ -11,15 +11,18 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.jetbrains.annotations.NotNull;
-import pl.mrstudios.essential.utility.builder.EmbedResponseBuilder;
-import pl.mrstudios.essential.module.settings.GuildSettings;
 import pl.mrstudios.essential.module.settings.GuildSettingsManager;
-import pl.mrstudios.essential.module.settings.document.JsonDocument;
+import pl.mrstudios.essential.module.settings.setting.GuildSettingEntry;
+import pl.mrstudios.essential.utility.builder.EmbedResponseBuilder;
+
+import java.util.Collection;
 
 import static java.awt.Color.RED;
 import static java.lang.String.format;
 import static net.dv8tion.jda.api.Permission.*;
 import static net.dv8tion.jda.internal.utils.PermissionUtil.checkPermission;
+import static pl.mrstudios.essential.module.settings.setting.GuildSetting.GUILD_NEWS_CHANNEL;
+import static pl.mrstudios.essential.module.settings.setting.GuildSettingEntry.guildSettingEntry;
 import static pl.mrstudios.essential.utility.builder.EmbedResponseBuilder.embedResponse;
 
 @Command(name = "configure")
@@ -66,10 +69,16 @@ public class CommandConfigure {
                         )
                 );
 
-        JsonDocument<GuildSettings> settings = guildSettingsManager.guildSettings(guild);
+        Collection<GuildSettingEntry> settings = guildSettingsManager.fetchSettings(guild);
+        GuildSettingEntry guildSettingEntry = settings.stream()
+            .filter((entry) -> entry.key() == GUILD_NEWS_CHANNEL)
+            .findFirst().orElse(guildSettingEntry(GUILD_NEWS_CHANNEL));
 
-        settings.read().newsChannelId = textChannel.getIdLong();
-        settings.save();
+        guildSettingEntry.value(textChannel.getIdLong());
+        if (settings.stream().noneMatch((entry) -> entry.key() == GUILD_NEWS_CHANNEL))
+            settings.add(guildSettingEntry);
+
+        guildSettingsManager.updateSettings(guild, settings);
 
         return embedResponse()
             .ephemeral()

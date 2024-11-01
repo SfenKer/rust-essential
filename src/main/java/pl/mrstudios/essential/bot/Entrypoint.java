@@ -5,7 +5,6 @@ import net.dv8tion.jda.api.JDA;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import pl.mrstudios.commons.sql.SqlConnection;
-import pl.mrstudios.essential.utility.builder.EmbedResponseBuilder;
 import pl.mrstudios.essential.command.CommandAbout;
 import pl.mrstudios.essential.command.CommandConfigure;
 import pl.mrstudios.essential.command.CommandServerInfo;
@@ -17,6 +16,7 @@ import pl.mrstudios.essential.module.calculator.command.CommandCalculator;
 import pl.mrstudios.essential.module.changelog.command.CommandChangelog;
 import pl.mrstudios.essential.module.news.NewsService;
 import pl.mrstudios.essential.module.settings.GuildSettingsManager;
+import pl.mrstudios.essential.utility.builder.EmbedResponseBuilder;
 
 import java.nio.file.Path;
 

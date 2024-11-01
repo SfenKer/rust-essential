@@ -17,6 +17,7 @@ import static java.awt.Color.RED;
 import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.isNull;
+import static java.util.Objects.requireNonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -29,12 +30,14 @@ import static net.dv8tion.jda.internal.utils.PermissionUtil.checkPermission;
 import static org.slf4j.LoggerFactory.getLogger;
 import static pl.mrstudios.commons.sql.statement.SqlStatement.createStatement;
 import static pl.mrstudios.essential.module.news.NewsSqlRepository.*;
+import static pl.mrstudios.essential.module.settings.setting.GuildSetting.GUILD_NEWS_CHANNEL;
 import static pl.mrstudios.essential.utility.StreamUtility.byteArrayInputStream;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class NewsService {
 
     private final JDA jda;
+    private final Logger logger;
     private final SqlConnection sqlConnection;
     private final ScheduledExecutorService executorService;
 
@@ -45,6 +48,7 @@ public class NewsService {
     ) {
 
         this.jda = jda;
+        this.logger = getLogger(NewsService.class);
         this.sqlConnection = sqlConnection;
         this.executorService = newSingleThreadScheduledExecutor();
 
@@ -55,7 +59,7 @@ public class NewsService {
 
                 new SyndFeedInput()
                     .build(new XmlReader(byteArrayInputStream(
-                        get(rssFeedUrl)
+                        get(RSS_FEED_URL)
                             .header("User-Agent", "News Reader/1.0.0 (in: '{project}')")
                             .asString().getBody()
                             .replace("&lt;img src=\"", "")
@@ -74,10 +78,16 @@ public class NewsService {
                             .execute(this.sqlConnection);
 
                         this.jda.getGuilds().stream()
-                            .map((guild) -> new Pair<>(guild, guildSettingsManager.guildSettings(guild).read()))
-                            .filter((pair) -> !isNull(pair.getSecond().newsChannelId))
+                            .map(
+                                (guild) -> new Pair<>(guild, guildSettingsManager.fetchSettings(guild)
+                                    .stream()
+                                    .filter((guildSettingEntry) -> guildSettingEntry.key() == GUILD_NEWS_CHANNEL)
+                                    .findFirst().orElse(null)
+                                )
+                            )
+                            .filter((pair) -> !isNull(pair.getSecond()))
                             .forEach(
-                                (pair) -> ofNullable(pair.getFirst().getTextChannelById(pair.getSecond().newsChannelId))
+                                (pair) -> ofNullable(pair.getFirst().getTextChannelById((Long) requireNonNull(pair.getSecond().value())))
                                     .filter((channel) -> checkPermission(channel, pair.getFirst().getSelfMember(), MESSAGE_SEND, MESSAGE_EMBED_LINKS))
                                     .ifPresent(
                                         (channel) -> channel.sendMessageEmbeds(
@@ -101,14 +111,13 @@ public class NewsService {
 
 
             } catch (@NotNull Exception exception) {
-                logger.error("Exception occurred while fetching news.", exception);
+                this.logger.error("Exception occurred while fetching news.", exception);
             }
 
         }, 0, 15, MINUTES);
 
     }
 
-    protected static final Logger logger = getLogger(NewsService.class);
-    protected static final String rssFeedUrl = "https://rust.facepunch.com/rss/news";
+    protected static final String RSS_FEED_URL = "https://rust.facepunch.com/rss/news";
 
 }

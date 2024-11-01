@@ -19,8 +19,8 @@ import static java.lang.management.ManagementFactory.getMemoryMXBean;
 import static java.lang.management.ManagementFactory.getOperatingSystemMXBean;
 import static java.time.Duration.between;
 import static java.time.Instant.now;
-import static pl.mrstudios.essential.utility.builder.EmbedResponseBuilder.embedResponse;
 import static pl.mrstudios.essential.utility.StringUtility.formatDuration;
+import static pl.mrstudios.essential.utility.builder.EmbedResponseBuilder.embedResponse;
 
 @Command(name = "about")
 @Description("Show information about Rust Essential.")
