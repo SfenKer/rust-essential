@@ -13,6 +13,7 @@ import pl.mrstudios.essential.command.suggestion.IntegerArgumentSuggester;
 import pl.mrstudios.essential.command.suggestion.StringArgumentSuggester;
 import pl.mrstudios.essential.config.Configuration;
 import pl.mrstudios.essential.config.ConfigurationFactory;
+import pl.mrstudios.essential.listener.GuildActionListener;
 import pl.mrstudios.essential.listener.UserInteractionListener;
 import pl.mrstudios.essential.modules.calculator.command.CommandCalculator;
 import pl.mrstudios.essential.modules.changelog.command.CommandChangelog;
@@ -96,8 +97,10 @@ public class Entrypoint {
         this.jda = createDefault(this.configuration.token)
             .setCompression(ZLIB)
             .setActivity(playing("Rust"))
-            .addEventListeners(new UserInteractionListener())
-            .disableCache(asList(
+            .addEventListeners(
+                new GuildActionListener(),
+                new UserInteractionListener()
+            ).disableCache(asList(
                 ACTIVITY, CLIENT_STATUS, FORUM_TAGS, ONLINE_STATUS,
                 SCHEDULED_EVENTS, STICKER
             )).build();

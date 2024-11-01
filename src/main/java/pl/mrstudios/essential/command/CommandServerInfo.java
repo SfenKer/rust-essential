@@ -39,6 +39,7 @@ import static java.util.Optional.ofNullable;
 import static java.util.concurrent.CompletableFuture.runAsync;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static java.util.stream.IntStream.rangeClosed;
+import static org.slf4j.LoggerFactory.getLogger;
 import static pl.mrstudios.essential.utility.EmbedUtility.embedBuilder;
 import static pl.mrstudios.essential.utility.StringUtility.formatDuration;
 import static pl.mrstudios.essential.utility.builder.EmbedResponseBuilder.embedResponse;
@@ -146,6 +147,8 @@ public class CommandServerInfo {
             }
 
         });
+
+        getLogger(CommandServerInfo.class).info("User '{}' requested server information for {}:{}", event.getUser().getName(), host, port);
 
         return embedResponse()
             .ephemeral()
