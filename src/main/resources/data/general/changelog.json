@@ -1,6 +1,25 @@
 [
   {
     "title": "Fixes and Improvements",
+    "version": "1.2.2",
+    "date": "1 November 2024",
+    "changes": {
+      "General": [
+        "Most of code has been refactored for better readability and future updates."
+      ],
+      "Added": [
+        "Added domain endings suggestions for ``/serverinfo`` command."
+      ],
+      "Improvements": [
+        "Improved guild settings storage for future updates."
+      ],
+      "Fixed": [
+        "Fixed ``/serverinfo`` was not working correctly when server had high latency."
+      ]
+    }
+  },
+  {
+    "title": "Fixes and Improvements",
     "version": "1.2.1",
     "date": "28 October 2024",
     "changes": {
