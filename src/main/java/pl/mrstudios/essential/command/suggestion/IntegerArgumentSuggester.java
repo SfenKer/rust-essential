@@ -8,6 +8,7 @@ import dev.rollczi.litecommands.suggestion.SuggestionResult;
 import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
 
+import static dev.rollczi.litecommands.suggestion.SuggestionResult.empty;
 import static dev.rollczi.litecommands.suggestion.SuggestionResult.from;
 
 public class IntegerArgumentSuggester implements Suggester<User, Integer> {
@@ -17,8 +18,10 @@ public class IntegerArgumentSuggester implements Suggester<User, Integer> {
         @NotNull Invocation<User> invocation,
         @NotNull Argument<Integer> argument,
         @NotNull SuggestionContext context
-    ) {
+    ) { try {
         return from(context.getCurrent());
-    }
+    } catch (@NotNull Exception exception) {
+        return empty();
+    } }
 
 }
