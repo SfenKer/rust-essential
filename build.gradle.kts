@@ -11,7 +11,7 @@ plugins {
 }
 
 project.group = "pl.mrstudios.essential"
-project.version = "1.2.2"
+project.version = "1.3.0"
 
 val versionDetails: Closure<VersionDetails> by extra
 fun projectVersion(): String = format("%s (git/%s)", project.version, versionDetails().gitHash)
