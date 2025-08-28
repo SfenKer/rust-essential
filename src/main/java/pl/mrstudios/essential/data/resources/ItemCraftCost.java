@@ -1,4 +1,4 @@
-package pl.mrstudios.essential.modules.calculator.resources;
+package pl.mrstudios.essential.data.resources;
 
 public class ItemCraftCost {
 

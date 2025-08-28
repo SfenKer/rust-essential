@@ -1,16 +1,16 @@
-package pl.mrstudios.essential.modules.calculator.session;
+package pl.mrstudios.essential.data.session;
 
 import com.google.gson.Gson;
 import org.jetbrains.annotations.NotNull;
-import pl.mrstudios.essential.modules.calculator.resources.ItemCraftCost;
-import pl.mrstudios.essential.modules.calculator.resources.StructureExplosivesSet;
+import pl.mrstudios.essential.data.resources.ItemCraftCost;
+import pl.mrstudios.essential.data.resources.StructureExplosivesSet;
 
 import java.util.Map;
 
 import static java.util.Arrays.stream;
 import static java.util.Map.entry;
 import static java.util.Map.ofEntries;
-import static pl.mrstudios.essential.modules.calculator.resources.StructureExplosivesSet.Structure;
+import static pl.mrstudios.essential.data.resources.StructureExplosivesSet.Structure;
 import static pl.mrstudios.essential.utility.StreamUtility.readResource;
 
 @SuppressWarnings("unchecked")

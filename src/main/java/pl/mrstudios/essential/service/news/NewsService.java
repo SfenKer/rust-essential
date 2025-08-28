@@ -50,10 +50,11 @@ public class NewsService {
             .execute(this.sqlConnection);
 
         /* Schedule */
-        newSingleThreadScheduledExecutor().scheduleAtFixedRate(
-            this::newsExecutorRunnable,
-            0, 15, MINUTES
-        );
+        newSingleThreadScheduledExecutor()
+            .scheduleAtFixedRate(
+                this::newsExecutorRunnable,
+                0, 15, MINUTES
+            );
 
     }
 

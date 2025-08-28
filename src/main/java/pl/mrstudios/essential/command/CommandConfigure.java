@@ -1,65 +1,56 @@
 package pl.mrstudios.essential.command;
 
-import dev.rollczi.litecommands.annotations.argument.Arg;
-import dev.rollczi.litecommands.annotations.bind.Bind;
-import dev.rollczi.litecommands.annotations.command.Command;
-import dev.rollczi.litecommands.annotations.context.Context;
-import dev.rollczi.litecommands.annotations.description.Description;
-import dev.rollczi.litecommands.annotations.execute.Execute;
-import dev.rollczi.litecommands.jda.permission.DiscordPermission;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.channel.Channel;
+import com.github.kaktushose.jda.commands.annotations.interactions.Command;
+import com.github.kaktushose.jda.commands.annotations.interactions.CommandConfig;
+import com.github.kaktushose.jda.commands.annotations.interactions.Interaction;
+import com.github.kaktushose.jda.commands.annotations.interactions.Param;
+import com.github.kaktushose.jda.commands.dispatching.events.interactions.CommandEvent;
+import com.google.inject.Inject;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.jetbrains.annotations.NotNull;
 import pl.mrstudios.essential.service.settings.GuildSettingsService;
 import pl.mrstudios.essential.service.settings.setting.GuildSettingContainer;
-import pl.mrstudios.essential.utility.builder.EmbedResponseBuilder;
 
 import java.util.Collection;
 
 import static java.awt.Color.RED;
 import static java.lang.String.format;
 import static net.dv8tion.jda.api.Permission.*;
+import static net.dv8tion.jda.api.interactions.IntegrationType.GUILD_INSTALL;
 import static net.dv8tion.jda.internal.utils.PermissionUtil.checkPermission;
 import static pl.mrstudios.essential.service.settings.setting.GuildSetting.GUILD_NEWS_CHANNEL;
-import static pl.mrstudios.essential.utility.builder.EmbedResponseBuilder.embedResponse;
+import static pl.mrstudios.essential.utility.EmbedUtility.embedBuilder;
 
-@Command(name = "configure")
-@DiscordPermission(MANAGE_SERVER)
-@Description("Configure settings of Rust Essential.")
+@Interaction
 public class CommandConfigure {
 
-    @Execute(name = "news-channel")
-    @Description("Set channel where news will be posted.")
-    public @NotNull EmbedResponseBuilder newsChannel(
+    private final GuildSettingsService guildSettingsService;
 
-        @Context Guild guild,
-        @Bind GuildSettingsService guildSettingsService,
+    @Inject
+    public CommandConfigure(
+        @NotNull GuildSettingsService guildSettingsService
+    ) {
+        this.guildSettingsService = guildSettingsService;
+    }
 
-        @Arg("channel")
-        @Description("Channel where news will be posted.")
-        @NotNull Channel channel
+    @CommandConfig(enabledFor = MANAGE_SERVER, integration = GUILD_INSTALL)
+    @Command(value = "configure news-channel", desc = "Configure channel where Rust news will be sent.")
+    public void newsChannel(
+
+        @NotNull CommandEvent event,
+
+        @Param("Channel where news will be posted.")
+        @NotNull TextChannel channel
 
     ) {
 
-        if (!(channel instanceof TextChannel textChannel))
-            return embedResponse()
-                .ephemeral()
-                .embed(
-                    (embedBuilder) -> embedBuilder.setColor(RED)
-                        .setDescription(
-                            """
-                            ### :warning: ‌ Error Occurred
-                            You can only choose text channels as news channel.
-                            """
-                        )
-                );
-
-        if (!checkPermission(textChannel, guild.getSelfMember(), MESSAGE_SEND, MESSAGE_EMBED_LINKS))
-            return embedResponse()
-                .ephemeral()
-                .embed(
-                    (embedBuilder) -> embedBuilder.setColor(RED)
+        assert event.getGuild() != null;
+        if (!checkPermission(channel, event.getGuild().getSelfMember(), MESSAGE_SEND, MESSAGE_EMBED_LINKS)) {
+            event.with()
+                .ephemeral(true)
+                .reply(
+                    embedBuilder()
+                        .setColor(RED)
                         .setDescription(
                             """
                             ### :warning: ‌ Error Occurred
@@ -67,23 +58,26 @@ public class CommandConfigure {
                             """
                         )
                 );
+            return;
+        }
 
-        Collection<GuildSettingContainer> settings = guildSettingsService.fetchSettings(guild);
+        Collection<GuildSettingContainer> settings = this.guildSettingsService.fetchSettings(event.getGuild());
         GuildSettingContainer container = settings.stream()
             .filter((entry) -> entry.key() == GUILD_NEWS_CHANNEL)
             .findFirst().orElse(GuildSettingContainer.guildSettingContainer(GUILD_NEWS_CHANNEL));
 
-        container.value(textChannel.getIdLong());
+        container.value(channel.getIdLong());
         if (settings.stream().noneMatch((entry) -> entry.key() == GUILD_NEWS_CHANNEL))
             settings.add(container);
 
-        guildSettingsService.updateSettings(guild, settings);
+        this.guildSettingsService.updateSettings(event.getGuild(), settings);
 
-        return embedResponse()
-            .ephemeral()
-            .embed(
-                (embedBuilder) -> embedBuilder.setColor(RED)
-                    .setThumbnail(guild.getSelfMember().getAvatarUrl())
+        event.with()
+            .ephemeral(true)
+            .reply(
+                embedBuilder()
+                    .setColor(RED)
+                    .setThumbnail(event.getJDA().getSelfUser().getAvatarUrl())
                     .setDescription(format(
                         """
                         ### :tools: ‌ Configuration
@@ -91,6 +85,7 @@ public class CommandConfigure {
                         """, channel.getAsMention()
                     ))
             );
+
     }
 
 }

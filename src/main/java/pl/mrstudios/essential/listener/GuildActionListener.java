@@ -13,14 +13,16 @@ public class GuildActionListener extends ListenerAdapter {
     public void onGuildJoin(
         @NotNull GuildJoinEvent event
     ) {
-        getLogger(GuildActionListener.class).info("Application has joined to '{}' guild.", event.getGuild().getName());
+        getLogger(GuildActionListener.class)
+            .info("Application has joined to '{}' guild.", event.getGuild().getName());
     }
 
     @Override
     public void onGuildLeave(
         @NotNull GuildLeaveEvent event
     ) {
-        getLogger(GuildActionListener.class).info("Application left from '{}' guild.", event.getGuild().getName());
+        getLogger(GuildActionListener.class)
+            .info("Application left from '{}' guild.", event.getGuild().getName());
     }
 
 }
