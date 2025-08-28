@@ -2,10 +2,7 @@ package pl.mrstudios.essential.command;
 
 import com.github.kaktushose.jda.commands.annotations.constraints.Max;
 import com.github.kaktushose.jda.commands.annotations.constraints.Min;
-import com.github.kaktushose.jda.commands.annotations.interactions.AutoComplete;
-import com.github.kaktushose.jda.commands.annotations.interactions.Command;
-import com.github.kaktushose.jda.commands.annotations.interactions.Interaction;
-import com.github.kaktushose.jda.commands.annotations.interactions.Param;
+import com.github.kaktushose.jda.commands.annotations.interactions.*;
 import com.github.kaktushose.jda.commands.dispatching.events.interactions.AutoCompleteEvent;
 import com.github.kaktushose.jda.commands.dispatching.events.interactions.CommandEvent;
 import com.ibasco.agql.protocols.valve.source.query.SourceQueryClient;
@@ -36,7 +33,12 @@ import static java.util.Optional.ofNullable;
 import static java.util.concurrent.CompletableFuture.runAsync;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static java.util.stream.IntStream.rangeClosed;
+import static net.dv8tion.jda.api.entities.SkuSnowflake.fromId;
+import static net.dv8tion.jda.api.interactions.IntegrationType.GUILD_INSTALL;
+import static net.dv8tion.jda.api.interactions.IntegrationType.USER_INSTALL;
+import static net.dv8tion.jda.api.interactions.components.buttons.Button.premium;
 import static org.slf4j.LoggerFactory.getLogger;
+import static pl.mrstudios.essential.constants.Constants.DISCORD_SKU_ID;
 import static pl.mrstudios.essential.utility.EmbedUtility.embedBuilder;
 import static pl.mrstudios.essential.utility.StringUtility.formatDuration;
 import static pl.mrstudios.essential.wrapper.RustMapsWrapper.mapImage;
@@ -44,6 +46,7 @@ import static pl.mrstudios.essential.wrapper.RustMapsWrapper.mapImage;
 @Interaction
 public class CommandServerInfo {
 
+    @CommandConfig(integration = { GUILD_INSTALL, USER_INSTALL })
     @Command(value = "serverinfo", desc = "Show status and information about server.")
     public void executeDefault(
 
@@ -57,6 +60,26 @@ public class CommandServerInfo {
         @NotNull Integer port
 
     ) {
+
+        if (
+            !event.isFromAttachedGuild() && event.getEntitlements().stream()
+                .noneMatch((entitlement) -> entitlement.getSkuIdLong() == DISCORD_SKU_ID)
+        ) {
+            event.jdaEvent().deferReply(true)
+                .addEmbeds(
+                    embedBuilder()
+                        .setColor(RED)
+                        .setDescription(
+                            """
+                            ### :gem: ‌ Rust Essential+
+                            Using commands on guilds where bot is not added or in direct messages requires `Rust Essential+` subscription.
+                            """
+                        ).build()
+                )
+                .addActionRow(premium(fromId(DISCORD_SKU_ID)))
+                .queue();
+            return;
+        }
 
         event.with()
             .ephemeral(true)

@@ -1,9 +1,13 @@
 package pl.mrstudios.essential.command;
 
 import com.github.kaktushose.jda.commands.annotations.interactions.Command;
+import com.github.kaktushose.jda.commands.annotations.interactions.CommandConfig;
 import com.github.kaktushose.jda.commands.annotations.interactions.Interaction;
 import com.github.kaktushose.jda.commands.dispatching.events.interactions.CommandEvent;
 import com.sun.management.OperatingSystemMXBean;
+import net.dv8tion.jda.api.entities.Entitlement;
+import net.dv8tion.jda.api.entities.SkuSnowflake;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
@@ -16,6 +20,8 @@ import static java.lang.management.ManagementFactory.getMemoryMXBean;
 import static java.lang.management.ManagementFactory.getOperatingSystemMXBean;
 import static java.time.Duration.between;
 import static java.time.Instant.now;
+import static net.dv8tion.jda.api.interactions.IntegrationType.GUILD_INSTALL;
+import static net.dv8tion.jda.api.interactions.IntegrationType.USER_INSTALL;
 import static pl.mrstudios.essential.utility.EmbedUtility.embedBuilder;
 import static pl.mrstudios.essential.utility.StringUtility.formatDuration;
 
@@ -24,6 +30,7 @@ public class CommandAbout {
 
     private static final Instant applicationStartTime = now();
 
+    @CommandConfig(integration = { GUILD_INSTALL, USER_INSTALL })
     @Command(value = "about", desc = "Show information about Rust Essential.")
     public void executeDefault(
         @NotNull CommandEvent event

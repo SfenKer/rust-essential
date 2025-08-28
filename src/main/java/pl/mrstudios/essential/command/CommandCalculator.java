@@ -19,8 +19,13 @@ import static java.lang.String.format;
 import static java.util.Arrays.stream;
 import static java.util.Objects.isNull;
 import static java.util.Optional.ofNullable;
+import static net.dv8tion.jda.api.entities.SkuSnowflake.fromId;
+import static net.dv8tion.jda.api.interactions.IntegrationType.GUILD_INSTALL;
+import static net.dv8tion.jda.api.interactions.IntegrationType.USER_INSTALL;
+import static net.dv8tion.jda.api.interactions.components.buttons.Button.premium;
 import static net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle.SUCCESS;
 import static net.dv8tion.jda.api.interactions.components.text.TextInputStyle.SHORT;
+import static pl.mrstudios.essential.constants.Constants.DISCORD_SKU_ID;
 import static pl.mrstudios.essential.utility.EmbedUtility.embedBuilder;
 import static pl.mrstudios.essential.utility.EmojiUtility.customEmoji;
 import static pl.mrstudios.essential.utility.StreamUtility.readResource;
@@ -35,10 +40,31 @@ public class CommandCalculator {
         this.session = new CalculatorSession();
     }
 
-    @Command("calculator")
+    @CommandConfig(integration = { GUILD_INSTALL, USER_INSTALL })
+    @Command(value = "calculator", desc = "Calculator of Raid Cost.")
     public void executeCommand(
         @NotNull CommandEvent event
     ) {
+
+        if (
+            !event.isFromAttachedGuild() && event.getEntitlements().stream()
+                .noneMatch((entitlement) -> entitlement.getSkuIdLong() == DISCORD_SKU_ID)
+        ) {
+            event.jdaEvent().deferReply(true)
+                .addEmbeds(
+                    embedBuilder()
+                        .setColor(RED)
+                        .setDescription(
+                            """
+                            ### :gem: ‌ Rust Essential+
+                            Using commands on guilds where bot is not added or in direct messages requires `Rust Essential+` subscription.
+                            """
+                        ).build()
+                )
+                .addActionRow(premium(fromId(DISCORD_SKU_ID)))
+                .queue();
+            return;
+        }
 
         event.with()
             .ephemeral(true)
