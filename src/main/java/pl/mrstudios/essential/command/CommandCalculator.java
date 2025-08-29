@@ -95,14 +95,13 @@ public class CommandCalculator {
 
     }
 
-    @StringSelectMenu("Select Explosive Set")
-    @MenuOptionContainer({
+    @MenuOptionContainer(value = {
         @MenuOption(value = "sulphur", label = "Any Explosives", emoji = "<:rust_sulphur:1300428595117948949>"),
         @MenuOption(value = "rocket", label = "Rocket", emoji = "<:rust_rocket:1300428554051387512>"),
         @MenuOption(value = "timed_explosive_charge", label = "Timed Explosive Charge", emoji = "<:rust_timed_explosive_charge:1300428605297524826>"),
         @MenuOption(value = "satchel_explosive_charge", label = "Satchel Explosive Charge", emoji = "<:rust_satchel_explosive_charge:1300428562150723634>"),
         @MenuOption(value = "explosive_ammo", label = "Explosive Ammo", emoji = "<:rust_explosive_ammo:1300428472476237874>")
-    })
+    }) @StringSelectMenu("Select Explosive Set")
     public void explosiveSetMenu(
         @NotNull ComponentEvent event,
         @NotNull List<String> choices
@@ -126,8 +125,7 @@ public class CommandCalculator {
 
     }
 
-    @StringSelectMenu("Select Structure")
-    @MenuOptionContainer({
+    @MenuOptionContainer(value = {
         @MenuOption(value = "wooden_wall", label = "Wooden Wall", emoji = "<:rust_wooden_wall:1300428624977203260>"),
         @MenuOption(value = "stone_wall", label = "Stone Wall", emoji = "<:rust_stone_wall:1300428584338325524>"),
         @MenuOption(value = "sheet_metal_wall", label = "Sheet Metal Wall", emoji = "<:rust_sheet_metal_wall:1300428526373044255>"),
@@ -143,7 +141,7 @@ public class CommandCalculator {
         @MenuOption(value = "vending_machine", label = "Vending Machine", emoji = "<:rust_vending_machine:1300428620594020503>"),
         @MenuOption(value = "external_wooden_wall", label = "External Wooden Wall", emoji = "<:rust_external_wooden_wall:1300428492206506005>"),
         @MenuOption(value = "external_stone_wall", label = "External Stone Wall", emoji = "<:rust_external_stone_wall:1300428483079438407>")
-    })
+    }) @StringSelectMenu("Select Structure")
     public void structureMenu(
         @NotNull ComponentEvent event,
         @NotNull List<String> choices
