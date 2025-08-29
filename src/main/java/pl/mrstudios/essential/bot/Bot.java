@@ -3,7 +3,7 @@ package pl.mrstudios.essential.bot;
 import com.github.kaktushose.jda.commands.guice.GuiceExtensionData;
 import com.google.inject.Injector;
 import com.zaxxer.hikari.HikariConfig;
-import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import pl.mrstudios.commons.sql.SqlConnection;
@@ -24,8 +24,8 @@ import static java.lang.Runtime.getRuntime;
 import static java.nio.file.Files.*;
 import static java.nio.file.Paths.get;
 import static java.util.Arrays.asList;
-import static net.dv8tion.jda.api.JDABuilder.createDefault;
 import static net.dv8tion.jda.api.entities.Activity.playing;
+import static net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder.createDefault;
 import static net.dv8tion.jda.api.utils.Compression.ZLIB;
 import static net.dv8tion.jda.api.utils.cache.CacheFlag.*;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -36,7 +36,7 @@ import static pl.mrstudios.essential.wrapper.RustMapsWrapper.provideRustMapsApiK
 @SuppressWarnings("FieldCanBeLocal")
 public class Bot {
 
-    private final JDA jda;
+    private final ShardManager shardManager;
 
     private final HikariConfig hikariConfig;
     private final SqlConnection sqlConnection;
@@ -85,7 +85,8 @@ public class Bot {
         this.sqlConnection = new SqlConnection(this.hikariConfig);
 
         /* JDA */
-        this.jda = createDefault(this.configuration.token)
+        this.shardManager = createDefault(this.configuration.token)
+            .setShardsTotal(4)
             .setCompression(ZLIB)
             .setActivity(playing("Rust"))
             .addEventListeners(
@@ -96,13 +97,19 @@ public class Bot {
             )).build();
 
         /* Managers */
-        this.guildSettingsService = new GuildSettingsService(this.jda, this.sqlConnection);
+        this.guildSettingsService = new GuildSettingsService(this.shardManager, this.sqlConnection);
 
         /* Injector */
         this.injector = createInjector((binder) -> {
 
+            binder.bind(ShardManager.class)
+                .toInstance(this.shardManager);
+
             binder.bind(Configuration.class)
                 .toInstance(this.configuration);
+
+            binder.bind(SqlConnection.class)
+                .toInstance(this.sqlConnection);
 
             binder.bind(GuildSettingsService.class)
                 .toInstance(this.guildSettingsService);
@@ -110,7 +117,7 @@ public class Bot {
         });
 
         /* Commands */
-        builder(this.jda, Bot.class, "pl.mrstudios.essential")
+        builder(this.shardManager, Bot.class, "pl.mrstudios.essential")
             .extensionData(new GuiceExtensionData(this.injector))
             .expirationStrategy(AFTER_15_MINUTES)
             .errorMessageFactory(new ErrorMessageFactoryImpl())
@@ -118,7 +125,7 @@ public class Bot {
             .start();
 
         /* Services */
-        new NewsService(this.jda, this.sqlConnection, this.guildSettingsService);
+        this.injector.getInstance(NewsService.class);
 
         /* API */
         provideRustMapsApiKey(this.configuration.rustMapsApiKey);

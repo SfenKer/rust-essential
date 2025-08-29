@@ -3,8 +3,8 @@ package pl.mrstudios.essential.service.settings;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import org.jetbrains.annotations.NotNull;
 import pl.mrstudios.commons.sql.SqlConnection;
 import pl.mrstudios.essential.service.settings.serializer.GuildSettingEntrySerializer;
@@ -30,12 +30,22 @@ public class GuildSettingsService {
     private Cache<@NotNull Long, Collection<GuildSettingContainer>> cache;
 
     public GuildSettingsService(
-        @NotNull JDA jda,
+        @NotNull ShardManager shardManager,
         @NotNull SqlConnection sqlConnection
     ) { try {
 
         /* Await Ready */
-        jda.awaitReady();
+        shardManager.getShards()
+            .forEach((shard) -> {
+
+                try {
+                    shard.awaitReady();
+                } catch (@NotNull Exception exception) {
+                    getLogger(GuildSettingsService.class)
+                        .error("An exception occurred while waiting for shard to become available. (shardId: {})", shard.getShardInfo().getShardId());
+                }
+
+            });
 
         /* Then Complete */
         this.sqlConnection = sqlConnection;
@@ -51,7 +61,7 @@ public class GuildSettingsService {
             .fetch(this.sqlConnection).stream()
             .map((result) -> result.entry("guildId").asLong())
             .filter(
-                (guildId) -> jda.getGuilds().stream()
+                (guildId) -> shardManager.getGuilds().stream()
                     .noneMatch((guild) -> guild.getIdLong() == guildId)
             ).forEach(
                 (guildId) -> createStatement(guildsDeleteEntry)
@@ -62,7 +72,8 @@ public class GuildSettingsService {
     } catch (
         @NotNull Exception exception
     ) {
-        getLogger(GuildSettingsService.class).error("An exception occurred while loading guild settings.");
+        getLogger(GuildSettingsService.class)
+            .error("An exception occurred while loading guild settings.");
     } }
 
     public @NotNull Collection<GuildSettingContainer> fetchSettings(

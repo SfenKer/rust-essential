@@ -4,11 +4,12 @@ import com.github.kaktushose.jda.commands.annotations.interactions.Command;
 import com.github.kaktushose.jda.commands.annotations.interactions.CommandConfig;
 import com.github.kaktushose.jda.commands.annotations.interactions.Interaction;
 import com.github.kaktushose.jda.commands.dispatching.events.interactions.CommandEvent;
+import com.google.inject.Inject;
 import com.sun.management.OperatingSystemMXBean;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
-import java.time.Instant;
 
 import static java.awt.Color.RED;
 import static java.lang.String.format;
@@ -19,13 +20,21 @@ import static java.time.Duration.between;
 import static java.time.Instant.now;
 import static net.dv8tion.jda.api.interactions.IntegrationType.GUILD_INSTALL;
 import static net.dv8tion.jda.api.interactions.IntegrationType.USER_INSTALL;
+import static pl.mrstudios.essential.bootstrap.Bootstrap.applicationStartTime;
 import static pl.mrstudios.essential.utility.EmbedUtility.embedBuilder;
 import static pl.mrstudios.essential.utility.StringUtility.formatDuration;
 
 @Interaction
 public class CommandAbout {
 
-    private static final Instant applicationStartTime = now();
+    private final ShardManager shardManager;
+
+    @Inject
+    public CommandAbout(
+        @NotNull ShardManager shardManager
+    ) {
+        this.shardManager = shardManager;
+    }
 
     @CommandConfig(integration = { GUILD_INSTALL, USER_INSTALL })
     @Command(value = "about", desc = "Show information about Rust Essential.")
@@ -44,6 +53,7 @@ public class CommandAbout {
                         **Version:** ``{version}``
                         **JVM Version:** ``%s``
                         ### :robot: ‌ Bot Information
+                        **Shard:** ``wss-shard/%d``
                         **Uptime:** ``%s``
                         **Latency:** ``%dms``
                         **Servers:** ``%s servers``
@@ -59,9 +69,10 @@ public class CommandAbout {
                         getProperty("java.version"),
 
                         /* Bot Information */
-                        formatDuration(between(applicationStartTime, now())),
+                        event.getJDA().getShardInfo().getShardId(),
+                        formatDuration(between(applicationStartTime(), now())),
                         event.getJDA().getGatewayPing(),
-                        decimalFormat.format(event.getJDA().getGuilds().size()),
+                        decimalFormat.format(this.shardManager.getGuilds().size()),
 
                         /* Hardware Information */
                         currentCpuUsage(), currentMemoryUsage()

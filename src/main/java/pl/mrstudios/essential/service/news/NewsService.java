@@ -1,9 +1,10 @@
 package pl.mrstudios.essential.service.news;
 
+import com.google.inject.Inject;
 import kotlin.Pair;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import org.jetbrains.annotations.NotNull;
 import pl.mrstudios.commons.sql.SqlConnection;
 import pl.mrstudios.essential.service.settings.GuildSettingsService;
@@ -31,17 +32,18 @@ import static pl.mrstudios.essential.wrapper.FacepunchWrapper.rssFeedEntries;
 @SuppressWarnings("FieldCanBeLocal")
 public class NewsService {
 
-    private final JDA jda;
+    private final ShardManager shardManager;
     private final SqlConnection sqlConnection;
     private final GuildSettingsService guildSettingsService;
 
+    @Inject
     public NewsService(
-        @NotNull JDA jda,
+        @NotNull ShardManager shardManager,
         @NotNull SqlConnection sqlConnection,
         @NotNull GuildSettingsService guildSettingsService
     ) {
 
-        this.jda = jda;
+        this.shardManager = shardManager;
         this.sqlConnection = sqlConnection;
         this.guildSettingsService = guildSettingsService;
 
@@ -83,7 +85,8 @@ public class NewsService {
                     .setString(1, entry.getLink())
                     .execute(this.sqlConnection);
 
-                this.jda.getGuilds().stream()
+                this.shardManager.getGuilds()
+                    .stream()
                     .map(
                         (guild) -> new Pair<>(guild, this.guildSettingsService.fetchSettings(guild)
                             .stream()
