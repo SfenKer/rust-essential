@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.JDA;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import pl.mrstudios.commons.sql.SqlConnection;
+import pl.mrstudios.essential.command.internal.ErrorMessageFactoryImpl;
 import pl.mrstudios.essential.config.Configuration;
 import pl.mrstudios.essential.config.ConfigurationFactory;
 import pl.mrstudios.essential.listener.GuildActionListener;
@@ -16,6 +17,8 @@ import pl.mrstudios.essential.service.settings.GuildSettingsService;
 import java.nio.file.Path;
 
 import static com.github.kaktushose.jda.commands.JDACommands.builder;
+import static com.github.kaktushose.jda.commands.definitions.interactions.InteractionDefinition.ReplyConfig.of;
+import static com.github.kaktushose.jda.commands.dispatching.expiration.ExpirationStrategy.AFTER_15_MINUTES;
 import static com.google.inject.Guice.createInjector;
 import static java.lang.Runtime.getRuntime;
 import static java.nio.file.Files.*;
@@ -109,6 +112,9 @@ public class Bot {
         /* Commands */
         builder(this.jda, Bot.class, "pl.mrstudios.essential")
             .extensionData(new GuiceExtensionData(this.injector))
+            .expirationStrategy(AFTER_15_MINUTES)
+            .errorMessageFactory(new ErrorMessageFactoryImpl())
+            .globalReplyConfig(of((config) -> config.ephemeral(true)))
             .start();
 
         /* Services */

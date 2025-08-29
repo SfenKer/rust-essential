@@ -2,6 +2,8 @@ package pl.mrstudios.essential.utility;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,6 +41,26 @@ public class StringUtility {
         @NotNull String plural
     ) {
         return format("%s %s", count, (count.longValue() == 1) ? singular : plural);
+    }
+
+    public static @NotNull String throwableToString(
+        @NotNull Throwable throwable
+    ) {
+        try (
+            StringWriter stringWriter = new StringWriter();
+            PrintWriter printWriter = new PrintWriter(stringWriter)
+        ) {
+
+            throwable.printStackTrace(printWriter);
+
+            return stringWriter.getBuffer()
+                .toString();
+
+        } catch (
+            @NotNull Exception exception
+        ) {
+            throw new RuntimeException(exception);
+        }
     }
 
 }

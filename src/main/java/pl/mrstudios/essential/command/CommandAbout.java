@@ -5,9 +5,6 @@ import com.github.kaktushose.jda.commands.annotations.interactions.CommandConfig
 import com.github.kaktushose.jda.commands.annotations.interactions.Interaction;
 import com.github.kaktushose.jda.commands.dispatching.events.interactions.CommandEvent;
 import com.sun.management.OperatingSystemMXBean;
-import net.dv8tion.jda.api.entities.Entitlement;
-import net.dv8tion.jda.api.entities.SkuSnowflake;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;

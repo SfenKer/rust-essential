@@ -27,7 +27,6 @@ import static net.dv8tion.jda.api.interactions.IntegrationType.USER_INSTALL;
 import static net.dv8tion.jda.api.interactions.components.buttons.Button.premium;
 import static net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle.SUCCESS;
 import static net.dv8tion.jda.api.interactions.components.text.TextInputStyle.SHORT;
-import static pl.mrstudios.essential.constants.Constants.DISCORD_SKU_ID;
 import static pl.mrstudios.essential.utility.EmbedUtility.embedBuilder;
 import static pl.mrstudios.essential.utility.EmojiUtility.customEmoji;
 import static pl.mrstudios.essential.utility.StreamUtility.readResource;
