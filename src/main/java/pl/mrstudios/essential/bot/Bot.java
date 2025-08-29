@@ -98,6 +98,9 @@ public class Bot {
         /* Injector */
         this.injector = createInjector((binder) -> {
 
+            binder.bind(Configuration.class)
+                .toInstance(this.configuration);
+
             binder.bind(GuildSettingsService.class)
                 .toInstance(this.guildSettingsService);
 

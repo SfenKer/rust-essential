@@ -5,7 +5,9 @@ import com.github.kaktushose.jda.commands.dispatching.events.interactions.Comman
 import com.github.kaktushose.jda.commands.dispatching.events.interactions.ComponentEvent;
 import com.github.kaktushose.jda.commands.dispatching.events.interactions.ModalEvent;
 import com.google.gson.Gson;
+import com.google.inject.Inject;
 import org.jetbrains.annotations.NotNull;
+import pl.mrstudios.essential.config.Configuration;
 import pl.mrstudios.essential.data.resources.StructureExplosivesSet;
 import pl.mrstudios.essential.data.session.CalculatorSession;
 
@@ -34,9 +36,14 @@ import static pl.mrstudios.essential.utility.StreamUtility.readResource;
 @SuppressWarnings({ "UnstableApiUsage" })
 public class CommandCalculator {
 
+    private final Configuration configuration;
     private final CalculatorSession session;
 
-    {
+    @Inject
+    public CommandCalculator(
+        @NotNull Configuration configuration
+    ) {
+        this.configuration = configuration;
         this.session = new CalculatorSession();
     }
 
@@ -48,7 +55,7 @@ public class CommandCalculator {
 
         if (
             !event.isFromAttachedGuild() && event.getEntitlements().stream()
-                .noneMatch((entitlement) -> entitlement.getSkuIdLong() == DISCORD_SKU_ID)
+                .noneMatch((entitlement) -> entitlement.getSkuIdLong() == this.configuration.subscriptionSku)
         ) {
             event.jdaEvent().deferReply(true)
                 .addEmbeds(
@@ -61,7 +68,7 @@ public class CommandCalculator {
                             """
                         ).build()
                 )
-                .addActionRow(premium(fromId(DISCORD_SKU_ID)))
+                .addActionRow(premium(fromId(this.configuration.subscriptionSku)))
                 .queue();
             return;
         }

@@ -5,11 +5,13 @@ import com.github.kaktushose.jda.commands.annotations.constraints.Min;
 import com.github.kaktushose.jda.commands.annotations.interactions.*;
 import com.github.kaktushose.jda.commands.dispatching.events.interactions.AutoCompleteEvent;
 import com.github.kaktushose.jda.commands.dispatching.events.interactions.CommandEvent;
+import com.google.inject.Inject;
 import com.ibasco.agql.protocols.valve.source.query.SourceQueryClient;
 import com.ibasco.agql.protocols.valve.source.query.SourceQueryOptions;
 import com.ibasco.agql.protocols.valve.source.query.info.SourceServer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.jetbrains.annotations.NotNull;
+import pl.mrstudios.essential.config.Configuration;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -38,13 +40,21 @@ import static net.dv8tion.jda.api.interactions.IntegrationType.GUILD_INSTALL;
 import static net.dv8tion.jda.api.interactions.IntegrationType.USER_INSTALL;
 import static net.dv8tion.jda.api.interactions.components.buttons.Button.premium;
 import static org.slf4j.LoggerFactory.getLogger;
-import static pl.mrstudios.essential.constants.Constants.DISCORD_SKU_ID;
 import static pl.mrstudios.essential.utility.EmbedUtility.embedBuilder;
 import static pl.mrstudios.essential.utility.StringUtility.formatDuration;
 import static pl.mrstudios.essential.wrapper.RustMapsWrapper.mapImage;
 
 @Interaction
 public class CommandServerInfo {
+
+    private final Configuration configuration;
+
+    @Inject
+    public CommandServerInfo(
+        @NotNull Configuration configuration
+    ) {
+        this.configuration = configuration;
+    }
 
     @CommandConfig(integration = { GUILD_INSTALL, USER_INSTALL })
     @Command(value = "serverinfo", desc = "Show status and information about server.")
@@ -63,7 +73,7 @@ public class CommandServerInfo {
 
         if (
             !event.isFromAttachedGuild() && event.getEntitlements().stream()
-                .noneMatch((entitlement) -> entitlement.getSkuIdLong() == DISCORD_SKU_ID)
+                .noneMatch((entitlement) -> entitlement.getSkuIdLong() == this.configuration.subscriptionSku)
         ) {
             event.jdaEvent().deferReply(true)
                 .addEmbeds(
@@ -76,7 +86,7 @@ public class CommandServerInfo {
                             """
                         ).build()
                 )
-                .addActionRow(premium(fromId(DISCORD_SKU_ID)))
+                .addActionRow(premium(fromId(this.configuration.subscriptionSku)))
                 .queue();
             return;
         }

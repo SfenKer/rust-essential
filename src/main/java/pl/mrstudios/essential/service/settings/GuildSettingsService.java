@@ -18,6 +18,7 @@ import java.util.Collection;
 import static com.github.benmanes.caffeine.cache.Caffeine.newBuilder;
 import static java.time.Duration.ofMinutes;
 import static java.util.Arrays.stream;
+import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 import static org.slf4j.LoggerFactory.getLogger;
 import static pl.mrstudios.commons.sql.statement.SqlStatement.createStatement;
@@ -26,7 +27,7 @@ import static pl.mrstudios.essential.service.settings.GuildSettingsSqlRepository
 public class GuildSettingsService {
 
     private SqlConnection sqlConnection;
-    private Cache<Long, Collection<GuildSettingContainer>> cache;
+    private Cache<@NotNull Long, Collection<GuildSettingContainer>> cache;
 
     public GuildSettingsService(
         @NotNull JDA jda,
@@ -73,7 +74,7 @@ public class GuildSettingsService {
     public @NotNull Collection<GuildSettingContainer> fetchSettings(
         @NotNull Long guildId
     ) {
-        return this.cache.get(
+        return requireNonNull(this.cache.get(
             guildId, (key) -> createStatement(guildsSelectByGuildId)
                 .setLong(1, key)
                 .fetch(this.sqlConnection).stream()
@@ -90,7 +91,7 @@ public class GuildSettingsService {
                     return new ArrayList<>();
 
                 })
-        );
+        ));
     }
 
     public void updateSettings(
