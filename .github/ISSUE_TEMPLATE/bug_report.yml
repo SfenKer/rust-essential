@@ -1,0 +1,11 @@
+name: 'Bug Report'
+description: 'Select if you want to report an issue'
+labels: [ 'bug' ]
+body:
+  - type: 'textarea'
+    id: 'details'
+    attributes:
+      label: 'Issue Details'
+      description: 'Describe your problem providing as many as possible details.'
+    validations:
+      required: true

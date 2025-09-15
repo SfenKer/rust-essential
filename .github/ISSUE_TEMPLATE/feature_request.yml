@@ -1,0 +1,11 @@
+name: 'Feature Request'
+description: 'Select if you want an feature in bot.'
+labels: [ 'feature' ]
+body:
+  - type: 'textarea'
+    id: 'details'
+    attributes:
+      label: 'Feature Details'
+      description: 'Describe your idea and how it works .'
+    validations:
+      required: true
