@@ -5,13 +5,13 @@ sqlite = "3.50.3.0"
 hikaricp = "7.0.2"
 mrstudios-commons = "2.0.1"
 logback = "1.5.18"
-unirest = "4.5.0"
+unirest = "4.5.1"
 caffeine = "3.2.2"
-okaeri-configs = "5.0.9"
+okaeri-configs = "5.0.13"
 rome = "2.1.0"
 source-query = "1.2.2"
-lombok = "1.18.38"
-jetbrains-annotations = "26.0.1"
+lombok = "1.18.40"
+jetbrains-annotations = "26.0.2-1"
 
 [libraries]
 jda-core = { group = "net.dv8tion", name = "JDA", version.ref = "jda-core" }
