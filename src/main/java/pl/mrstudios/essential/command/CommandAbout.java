@@ -53,16 +53,16 @@ public class CommandAbout {
                         **Version:** ``{version}``
                         **JVM Version:** ``%s``
                         ### :robot: ‌ Bot Information
-                        **Shard:** ``wss-shard/%d``
+                        **Shard:** ``shard-%d``
                         **Uptime:** ``%s``
                         **Latency:** ``%dms``
                         **Servers:** ``%s servers``
                         ### :desktop: ‌ Hardware Information
                         **CPU Usage:** ``%s%%``
                         **Memory Usage:** ``%d MB``
-                        ### :busts_in_silhouette: ‌ Support
-                        This bot is developed by MrStudios Industries, if you need help join our Official Discord server.
-                        > https://discord.com/invite/C8dF6zkYff
+                        ### :technologist: ‌ Source Code
+                        Project source code is available on GitHub.
+                        > [github.com/SfenKer/rust-essential](https://github.com/SfenKer/rust-essential)
                         """,
 
                         /* General Information */
