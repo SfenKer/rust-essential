@@ -18,7 +18,4 @@ public class Configuration extends OkaeriConfig {
     @Comment({ "", "Key for Rust Maps from Rust Maps Dashboard."})
     public @NotNull String rustMapsApiKey = "ENTER_API_KEY_HERE";
 
-    @Comment({ "", "Premium Subscription SKU" })
-    public @NotNull Long subscriptionSku = 0L;
-
 }
