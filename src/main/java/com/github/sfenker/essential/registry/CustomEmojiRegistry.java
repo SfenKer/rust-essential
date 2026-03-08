@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 
 import static com.google.common.collect.Maps.newHashMap;
+import static net.dv8tion.jda.api.entities.emoji.Emoji.fromUnicode;
 
 public class CustomEmojiRegistry {
 
@@ -28,6 +29,9 @@ public class CustomEmojiRegistry {
     ) {
         return customEmojis.get(name);
     }
+
+    static final Emoji DEFAULT_EMOJI =
+        fromUnicode("❓");
 
     static final Map<String, Emoji> customEmojis =
         newHashMap();
