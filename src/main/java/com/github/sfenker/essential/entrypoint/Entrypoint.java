@@ -99,6 +99,9 @@ public class Entrypoint {
             .registerParameter(SessionFactory.class, this.sessionFactory)
             .registerParameter(GuildSettingsManager.class, this.guildSettingsManager);
 
+    final NewsService newsService =
+        new NewsService(this.sessionFactory, this.schedulerFactory);
+
     final Injector injector =
         createInjector(
             (binder) -> {
@@ -109,14 +112,14 @@ public class Entrypoint {
                 binder.bind(ShardManager.class)
                     .toInstance(this.shardManager);
 
+                binder.bind(NewsService.class)
+                    .toInstance(this.newsService);
+
                 binder.bind(GuildSettingsManager.class)
                     .toInstance(this.guildSettingsManager);
 
             }
         );
-
-    final NewsService newsService =
-        new NewsService(this.sessionFactory, this.schedulerFactory);
 
     {
         builder(this.shardManager)
