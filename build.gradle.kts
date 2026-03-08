@@ -2,68 +2,67 @@ import com.palantir.gradle.gitversion.VersionDetails
 import groovy.lang.Closure
 import org.gradle.jvm.toolchain.JavaLanguageVersion.of
 import java.lang.String.format
+import java.lang.String.valueOf
 
 plugins {
     id("java")
-    id("net.kyori.blossom") version "1.3.1"
-    id("com.gradleup.shadow") version "8.3.9"
-    id("com.palantir.git-version") version "4.0.0"
+    id("net.kyori.blossom") version "2.2.0"
+    id("com.palantir.git-version") version "5.0.0"
+    id("org.springframework.boot") version "4.1.0-M2"
 }
 
-project.group = "pl.mrstudios.essential"
-project.version = "1.3.3"
+project.group = "com.github.sfenker.essential"
+project.version = "2.0.0"
 
 val versionDetails: Closure<VersionDetails> by extra
 fun projectVersion(): String = format("%s (git/%s)", project.version, versionDetails().gitHash)
 
 java {
-    toolchain.languageVersion.set(of(23))
+    toolchain.languageVersion.set(of(25))
 }
 
-blossom {
-    replaceToken("{project}", project.name)
-    replaceToken("{version}", projectVersion())
+sourceSets {
+    main {
+        blossom {
+            javaSources {
+                property("version", valueOf(project.version))
+                property("gitTag", versionDetails().lastTag ?: "unknown")
+                property("gitHash", versionDetails().gitHash ?: "unknown")
+                property("gitBranch", versionDetails().branchName ?: "unknown")
+            }
+        }
+    }
 }
 
 repositories {
     mavenCentral()
-    maven("https://repo.mrstudios.pl/public/")
-    maven("https://repo.eternalcode.pl/releases/")
-    maven("https://storehouse.okaeri.eu/repository/maven-public/")
 }
 
 dependencies {
 
-    /* JDA */
     implementation(libs.jda.core)
     implementation(libs.jda.commands)
 
-    /* Commons */
-    implementation(libs.commons.sql)
+    /* Serialization & Data */
+    implementation(libs.gson)
+    implementation(libs.guava)
 
-    /* HikariCP */
+    /* Database */
     implementation(libs.hikaricp)
+    implementation(libs.sqlite.driver)
+    implementation(libs.jakarta.persistence)
+    implementation(libs.hibernate.core)
+    implementation(libs.hibernate.hikaricp)
+    implementation(libs.hibernate.community.dialects)
 
-    /* SQLite */
-    implementation(libs.sqlite)
-
-    /* Logback Classic */
+    /* System & Tools */
+    implementation(libs.oshi.core)
+    implementation(libs.unirest.java.core)
+    implementation(libs.unirest.modules.gson)
     implementation(libs.logback.classic)
 
-    /* Unirest */
-    implementation(libs.unirest.core)
-    implementation(libs.unirest.gson)
-
-    /* Caffeine */
-    implementation(libs.caffeine)
-
-    /* Okaeri Configs */
-    implementation(libs.okaeri.configs)
-
-    /* Rome */
+    /* Misc */
     implementation(libs.rome)
-
-    /* Source Query */
     implementation(libs.source.query)
 
     /* Lombok */
@@ -83,22 +82,18 @@ tasks {
         options.compilerArgs.add("-parameters")
     }
 
-    processResources {
-        filteringCharset = "UTF-8"
-    }
-
     jar {
-        dependsOn(shadowJar)
-        manifest {
-            attributes["Main-Class"] = "pl.mrstudios.essential.bootstrap.Bootstrap"
-        }
+        enabled = false
     }
 
-    shadowJar {
-        dependencies {
-            isEnableRelocation = false
-            relocationPrefix = format("%s.libraries", project.group)
-        }
+    bootJar {
+        dependsOn(generateTemplates)
+        archiveFileName.set("${project.name}.jar")
+        mainClass.set("${project.group}.entrypoint.Entrypoint")
+    }
+
+    build {
+        dependsOn(bootJar)
     }
 
 }
