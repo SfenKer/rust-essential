@@ -5,22 +5,27 @@ import com.github.sfenker.essential.listener.GuildActionListener;
 import com.github.sfenker.essential.service.news.entity.NewsHistoryEntity;
 import com.github.sfenker.essential.settings.GuildSettingsManager;
 import com.github.sfenker.essential.settings.entity.GuildSettingsEntity;
+import com.google.inject.Injector;
+import io.github.kaktushose.jdac.guice.GuiceExtensionData;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import static com.google.inject.Guice.createInjector;
 import static io.github.kaktushose.jdac.JDACommands.builder;
+import static io.github.kaktushose.jdac.definitions.description.ClassFinder.reflective;
 import static io.github.kaktushose.jdac.definitions.interactions.InteractionDefinition.ReplyConfig.of;
 import static io.github.kaktushose.jdac.dispatching.expiration.ExpirationStrategy.AFTER_15_MINUTES;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.System.getenv;
 import static java.lang.Thread.ofPlatform;
 import static java.lang.Thread.setDefaultUncaughtExceptionHandler;
+import static java.nio.file.Paths.get;
 import static java.util.Arrays.asList;
 import static net.dv8tion.jda.api.entities.Activity.playing;
 import static net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder.createDefault;
-import static net.dv8tion.jda.api.utils.Compression.ZLIB;
+import static net.dv8tion.jda.api.utils.Compression.NONE;
 import static net.dv8tion.jda.api.utils.cache.CacheFlag.*;
 
 @Slf4j
@@ -35,7 +40,8 @@ public class Entrypoint {
             (thread, throwable) -> {
                 log.error("An unexpected exception was thrown in thread {}.", thread.getName());
                 log.error("Stacktrace:", throwable);
-            });
+            }
+        );
     }
 
     {
@@ -48,6 +54,12 @@ public class Entrypoint {
                             log.info("Application is shutting down, please wait..")
                     )
             );
+    }
+
+    {
+        get("database")
+            .toFile()
+            .mkdirs();
     }
 
     final SessionFactory sessionFactory = new Configuration()
@@ -66,7 +78,7 @@ public class Entrypoint {
     {
         this.shardManager = createDefault(getenv("DISCORD_TOKEN"))
             .setShardsTotal(4)
-            .setCompression(ZLIB)
+            .setCompression(NONE)
             .setActivity(playing("Rust"))
             .addEventListeners(
                 new GuildActionListener(this.guildSettingsManager)
@@ -78,15 +90,34 @@ public class Entrypoint {
             .build();
     }
 
+    final Injector injector =
+        createInjector(
+            (binder) -> {
+
+                binder.bind(SessionFactory.class)
+                    .toInstance(this.sessionFactory);
+
+                binder.bind(ShardManager.class)
+                    .toInstance(this.shardManager);
+
+                binder.bind(GuildSettingsManager.class)
+                    .toInstance(this.guildSettingsManager);
+
+            }
+        );
+
     {
-        builder(this.shardManager, Entrypoint.class, "com.github.sfenker.essential")
-            //.extensionData(new GuiceExtensionData(this.injector))
+        builder(this.shardManager)
+            .classFinders(
+                reflective("com.github.sfenker.essential.command")
+            )
+            .extensionData(new GuiceExtensionData(this.injector))
             .expirationStrategy(AFTER_15_MINUTES)
             .errorMessageFactory(new ErrorMessageFactoryImpl())
             .globalReplyConfig(of(
                 (config) ->
-                    config.ephemeral(true))
-            )
+                    config.ephemeral(true)
+            ))
             .start();
     }
 

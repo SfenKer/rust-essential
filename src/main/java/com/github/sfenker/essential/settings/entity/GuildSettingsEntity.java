@@ -18,4 +18,12 @@ public class GuildSettingsEntity {
     @Column(name = "newsChannelId")
     public @Nullable Long newsChannelId;
 
+    public static @NotNull GuildSettingsEntity guildSettings(
+        @NotNull Long id
+    ) {
+        var entity = new GuildSettingsEntity();
+        entity.id = id;
+        return entity;
+    }
+
 }

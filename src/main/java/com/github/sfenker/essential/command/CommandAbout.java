@@ -1,7 +1,6 @@
 package com.github.sfenker.essential.command;
 
 import com.google.inject.Inject;
-import com.sun.management.OperatingSystemMXBean;
 import io.github.kaktushose.jdac.annotations.interactions.Command;
 import io.github.kaktushose.jdac.annotations.interactions.CommandConfig;
 import io.github.kaktushose.jdac.annotations.interactions.Interaction;
@@ -9,88 +8,99 @@ import io.github.kaktushose.jdac.dispatching.events.interactions.CommandEvent;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.DecimalFormat;
-
-import static com.github.sfenker.essential.entrypoint.Bootstrap.applicationStartTime;
-import static com.github.sfenker.essential.utility.EmbedUtility.embedBuilder;
+import static com.github.sfenker.essential.Constants.gitHash;
+import static com.github.sfenker.essential.Constants.projectVersion;
+import static com.github.sfenker.essential.builder.ComponentContainerBuilder.componentContainerBuilder;
+import static com.github.sfenker.essential.utility.StreamUtility.resourceStream;
 import static com.github.sfenker.essential.utility.StringUtility.formatDuration;
-import static java.awt.Color.RED;
-import static java.lang.String.format;
+import static com.github.sfenker.essential.utility.SystemUtility.cpuUsage;
+import static com.github.sfenker.essential.utility.SystemUtility.memoryUsage;
 import static java.lang.System.getProperty;
-import static java.lang.management.ManagementFactory.getMemoryMXBean;
-import static java.lang.management.ManagementFactory.getOperatingSystemMXBean;
+import static java.lang.management.ManagementFactory.getRuntimeMXBean;
 import static java.time.Duration.between;
 import static java.time.Instant.now;
+import static java.time.Instant.ofEpochMilli;
+import static java.util.Arrays.asList;
+import static net.dv8tion.jda.api.components.buttons.Button.link;
+import static net.dv8tion.jda.api.components.thumbnail.Thumbnail.fromFile;
 import static net.dv8tion.jda.api.interactions.IntegrationType.GUILD_INSTALL;
 import static net.dv8tion.jda.api.interactions.IntegrationType.USER_INSTALL;
+import static net.dv8tion.jda.api.utils.FileUpload.fromData;
+import static org.apache.commons.lang3.StringUtils.join;
 
 @Interaction
 public class CommandAbout {
 
-    private final ShardManager shardManager;
-
     @Inject
-    public CommandAbout(
-        @NotNull ShardManager shardManager
-    ) {
-        this.shardManager = shardManager;
-    }
+    ShardManager shardManager;
 
     @CommandConfig(integration = { GUILD_INSTALL, USER_INSTALL })
-    @Command(value = "about", desc = "Show information about Rust Essential.")
+    @Command(value = "about", desc = "Display information about Rust Essential.")
     public void executeDefault(
         @NotNull CommandEvent event
     ) {
         event.with()
             .ephemeral(true)
             .reply(
-                embedBuilder()
-                    .setColor(RED)
-                    .setThumbnail(event.getJDA().getSelfUser().getAvatarUrl())
-                    .setDescription(format(
-                        """
-                        ### :receipt: ‌ General Information
-                        **Version:** ``{version}``
-                        **JVM Version:** ``%s``
-                        ### :robot: ‌ Bot Information
-                        **Shard:** ``shard-%d``
-                        **Uptime:** ``%s``
-                        **Latency:** ``%dms``
-                        **Servers:** ``%s servers``
-                        ### :desktop: ‌ Hardware Information
-                        **CPU Usage:** ``%s%%``
-                        **Memory Usage:** ``%d MB``
-                        ### :technologist: ‌ Source Code
-                        Project source code is available on GitHub.
-                        > [github.com/SfenKer/rust-essential](https://github.com/SfenKer/rust-essential)
-                        """,
-
-                        /* General Information */
+                componentContainerBuilder()
+                    .section(
+                        fromFile((fromData(resourceStream("assets/image/logo.png"), "logo.png"))),
+                        "### :tools: Rust Essential",
+                        "Rust Essential is a project that provides many features like News, Raid Cost Calculator and more features that will be great for your Rust Community discord server."
+                    )
+                    .textDisplay("### :receipt: General Information")
+                    .textDisplay(
+                        join(asList(
+                            "**Version:** ``%s (git/%s)``",
+                            "**JVM Version:** ``%s (%s)``"
+                        ), "\n"),
+                        projectVersion, gitHash,
                         getProperty("java.version"),
-
-                        /* Bot Information */
-                        event.getJDA().getShardInfo().getShardId(),
-                        formatDuration(between(applicationStartTime(), now())),
-                        event.getJDA().getGatewayPing(),
-                        decimalFormat.format(this.shardManager.getGuilds().size()),
-
-                        /* Hardware Information */
-                        currentCpuUsage(), currentMemoryUsage()
-
+                        getProperty("java.vendor")
+                    )
+                    .textDisplay("### :robot: Bot Information")
+                    .textDisplay(
+                        join(asList(
+                            "**Shard:** ``%d``",
+                            "**Uptime:** ``%s``",
+                            "**Latency:** ``%.0fms``",
+                            "**Guilds:** ``%d guilds``",
+                            "**Users:** ``%d users``"
+                        ), "\n"),
+                        event.getJDA().getShardInfo()
+                            .getShardId(),
+                        formatDuration(between(ofEpochMilli(startTime), now())),
+                        this.shardManager.getAverageGatewayPing(),
+                        this.shardManager.getGuildCache().size(),
+                        this.shardManager.getUserCache().size()
+                    )
+                    .textDisplay("### :desktop: Hardware Information")
+                    .textDisplay(
+                        join(asList(
+                            "**CPU Usage:** ``%.2f%%``",
+                            "**Memory Usage:** ``%d MiB``"
+                        ), "\n"),
+                        cpuUsage(),
+                        memoryUsage()
+                    )
+                    .textDisplay("### :technologist: Source Code and License")
+                    .textDisplay(join(
+                        new String[] {
+                            "This project is open source and licensed under [AGPL v3](https://en.wikipedia.org/wiki/GNU_Affero_General_Public_License) license.",
+                            "You can find the source code on GitHub and also join our Discord server to contribute or ask for help."
+                        }, "\n"
                     ))
+                    .actionRow(
+                        link("https://github.com/SfenKer/rust-essential", "GitHub Repository"),
+                        link("https://discord.com/invite/C8dF6zkYff", "Discord Server")
+                    )
+                    .build()
             );
     }
 
-    private static @NotNull String currentCpuUsage() {
-        return format("%.2f", ((OperatingSystemMXBean) getOperatingSystemMXBean()).getCpuLoad())
-            .replace('.', ',');
-    }
-
-    private static @NotNull Integer currentMemoryUsage() {
-        return (int) (getMemoryMXBean().getNonHeapMemoryUsage().getUsed()) / 1_048_576;
-    }
-
-    private final DecimalFormat decimalFormat = new DecimalFormat("#,###");
+    static final Long startTime =
+        getRuntimeMXBean()
+            .getStartTime();
 
 }
 

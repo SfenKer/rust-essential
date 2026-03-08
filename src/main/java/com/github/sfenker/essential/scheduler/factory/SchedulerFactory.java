@@ -9,11 +9,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
-import static ch.qos.logback.core.util.ExecutorServiceUtil.newScheduledExecutorService;
 import static com.github.sfenker.essential.utility.ReflectionUtility.supplyMethod;
 import static com.github.sfenker.essential.utility.ReflectionUtility.writeField;
 import static com.google.common.base.Preconditions.checkArgument;
@@ -22,9 +24,14 @@ import static com.google.common.collect.Lists.cartesianProduct;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
 import static java.util.Arrays.stream;
+import static java.util.concurrent.Executors.newScheduledThreadPool;
 import static java.util.function.UnaryOperator.identity;
 import static java.util.stream.Collectors.toMap;
 
+/*
+ * Actually this is a concept, but probably
+ * in future I will release it as a library.
+ */
 public class SchedulerFactory {
 
     final Set<Class<?>> tasks =
@@ -34,7 +41,7 @@ public class SchedulerFactory {
         newHashMap();
 
     final ScheduledExecutorService executorService =
-        newScheduledExecutorService();
+        newScheduledThreadPool(2);
 
     public @NotNull SchedulerFactory registerScheduler(
         @NotNull Class<?> clazz
@@ -102,12 +109,18 @@ public class SchedulerFactory {
             );
 
         var method = stream(clazz.getDeclaredMethods())
-            .filter((entry) -> entry.isAnnotationPresent(Entrypoint.class))
+            .filter(
+                (entry) ->
+                    entry.isAnnotationPresent(Entrypoint.class)
+            )
             .findFirst()
             .orElseThrow();
 
         var suppliers = stream(clazz.getDeclaredMethods())
-            .filter((entry) -> entry.isAnnotationPresent(ParameterSupplier.class))
+            .filter(
+                (entry) ->
+                    entry.isAnnotationPresent(ParameterSupplier.class)
+            )
             .collect(toMap(
                 (entry) ->
                     entry.getAnnotation(ParameterSupplier.class)
@@ -127,9 +140,44 @@ public class SchedulerFactory {
 
         return () -> {
 
-            var args = parameters.stream()
+            var raw = parameters.stream()
                 .map(Supplier::get)
-                .map((object) -> copyOf((Collection<?>) object))
+                .toList();
+
+            var args = raw.stream()
+                .map(
+                    (object) ->
+                        switch (object) {
+
+                            case Collection<?> collection ->
+                                copyOf(
+                                    collection.stream()
+                                        .map(
+                                            (item) ->
+                                                (item instanceof CompletableFuture<?> completableFuture) ?
+                                                    completableFuture.join() : item
+                                        )
+                                        .filter(Objects::nonNull)
+                                        .toList()
+                                );
+
+                            case Stream<?> stream ->
+                                copyOf(
+                                    stream
+                                        .map(
+                                            (item) ->
+                                                (item instanceof CompletableFuture<?> completableFuture) ?
+                                                    completableFuture.join() : item
+                                        )
+                                        .filter(Objects::nonNull)
+                                        .toList()
+                                );
+
+                            default ->
+                                throw new IllegalStateException("Unsupported Type: " + object.getClass().getName());
+
+                        }
+                )
                 .toList();
 
             cartesianProduct(args)

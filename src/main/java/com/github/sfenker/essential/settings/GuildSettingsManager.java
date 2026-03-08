@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
-import static java.util.Optional.ofNullable;
+import static com.github.sfenker.essential.settings.entity.GuildSettingsEntity.guildSettings;
 
 public class GuildSettingsManager {
 
@@ -19,10 +19,10 @@ public class GuildSettingsManager {
         this.repository = new GuildSettingsRepository(sessionFactory);
     }
 
-    public @NotNull GuildSettingsEntity create() {
-        var entity = new GuildSettingsEntity();
-        this.repository.insertEntityAsync(entity);
-        return entity;
+    public @NotNull CompletableFuture<Void> create(
+        @NotNull Long guildId
+    ) {
+        return this.repository.insertEntityAsync(guildSettings(guildId));
     }
 
     public @NotNull CompletableFuture<GuildSettingsEntity> get(
@@ -34,12 +34,15 @@ public class GuildSettingsManager {
     public @NotNull CompletableFuture<GuildSettingsEntity> getOrCreate(
         @NotNull Long guildId
     ) {
-        return get(guildId)
-            .thenApply(
-                (settings) ->
-                    ofNullable(settings)
-                        .orElseGet(this::create)
-            );
+        return create(guildId)
+            .thenCompose((_) -> get(guildId))
+            .exceptionallyCompose((_) -> get(guildId));
+    }
+
+    public @NotNull CompletableFuture<Void> save(
+        @NotNull GuildSettingsEntity entity
+    ) {
+        return this.repository.updateEntityAsync(entity);
     }
 
     public @NotNull CompletableFuture<Void> drop(

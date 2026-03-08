@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
+import static java.lang.String.format;
 import static java.util.concurrent.CompletableFuture.runAsync;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
@@ -58,6 +59,25 @@ public class NewsHistoryRepository {
         @NotNull Long id
     ) {
         return supplyAsync(() -> queryEntity(id));
+    }
+
+    public @Nullable NewsHistoryEntity queryEntityBy(
+        @NotNull String string,
+        @NotNull Object value
+    ) {
+        try (var session = this.sessionFactory.openSession()) {
+            var query = format("FROM NewsHistoryEntity WHERE %s = :value", string);
+            return session.createQuery(query, NewsHistoryEntity.class)
+                .setParameter("value", value)
+                .getSingleResultOrNull();
+        }
+    }
+
+    public @NotNull CompletableFuture<NewsHistoryEntity> queryEntityByAsync(
+        @NotNull String string,
+        @NotNull Object value
+    ) {
+        return supplyAsync(() -> queryEntityBy(string, value));
     }
 
     public void dropEntity(

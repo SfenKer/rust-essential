@@ -22,7 +22,7 @@ public class GuildSettingsRepository {
     ) {
         try (var session = this.sessionFactory.openSession()) {
             var transaction = session.beginTransaction();
-            session.merge(entity);
+            session.persist(entity);
             transaction.commit();
         }
     }
@@ -31,6 +31,22 @@ public class GuildSettingsRepository {
         @NotNull GuildSettingsEntity entity
     ) {
         return runAsync(() -> insertEntity(entity));
+    }
+
+    public void updateEntity(
+        @NotNull GuildSettingsEntity entity
+    ) {
+        try (var session = this.sessionFactory.openSession()) {
+            var transaction = session.beginTransaction();
+            session.merge(entity);
+            transaction.commit();
+        }
+    }
+
+    public @NotNull CompletableFuture<Void> updateEntityAsync(
+        @NotNull GuildSettingsEntity entity
+    ) {
+        return runAsync(() -> updateEntity(entity));
     }
 
     public @NotNull Collection<GuildSettingsEntity> queryAllEntities() {

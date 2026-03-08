@@ -1,136 +1,78 @@
 package com.github.sfenker.essential.command.internal;
 
 import io.github.kaktushose.jdac.embeds.error.ErrorMessageFactory;
+import net.dv8tion.jda.api.components.MessageTopLevelComponent;
 import net.dv8tion.jda.api.events.interaction.GenericInteractionCreateEvent;
-import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
-import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
-import static com.github.sfenker.essential.utility.EmbedUtility.embedBuilder;
+import static com.github.sfenker.essential.builder.ComponentContainerBuilder.componentContainerBuilder;
 import static com.github.sfenker.essential.utility.StringUtility.throwableToString;
-import static io.github.kaktushose.jdac.definitions.interactions.command.OptionDataDefinition.ConstraintDefinition;
-import static java.awt.Color.RED;
-import static java.lang.String.format;
+import static io.github.kaktushose.proteus.conversion.ConversionResult.Failure;
 
 public class ErrorMessageFactoryImpl implements ErrorMessageFactory {
 
     @Override
-    public @NotNull MessageCreateData getTypeAdaptingFailedMessage(
+    public @NotNull MessageTopLevelComponent getTypeAdaptingFailedMessage(
         @NotNull ErrorContext context,
-        @NotNull List<String> userInput
+        @NotNull Failure<?> failure
     ) {
-        return new MessageCreateBuilder()
-            .addEmbeds(
-                embedBuilder()
-                    .setColor(RED)
-                    .setDescription(
-                        """
-                        ### :warning: ‌ Error Occurred
-                        Invalid argument type was provided, please contact with support.
-                        """
-                    ).build()
-            ).build();
+        return componentContainerBuilder()
+            .textDisplay("### :warning: Error Occurred")
+            .textDisplay("Invalid argument type was provided.")
+            .build();
     }
 
     @Override
-    public @NotNull MessageCreateData getInsufficientPermissionsMessage(
+    public @NotNull MessageTopLevelComponent getInsufficientPermissionsMessage(
         @NotNull ErrorContext context
     ) {
-        return new MessageCreateBuilder()
-            .addEmbeds(
-                embedBuilder()
-                    .setColor(RED)
-                    .setDescription(
-                        """
-                        ### :warning: ‌ Error Occurred
-                        You don't have enough permissions to execute that command.
-                        """
-                    ).build()
-            ).build();
+        return componentContainerBuilder()
+            .textDisplay("### :warning: Error Occurred")
+            .textDisplay("You don't have permissions to execute that interaction.")
+            .build();
     }
 
     @Override
-    public @NotNull MessageCreateData getConstraintFailedMessage(
+    public @NotNull MessageTopLevelComponent getConstraintFailedMessage(
         @NotNull ErrorContext context,
-        @NotNull ConstraintDefinition constraint
+        @NotNull String message
     ) {
-        return new MessageCreateBuilder()
-            .addEmbeds(
-                embedBuilder()
-                    .setColor(RED)
-                    .setDescription(
-                        """
-                        ### :warning: ‌ Error Occurred
-                        Invalid parameter was provided, please contact with support.
-                        """
-                    ).build()
-            ).build();
+        return componentContainerBuilder()
+            .textDisplay("### :warning: Error Occurred")
+            .textDisplay(message)
+            .build();
     }
 
     @Override
-    public @NotNull MessageCreateData getCooldownMessage(
+    public @NotNull MessageTopLevelComponent getInteractionExecutionFailedMessage(
         @NotNull ErrorContext context,
-        long ms
+        @NotNull Throwable throwable
     ) {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return exceptionMessageTemplate(throwable);
     }
 
     @Override
-    public @NotNull MessageCreateData getWrongChannelTypeMessage(
-        @NotNull ErrorContext context
-    ) {
-        return new MessageCreateBuilder()
-            .addEmbeds(
-                embedBuilder()
-                    .setColor(RED)
-                    .setDescription(
-                        """
-                        ### :warning: ‌ Error Occurred
-                        This command can't be executed on that channel.
-                        """
-                    ).build()
-            ).build();
-    }
-
-    @Override
-    public @NotNull MessageCreateData getCommandExecutionFailedMessage(
-        @NotNull ErrorContext context,
-        @NotNull Throwable exception
-    ) {
-        return new MessageCreateBuilder()
-            .addEmbeds(
-                embedBuilder()
-                    .setColor(RED)
-                    .setDescription(format(
-                        """
-                        ### :warning: ‌ Error Occurred
-                        An unexpected exception was thrown while executing that interaction.
-                        ### :scroll: ‌ Stacktrace
-                        ```
-                        %s
-                        ```
-                        """, throwableToString(exception)
-                    )).build()
-            ).build();
-    }
-
-    @Override
-    public @NotNull MessageCreateData getTimedOutComponentMessage(
+    public @NotNull MessageTopLevelComponent getTimedOutComponentMessage(
         @NotNull GenericInteractionCreateEvent event
     ) {
-        return new MessageCreateBuilder()
-            .addEmbeds(
-                embedBuilder()
-                    .setColor(RED)
-                    .setDescription(
-                        """
-                        ### :warning: ‌ Error Occurred
-                        This interaction expired, please create new interaction.
-                        """
-                    ).build()
-            ).build();
+        return componentContainerBuilder()
+            .textDisplay("### :warning: Error Occurred")
+            .textDisplay("This interaction has expired and can no longer be used.")
+            .build();
+    }
+
+    public static @NotNull MessageTopLevelComponent exceptionMessageTemplate(
+        @NotNull Throwable throwable
+    ) {
+        return componentContainerBuilder()
+            .textDisplay("### :warning: Error Occurred")
+            .textDisplay("An unexpected exception was thrown while executing that interaction.")
+            .textDisplay("### :scroll: Stacktrace")
+            .textDisplay(
+                "```\n%s\n```",
+                throwableToString(throwable)
+            )
+            .build();
     }
 
 }
