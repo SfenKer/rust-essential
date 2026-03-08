@@ -1,10 +1,14 @@
 package com.github.sfenker.essential.service.news;
 
+import com.github.sfenker.essential.scheduler.factory.SchedulerFactory;
+import com.github.sfenker.essential.service.news.entity.NewsHistoryEntity;
 import com.github.sfenker.essential.service.news.repository.NewsHistoryRepository;
+import com.github.sfenker.essential.service.news.scheduler.NewsCheckerTask;
 import com.github.sfenker.essential.types.news.News;
 import lombok.SneakyThrows;
 import org.hibernate.SessionFactory;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Node;
 
 import java.util.Collection;
@@ -20,12 +24,16 @@ public class NewsService {
     final NewsHistoryRepository newsHistoryRepository;
 
     public NewsService(
-        @NotNull SessionFactory sessionFactory
+        @NotNull SessionFactory sessionFactory,
+        @NotNull SchedulerFactory schedulerFactory
     ) {
         this.newsHistoryRepository = new NewsHistoryRepository(sessionFactory);
+        schedulerFactory.registerParameter(NewsService.class, this)
+            .registerParameter(NewsHistoryRepository.class, this.newsHistoryRepository)
+            .registerScheduler(NewsCheckerTask.class);
     }
 
-    public @NotNull Boolean wasPostedBefore(
+    public @Nullable Boolean wasPostedBefore(
         @NotNull News news
     ) {
         return this.newsHistoryRepository.queryEntityBy("url", news.url) != null;
@@ -36,6 +44,14 @@ public class NewsService {
     ) {
         return this.newsHistoryRepository.queryEntityByAsync("url", news.url)
             .thenApply(Objects::nonNull);
+    }
+
+    public void markAsPosted(
+        @NotNull News news
+    ) {
+        var entity = new NewsHistoryEntity();
+        entity.url = news.url;
+        this.newsHistoryRepository.insertEntityAsync(entity);
     }
 
     @SneakyThrows

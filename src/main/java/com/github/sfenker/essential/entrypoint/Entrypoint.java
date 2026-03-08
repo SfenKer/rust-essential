@@ -2,6 +2,8 @@ package com.github.sfenker.essential.entrypoint;
 
 import com.github.sfenker.essential.command.internal.ErrorMessageFactoryImpl;
 import com.github.sfenker.essential.listener.GuildActionListener;
+import com.github.sfenker.essential.scheduler.factory.SchedulerFactory;
+import com.github.sfenker.essential.service.news.NewsService;
 import com.github.sfenker.essential.service.news.entity.NewsHistoryEntity;
 import com.github.sfenker.essential.settings.GuildSettingsManager;
 import com.github.sfenker.essential.settings.entity.GuildSettingsEntity;
@@ -12,6 +14,7 @@ import net.dv8tion.jda.api.sharding.ShardManager;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import static com.github.sfenker.essential.scheduler.factory.SchedulerFactory.createSchedulerFactory;
 import static com.google.inject.Guice.createInjector;
 import static io.github.kaktushose.jdac.JDACommands.builder;
 import static io.github.kaktushose.jdac.definitions.description.ClassFinder.reflective;
@@ -90,6 +93,12 @@ public class Entrypoint {
             .build();
     }
 
+    final SchedulerFactory schedulerFactory =
+        createSchedulerFactory()
+            .registerParameter(ShardManager.class, this.shardManager)
+            .registerParameter(SessionFactory.class, this.sessionFactory)
+            .registerParameter(GuildSettingsManager.class, this.guildSettingsManager);
+
     final Injector injector =
         createInjector(
             (binder) -> {
@@ -106,6 +115,9 @@ public class Entrypoint {
             }
         );
 
+    final NewsService newsService =
+        new NewsService(this.sessionFactory, this.schedulerFactory);
+
     {
         builder(this.shardManager)
             .classFinders(
@@ -119,6 +131,10 @@ public class Entrypoint {
                     config.ephemeral(true)
             ))
             .start();
+    }
+
+    {
+        this.schedulerFactory.build();
     }
 
     {

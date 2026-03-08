@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import static com.github.sfenker.essential.Constants.gitHash;
 import static com.github.sfenker.essential.Constants.projectVersion;
 import static com.github.sfenker.essential.builder.ComponentContainerBuilder.componentContainerBuilder;
-import static com.github.sfenker.essential.utility.StreamUtility.resourceStream;
 import static com.github.sfenker.essential.utility.StringUtility.formatDuration;
 import static com.github.sfenker.essential.utility.SystemUtility.cpuUsage;
 import static com.github.sfenker.essential.utility.SystemUtility.memoryUsage;
@@ -22,10 +21,9 @@ import static java.time.Instant.now;
 import static java.time.Instant.ofEpochMilli;
 import static java.util.Arrays.asList;
 import static net.dv8tion.jda.api.components.buttons.Button.link;
-import static net.dv8tion.jda.api.components.thumbnail.Thumbnail.fromFile;
+import static net.dv8tion.jda.api.components.thumbnail.Thumbnail.fromUrl;
 import static net.dv8tion.jda.api.interactions.IntegrationType.GUILD_INSTALL;
 import static net.dv8tion.jda.api.interactions.IntegrationType.USER_INSTALL;
-import static net.dv8tion.jda.api.utils.FileUpload.fromData;
 import static org.apache.commons.lang3.StringUtils.join;
 
 @Interaction
@@ -39,12 +37,11 @@ public class CommandAbout {
     public void executeDefault(
         @NotNull CommandEvent event
     ) {
-        event.with()
-            .ephemeral(true)
-            .reply(
+        event.jdaEvent()
+            .replyComponents(
                 componentContainerBuilder()
                     .section(
-                        fromFile((fromData(resourceStream("assets/image/logo.png"), "logo.png"))),
+                        fromUrl(event.getJDA().getSelfUser().getAvatarUrl()),
                         "### :tools: Rust Essential",
                         "Rust Essential is a project that provides many features like News, Raid Cost Calculator and more features that will be great for your Rust Community discord server."
                     )
@@ -95,7 +92,10 @@ public class CommandAbout {
                         link("https://discord.com/invite/C8dF6zkYff", "Discord Server")
                     )
                     .build()
-            );
+            )
+            .useComponentsV2()
+            .setEphemeral(true)
+            .queue();
     }
 
     static final Long startTime =

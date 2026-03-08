@@ -7,8 +7,8 @@ import com.github.sfenker.essential.scheduler.annotation.type.Scheduler;
 import com.github.sfenker.essential.service.news.NewsService;
 import com.github.sfenker.essential.settings.GuildSettingsManager;
 import com.github.sfenker.essential.types.news.News;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 
 import static com.github.sfenker.essential.builder.ComponentContainerBuilder.componentContainerBuilder;
 import static java.lang.String.format;
+import static java.util.Optional.ofNullable;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static net.dv8tion.jda.api.components.buttons.Button.link;
 import static net.dv8tion.jda.api.components.thumbnail.Thumbnail.fromUrl;
@@ -24,7 +25,7 @@ import static net.dv8tion.jda.api.components.thumbnail.Thumbnail.fromUrl;
 public class NewsCheckerTask {
 
     @Inject
-    JDA jda;
+    ShardManager shardManager;
 
     @Inject
     NewsService newsService;
@@ -70,13 +71,15 @@ public class NewsCheckerTask {
             .stream()
             .filter(
                 (news) ->
-                    !this.newsService.wasPostedBefore(news)
-            );
+                    !ofNullable(this.newsService.wasPostedBefore(news))
+                        .orElse(false)
+            )
+            .peek(this.newsService::markAsPosted);
     }
 
     @ParameterSupplier(type = Guild.class)
     @NotNull Stream<CompletableFuture<Guild>> retrieveGuilds() {
-        return this.jda.getGuilds()
+        return this.shardManager.getGuilds()
             .stream()
             .map(
                 (guild) ->
