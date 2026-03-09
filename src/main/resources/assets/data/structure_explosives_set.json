@@ -4,7 +4,7 @@
     "name": "Any Explosives",
     "structures": [
       {
-        "id": "wooden_wall",
+        "id": "wood",
         "name": "Wooden Wall",
         "costs": {
           "rocket": 0,
@@ -14,7 +14,7 @@
         }
       },
       {
-        "id": "stone_wall",
+        "id": "stone",
         "name": "Stone Wall",
         "costs": {
           "rocket": 4,
@@ -24,7 +24,7 @@
         }
       },
       {
-        "id": "sheet_metal_wall",
+        "id": "metal",
         "name": "Sheet Metal Wall",
         "costs": {
           "rocket": 8,
@@ -34,7 +34,7 @@
         }
       },
       {
-        "id": "high_quality_metal_wall",
+        "id": "high_quality_metal",
         "name": "Armored Wall",
         "costs": {
           "rocket": 16,
@@ -160,7 +160,7 @@
     "name": "Rocket",
     "structures": [
       {
-        "id": "wooden_wall",
+        "id": "wood",
         "name": "Wooden Wall",
         "costs": {
           "rocket": 2,
@@ -170,7 +170,7 @@
         }
       },
       {
-        "id": "stone_wall",
+        "id": "stone",
         "name": "Stone Wall",
         "costs": {
           "rocket": 4,
@@ -180,7 +180,7 @@
         }
       },
       {
-        "id": "sheet_metal_wall",
+        "id": "metal",
         "name": "Sheet Metal Wall",
         "costs": {
           "rocket": 8,
@@ -190,7 +190,7 @@
         }
       },
       {
-        "id": "high_quality_metal_wall",
+        "id": "high_quality_metal",
         "name": "Armored Wall",
         "costs": {
           "rocket": 16,
@@ -316,7 +316,7 @@
     "name": "Timed Explosive Charge",
     "structures": [
       {
-        "id": "wooden_wall",
+        "id": "wood",
         "name": "Wooden Wall",
         "costs": {
           "rocket": 0,
@@ -326,7 +326,7 @@
         }
       },
       {
-        "id": "stone_wall",
+        "id": "stone",
         "name": "Stone Wall",
         "costs": {
           "rocket": 0,
@@ -336,7 +336,7 @@
         }
       },
       {
-        "id": "sheet_metal_wall",
+        "id": "metal",
         "name": "Sheet Metal Wall",
         "costs": {
           "rocket": 0,
@@ -346,7 +346,7 @@
         }
       },
       {
-        "id": "high_quality_metal_wall",
+        "id": "high_quality_metal",
         "name": "Armored Wall",
         "costs": {
           "rocket": 0,
@@ -473,7 +473,7 @@
     "name": "Satchel Explosive Charge",
     "structures": [
       {
-        "id": "wooden_wall",
+        "id": "wood",
         "name": "Wooden Wall",
         "costs": {
           "rocket": 0,
@@ -483,7 +483,7 @@
         }
       },
       {
-        "id": "stone_wall",
+        "id": "stone",
         "name": "Stone Wall",
         "costs": {
           "rocket": 0,
@@ -493,7 +493,7 @@
         }
       },
       {
-        "id": "sheet_metal_wall",
+        "id": "metal",
         "name": "Sheet Metal Wall",
         "costs": {
           "rocket": 0,
@@ -503,7 +503,7 @@
         }
       },
       {
-        "id": "high_quality_metal_wall",
+        "id": "high_quality_metal",
         "name": "Armored Wall",
         "costs": {
           "rocket": 0,
@@ -629,7 +629,7 @@
     "name": "Explosive Ammo",
     "structures": [
       {
-        "id": "wooden_wall",
+        "id": "wood",
         "name": "Wooden Wall",
         "costs": {
           "rocket": 0,
@@ -639,7 +639,7 @@
         }
       },
       {
-        "id": "stone_wall",
+        "id": "stone",
         "name": "Stone Wall",
         "costs": {
           "rocket": 0,
@@ -649,7 +649,7 @@
         }
       },
       {
-        "id": "sheet_metal_wall",
+        "id": "metal",
         "name": "Sheet Metal Wall",
         "costs": {
           "rocket": 0,
@@ -659,7 +659,7 @@
         }
       },
       {
-        "id": "high_quality_metal_wall",
+        "id": "high_quality_metal",
         "name": "Armored Wall",
         "costs": {
           "rocket": 0,
