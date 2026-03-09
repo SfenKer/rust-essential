@@ -14,7 +14,6 @@ oshi = "6.10.0"
 unirest = "4.7.4"
 logback = "1.5.32"
 
-rome = "2.1.0"
 source-query = "1.2.2"
 
 lombok = "1.18.42"
@@ -39,7 +38,6 @@ unirest-java-core = { group = "com.konghq", name = "unirest-java-core", version.
 unirest-modules-gson = { group = "com.konghq", name = "unirest-modules-gson", version.ref = "unirest" }
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
 
-rome = { group = "com.rometools", name = "rome", version.ref = "rome" }
 source-query = { group = "com.ibasco.agql", name = "agql-source-query", version.ref = "source-query" }
 
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }

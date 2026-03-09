@@ -63,7 +63,6 @@ dependencies {
     implementation(libs.logback.classic)
 
     /* Misc */
-    implementation(libs.rome)
     implementation(libs.source.query)
 
     /* Lombok */
