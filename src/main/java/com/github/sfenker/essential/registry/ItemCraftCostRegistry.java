@@ -3,6 +3,7 @@ package com.github.sfenker.essential.registry;
 import com.github.sfenker.essential.types.resources.ItemCraftCost;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.Map;
 
 import static com.github.sfenker.essential.utility.StreamUtility.jsonResource;
@@ -25,5 +26,9 @@ public class ItemCraftCostRegistry {
                 (item) -> item.id,
                 identity()
             ));
+
+    public static @NotNull Collection<ItemCraftCost> itemCraftCostRegistry() {
+        return craftCostRegistry.values();
+    }
 
 }

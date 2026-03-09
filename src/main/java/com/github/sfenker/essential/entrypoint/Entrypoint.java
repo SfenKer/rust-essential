@@ -14,6 +14,7 @@ import net.dv8tion.jda.api.sharding.ShardManager;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import static com.github.sfenker.essential.registry.CustomEmojiRegistry.initCustomEmojiRegistry;
 import static com.github.sfenker.essential.scheduler.factory.SchedulerFactory.createSchedulerFactory;
 import static com.google.inject.Guice.createInjector;
 import static io.github.kaktushose.jdac.JDACommands.builder;
@@ -30,6 +31,7 @@ import static net.dv8tion.jda.api.entities.Activity.playing;
 import static net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder.createDefault;
 import static net.dv8tion.jda.api.utils.Compression.NONE;
 import static net.dv8tion.jda.api.utils.cache.CacheFlag.*;
+import static org.apache.commons.lang3.function.Failable.asRunnable;
 
 @Slf4j
 public class Entrypoint {
@@ -76,10 +78,8 @@ public class Entrypoint {
     final GuildSettingsManager guildSettingsManager =
         new GuildSettingsManager(this.sessionFactory);
 
-    final ShardManager shardManager;
-
-    {
-        this.shardManager = createDefault(getenv("DISCORD_TOKEN"))
+    final ShardManager shardManager =
+        createDefault(getenv("DISCORD_TOKEN"))
             .setShardsTotal(4)
             .setCompression(NONE)
             .setActivity(playing("Rust"))
@@ -91,6 +91,17 @@ public class Entrypoint {
                 SCHEDULED_EVENTS, STICKER
             ))
             .build();
+
+    {
+        this.shardManager.getShards()
+            .forEach(
+                (jda) ->
+                    asRunnable(jda::awaitReady)
+            );
+    }
+
+    {
+        initCustomEmojiRegistry(this.shardManager);
     }
 
     final SchedulerFactory schedulerFactory =

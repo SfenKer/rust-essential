@@ -15,6 +15,7 @@ import java.util.Collection;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.stream;
+import static org.apache.commons.lang3.StringUtils.join;
 
 public class ComponentContainerBuilder {
 
@@ -40,6 +41,12 @@ public class ComponentContainerBuilder {
     ) {
         this.components.add(TextDisplay.of(string.formatted(format)));
         return this;
+    }
+
+    public @NotNull ComponentContainerBuilder textDisplayList(
+        @NotNull String... string
+    ) {
+        return textDisplay(join(string, "\n"));
     }
 
     public @NotNull ComponentContainerBuilder gallery(

@@ -2,12 +2,10 @@
   {
     "id": "sulphur",
     "name": "Any Explosives",
-    "emoji": 1300428595117948949,
     "structures": [
       {
         "id": "wooden_wall",
         "name": "Wooden Wall",
-        "emoji": 1300428624977203260,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -18,7 +16,6 @@
       {
         "id": "stone_wall",
         "name": "Stone Wall",
-        "emoji": 1300428584338325524,
         "costs": {
           "rocket": 4,
           "bomb": 0,
@@ -29,7 +26,6 @@
       {
         "id": "sheet_metal_wall",
         "name": "Sheet Metal Wall",
-        "emoji": 1300428526373044255,
         "costs": {
           "rocket": 8,
           "bomb": 0,
@@ -40,7 +36,6 @@
       {
         "id": "high_quality_metal_wall",
         "name": "Armored Wall",
-        "emoji": 1300428506123210782,
         "costs": {
           "rocket": 16,
           "bomb": 0,
@@ -51,7 +46,6 @@
       {
         "id": "metal_shop_front",
         "name": "Metal Shop Front",
-        "emoji": 1300428534971502604,
         "costs": {
           "rocket": 6,
           "bomb": 0,
@@ -62,7 +56,6 @@
       {
         "id": "wooden_door",
         "name": "Wooden Door",
-        "emoji": 1300428637400465448,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -73,7 +66,6 @@
       {
         "id": "sheet_metal_door",
         "name": "Sheet Metal Door",
-        "emoji": 1300428570572754954,
         "costs": {
           "rocket": 1,
           "bomb": 0,
@@ -84,7 +76,6 @@
       {
         "id": "armored_door",
         "name": "Armored Door",
-        "emoji": 1300428456139427880,
         "costs": {
           "rocket": 1,
           "bomb": 2,
@@ -95,7 +86,6 @@
       {
         "id": "garage_door",
         "name": "Garage Door",
-        "emoji": 1300428499429097482,
         "costs": {
           "rocket": 3,
           "bomb": 0,
@@ -106,7 +96,6 @@
       {
         "id": "ladder_hatch",
         "name": "Ladder Hatch",
-        "emoji": 1300428513379356742,
         "costs": {
           "rocket": 1,
           "bomb": 0,
@@ -117,7 +106,6 @@
       {
         "id": "wooden_window_bars",
         "name": "Wooden Window Bars",
-        "emoji": 1300428647689228390,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -128,7 +116,6 @@
       {
         "id": "metal_window_bars",
         "name": "Metal Window Bars",
-        "emoji": 1300428541783179314,
         "costs": {
           "rocket": 4,
           "bomb": 0,
@@ -139,7 +126,6 @@
       {
         "id": "vending_machine",
         "name": "Vending Machine",
-        "emoji": 1300428620594020503,
         "costs": {
           "rocket": 2,
           "bomb": 2,
@@ -150,7 +136,6 @@
       {
         "id": "external_wooden_wall",
         "name": "External Wooden Wall",
-        "emoji": 1300428492206506005,
         "costs": {
           "rocket": 2,
           "bomb": 0,
@@ -161,7 +146,6 @@
       {
         "id": "external_stone_wall",
         "name": "External Stone Wall",
-        "emoji": 1300428483079438407,
         "costs": {
           "rocket": 4,
           "bomb": 0,
@@ -174,12 +158,10 @@
   {
     "id": "rocket",
     "name": "Rocket",
-    "emoji": 1300428554051387512,
     "structures": [
       {
         "id": "wooden_wall",
         "name": "Wooden Wall",
-        "emoji": 1300428624977203260,
         "costs": {
           "rocket": 2,
           "bomb": 0,
@@ -190,7 +172,6 @@
       {
         "id": "stone_wall",
         "name": "Stone Wall",
-        "emoji": 1300428584338325524,
         "costs": {
           "rocket": 4,
           "bomb": 0,
@@ -201,7 +182,6 @@
       {
         "id": "sheet_metal_wall",
         "name": "Sheet Metal Wall",
-        "emoji": 1300428526373044255,
         "costs": {
           "rocket": 8,
           "bomb": 0,
@@ -212,7 +192,6 @@
       {
         "id": "high_quality_metal_wall",
         "name": "Armored Wall",
-        "emoji": 1300428506123210782,
         "costs": {
           "rocket": 16,
           "bomb": 0,
@@ -223,7 +202,6 @@
       {
         "id": "metal_shop_front",
         "name": "Metal Shop Front",
-        "emoji": 1300428534971502604,
         "costs": {
           "rocket": 6,
           "bomb": 0,
@@ -234,7 +212,6 @@
       {
         "id": "wooden_door",
         "name": "Wooden Door",
-        "emoji": 1300428637400465448,
         "costs": {
           "rocket": 1,
           "bomb": 0,
@@ -245,7 +222,6 @@
       {
         "id": "sheet_metal_door",
         "name": "Sheet Metal Door",
-        "emoji": 1300428570572754954,
         "costs": {
           "rocket": 2,
           "bomb": 0,
@@ -256,7 +232,6 @@
       {
         "id": "armored_door",
         "name": "Armored Door",
-        "emoji": 1300428456139427880,
         "costs": {
           "rocket": 5,
           "bomb": 0,
@@ -267,7 +242,6 @@
       {
         "id": "garage_door",
         "name": "Garage Door",
-        "emoji": 1300428499429097482,
         "costs": {
           "rocket": 3,
           "bomb": 0,
@@ -278,7 +252,6 @@
       {
         "id": "ladder_hatch",
         "name": "Ladder Hatch",
-        "emoji": 1300428513379356742,
         "costs": {
           "rocket": 2,
           "bomb": 0,
@@ -289,7 +262,6 @@
       {
         "id": "wooden_window_bars",
         "name": "Wooden Window Bars",
-        "emoji": 1300428647689228390,
         "costs": {
           "rocket": 2,
           "bomb": 0,
@@ -300,7 +272,6 @@
       {
         "id": "metal_window_bars",
         "name": "Metal Window Bars",
-        "emoji": 1300428541783179314,
         "costs": {
           "rocket": 4,
           "bomb": 0,
@@ -311,7 +282,6 @@
       {
         "id": "vending_machine",
         "name": "Vending Machine",
-        "emoji": 1300428620594020503,
         "costs": {
           "rocket": 10,
           "bomb": 0,
@@ -322,7 +292,6 @@
       {
         "id": "external_wooden_wall",
         "name": "External Wooden Wall",
-        "emoji": 1300428492206506005,
         "costs": {
           "rocket": 3,
           "bomb": 0,
@@ -333,7 +302,6 @@
       {
         "id": "external_stone_wall",
         "name": "External Stone Wall",
-        "emoji": 1300428483079438407,
         "costs": {
           "rocket": 4,
           "bomb": 0,
@@ -346,12 +314,10 @@
   {
     "id": "timed_explosive_charge",
     "name": "Timed Explosive Charge",
-    "emoji": 1300428605297524826,
     "structures": [
       {
         "id": "wooden_wall",
         "name": "Wooden Wall",
-        "emoji": 1300428624977203260,
         "costs": {
           "rocket": 0,
           "bomb": 1,
@@ -362,7 +328,6 @@
       {
         "id": "stone_wall",
         "name": "Stone Wall",
-        "emoji": 1300428584338325524,
         "costs": {
           "rocket": 0,
           "bomb": 2,
@@ -373,7 +338,6 @@
       {
         "id": "sheet_metal_wall",
         "name": "Sheet Metal Wall",
-        "emoji": 1300428526373044255,
         "costs": {
           "rocket": 0,
           "bomb": 4,
@@ -384,7 +348,6 @@
       {
         "id": "high_quality_metal_wall",
         "name": "Armored Wall",
-        "emoji": 1300428506123210782,
         "costs": {
           "rocket": 0,
           "bomb": 8,
@@ -395,7 +358,6 @@
       {
         "id": "metal_shop_front",
         "name": "Metal Shop Front",
-        "emoji": 1300428534971502604,
         "costs": {
           "rocket": 0,
           "bomb": 3,
@@ -406,7 +368,6 @@
       {
         "id": "wooden_door",
         "name": "Wooden Door",
-        "emoji": 1300428637400465448,
         "costs": {
           "rocket": 0,
           "bomb": 1,
@@ -417,7 +378,6 @@
       {
         "id": "sheet_metal_door",
         "name": "Sheet Metal Door",
-        "emoji": 1300428570572754954,
         "costs": {
           "rocket": 0,
           "bomb": 1,
@@ -428,7 +388,6 @@
       {
         "id": "armored_door",
         "name": "Armored Door",
-        "emoji": 1300428456139427880,
         "costs": {
           "rocket": 0,
           "bomb": 3,
@@ -439,7 +398,6 @@
       {
         "id": "garage_door",
         "name": "Garage Door",
-        "emoji": 1300428499429097482,
         "costs": {
           "rocket": 0,
           "bomb": 2,
@@ -450,7 +408,6 @@
       {
         "id": "ladder_hatch",
         "name": "Ladder Hatch",
-        "emoji": 1300428513379356742,
         "costs": {
           "rocket": 0,
           "bomb": 1,
@@ -461,7 +418,6 @@
       {
         "id": "wooden_window_bars",
         "name": "Wooden Window Bars",
-        "emoji": 1300428647689228390,
         "costs": {
           "rocket": 0,
           "bomb": 1,
@@ -472,7 +428,6 @@
       {
         "id": "metal_window_bars",
         "name": "Metal Window Bars",
-        "emoji": 1300428541783179314,
         "costs": {
           "rocket": 0,
           "bomb": 2,
@@ -483,7 +438,6 @@
       {
         "id": "vending_machine",
         "name": "Vending Machine",
-        "emoji": 1300428620594020503,
         "costs": {
           "rocket": 0,
           "bomb": 3,
@@ -494,7 +448,6 @@
       {
         "id": "external_wooden_wall",
         "name": "External Wooden Wall",
-        "emoji": 1300428492206506005,
         "costs": {
           "rocket": 0,
           "bomb": 2,
@@ -505,7 +458,6 @@
       {
         "id": "external_stone_wall",
         "name": "External Stone Wall",
-        "emoji": 1300428483079438407,
         "costs": {
           "rocket": 0,
           "bomb": 2,
@@ -519,12 +471,10 @@
   {
     "id": "satchel_explosive_charge",
     "name": "Satchel Explosive Charge",
-    "emoji": 1300428562150723634,
     "structures": [
       {
         "id": "wooden_wall",
         "name": "Wooden Wall",
-        "emoji": 1300428624977203260,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -535,7 +485,6 @@
       {
         "id": "stone_wall",
         "name": "Stone Wall",
-        "emoji": 1300428584338325524,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -546,7 +495,6 @@
       {
         "id": "sheet_metal_wall",
         "name": "Sheet Metal Wall",
-        "emoji": 1300428526373044255,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -557,7 +505,6 @@
       {
         "id": "high_quality_metal_wall",
         "name": "Armored Wall",
-        "emoji": 1300428506123210782,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -568,7 +515,6 @@
       {
         "id": "metal_shop_front",
         "name": "Metal Shop Front",
-        "emoji": 1300428534971502604,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -579,7 +525,6 @@
       {
         "id": "wooden_door",
         "name": "Wooden Door",
-        "emoji": 1300428637400465448,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -590,7 +535,6 @@
       {
         "id": "sheet_metal_door",
         "name": "Sheet Metal Door",
-        "emoji": 1300428570572754954,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -601,7 +545,6 @@
       {
         "id": "armored_door",
         "name": "Armored Door",
-        "emoji": 1300428456139427880,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -612,7 +555,6 @@
       {
         "id": "garage_door",
         "name": "Garage Door",
-        "emoji": 1300428499429097482,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -623,7 +565,6 @@
       {
         "id": "ladder_hatch",
         "name": "Ladder Hatch",
-        "emoji": 1300428513379356742,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -634,7 +575,6 @@
       {
         "id": "wooden_window_bars",
         "name": "Wooden Window Bars",
-        "emoji": 1300428647689228390,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -645,7 +585,6 @@
       {
         "id": "metal_window_bars",
         "name": "Metal Window Bars",
-        "emoji": 1300428541783179314,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -656,7 +595,6 @@
       {
         "id": "vending_machine",
         "name": "Vending Machine",
-        "emoji": 1300428620594020503,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -667,7 +605,6 @@
       {
         "id": "external_wooden_wall",
         "name": "External Wooden Wall",
-        "emoji": 1300428492206506005,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -678,7 +615,6 @@
       {
         "id": "external_stone_wall",
         "name": "External Stone Wall",
-        "emoji": 1300428483079438407,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -691,12 +627,10 @@
   {
     "id": "explosive_ammo",
     "name": "Explosive Ammo",
-    "emoji": 1300428472476237874,
     "structures": [
       {
         "id": "wooden_wall",
         "name": "Wooden Wall",
-        "emoji": 1300428624977203260,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -707,7 +641,6 @@
       {
         "id": "stone_wall",
         "name": "Stone Wall",
-        "emoji": 1300428584338325524,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -718,7 +651,6 @@
       {
         "id": "sheet_metal_wall",
         "name": "Sheet Metal Wall",
-        "emoji": 1300428526373044255,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -729,7 +661,6 @@
       {
         "id": "high_quality_metal_wall",
         "name": "Armored Wall",
-        "emoji": 1300428506123210782,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -740,7 +671,6 @@
       {
         "id": "metal_shop_front",
         "name": "Metal Shop Front",
-        "emoji": 1300428534971502604,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -751,7 +681,6 @@
       {
         "id": "wooden_door",
         "name": "Wooden Door",
-        "emoji": 1300428637400465448,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -762,7 +691,6 @@
       {
         "id": "sheet_metal_door",
         "name": "Sheet Metal Door",
-        "emoji": 1300428570572754954,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -773,7 +701,6 @@
       {
         "id": "armored_door",
         "name": "Armored Door",
-        "emoji": 1300428456139427880,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -784,7 +711,6 @@
       {
         "id": "garage_door",
         "name": "Garage Door",
-        "emoji": 1300428499429097482,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -795,7 +721,6 @@
       {
         "id": "ladder_hatch",
         "name": "Ladder Hatch",
-        "emoji": 1300428513379356742,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -806,7 +731,6 @@
       {
         "id": "wooden_window_bars",
         "name": "Wooden Window Bars",
-        "emoji": 1300428647689228390,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -817,7 +741,6 @@
       {
         "id": "metal_window_bars",
         "name": "Metal Window Bars",
-        "emoji": 1300428541783179314,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -828,7 +751,6 @@
       {
         "id": "vending_machine",
         "name": "Vending Machine",
-        "emoji": 1300428620594020503,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -839,7 +761,6 @@
       {
         "id": "external_wooden_wall",
         "name": "External Wooden Wall",
-        "emoji": 1300428492206506005,
         "costs": {
           "rocket": 0,
           "bomb": 0,
@@ -850,7 +771,6 @@
       {
         "id": "external_stone_wall",
         "name": "External Stone Wall",
-        "emoji": 1300428483079438407,
         "costs": {
           "rocket": 0,
           "bomb": 0,

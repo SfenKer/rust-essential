@@ -3,6 +3,7 @@ package com.github.sfenker.essential.registry;
 import com.github.sfenker.essential.types.resources.StructureExplosivesSet;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.Map;
 
 import static com.github.sfenker.essential.utility.StreamUtility.jsonResource;
@@ -12,7 +13,7 @@ import static java.util.stream.Collectors.toMap;
 
 public class StructureExplosiveSetRegistry {
 
-    public static @NotNull StructureExplosivesSet itemCraftCost(
+    public static @NotNull StructureExplosivesSet structureExplosivesSet(
         @NotNull String id
     ) {
         return structureExplosiveSetsRegistry.get(id);
@@ -25,5 +26,9 @@ public class StructureExplosiveSetRegistry {
                 (item) -> item.id,
                 identity()
             ));
+
+    public static @NotNull Collection<StructureExplosivesSet> structureExplosivesSetRegistry() {
+        return structureExplosiveSetsRegistry.values();
+    }
 
 }
