@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import static com.github.sfenker.essential.Constants.decimalFormat;
-import static com.github.sfenker.essential.builder.ComponentContainerBuilder.componentContainerBuilder;
 import static com.github.sfenker.essential.registry.CustomEmojiRegistry.customEmoji;
 import static com.github.sfenker.essential.registry.StructureExplosiveSetRegistry.structureExplosivesSetRegistry;
 import static com.github.sfenker.essential.utility.DiscordUtility.*;
@@ -195,12 +194,14 @@ public class CommandCalculator {
         if (isNull(this.session.currentStructure)) {
             event.with()
                 .ephemeral(true)
-                .reply(
-                    componentContainerBuilder()
-                        .textDisplay("### :warning: Error Occurred")
-                        .textDisplay("You must select structure before providing amount.")
-                        .build()
-                );
+                .reply(container(
+                    textDisplay(
+                        """
+                        ### :warning: Error Occurred
+                        You must select structure before providing amount.
+                        """
+                    )
+                ));
             return;
         }
 
@@ -309,7 +310,7 @@ public class CommandCalculator {
                     textDisplay(
                         """
                         ### :warning: Error Occurred
-                        Please provide valid amount of structures.
+                        Please provide valid amount of structures that will be an ``Integer``.
                         """
                     )
                 ));

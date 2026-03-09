@@ -5,7 +5,8 @@ import net.dv8tion.jda.api.components.MessageTopLevelComponent;
 import net.dv8tion.jda.api.events.interaction.GenericInteractionCreateEvent;
 import org.jetbrains.annotations.NotNull;
 
-import static com.github.sfenker.essential.builder.ComponentContainerBuilder.componentContainerBuilder;
+import static com.github.sfenker.essential.utility.DiscordUtility.container;
+import static com.github.sfenker.essential.utility.DiscordUtility.textDisplay;
 import static com.github.sfenker.essential.utility.StringUtility.throwableToString;
 import static io.github.kaktushose.proteus.conversion.ConversionResult.Failure;
 
@@ -16,20 +17,28 @@ public class ErrorMessageFactoryImpl implements ErrorMessageFactory {
         @NotNull ErrorContext context,
         @NotNull Failure<?> failure
     ) {
-        return componentContainerBuilder()
-            .textDisplay("### :warning: Error Occurred")
-            .textDisplay("Invalid argument type was provided.")
-            .build();
+        return container(
+            textDisplay(
+                """
+                ### :warning: Error Occurred
+                An error occurred while converting the interaction's arguments.
+                """
+            )
+        );
     }
 
     @Override
     public @NotNull MessageTopLevelComponent getInsufficientPermissionsMessage(
         @NotNull ErrorContext context
     ) {
-        return componentContainerBuilder()
-            .textDisplay("### :warning: Error Occurred")
-            .textDisplay("You don't have permissions to execute that interaction.")
-            .build();
+        return container(
+            textDisplay(
+                """
+                ### :warning: Error Occurred
+                You don't have permission to execute that interaction.
+                """
+            )
+        );
     }
 
     @Override
@@ -37,10 +46,14 @@ public class ErrorMessageFactoryImpl implements ErrorMessageFactory {
         @NotNull ErrorContext context,
         @NotNull String message
     ) {
-        return componentContainerBuilder()
-            .textDisplay("### :warning: Error Occurred")
-            .textDisplay(message)
-            .build();
+        return container(
+            textDisplay(
+                """
+                ### :warning: Error Occurred
+                %s
+                """, message
+            )
+        );
     }
 
     @Override
@@ -55,24 +68,35 @@ public class ErrorMessageFactoryImpl implements ErrorMessageFactory {
     public @NotNull MessageTopLevelComponent getTimedOutComponentMessage(
         @NotNull GenericInteractionCreateEvent event
     ) {
-        return componentContainerBuilder()
-            .textDisplay("### :warning: Error Occurred")
-            .textDisplay("This interaction has expired and can no longer be used.")
-            .build();
+        return container(
+            textDisplay(
+                """
+                ### :warning: Error Occurred
+                That interaction has expired and can no longer be used.
+                """
+            )
+        );
     }
 
     public static @NotNull MessageTopLevelComponent exceptionMessageTemplate(
         @NotNull Throwable throwable
     ) {
-        return componentContainerBuilder()
-            .textDisplay("### :warning: Error Occurred")
-            .textDisplay("An unexpected exception was thrown while executing that interaction.")
-            .textDisplay("### :scroll: Stacktrace")
-            .textDisplay(
-                "```\n%s\n```",
-                throwableToString(throwable)
-            )
-            .build();
+        return container(
+            textDisplay(
+                """
+                ### :warning: Error Occurred
+                An unexpected exception was thrown while executing that interaction.
+                """
+            ),
+                textDisplay(
+                    """
+                    ### :scroll: Stacktrace
+                    ```
+                    %s
+                    ```
+                    """, throwableToString(throwable)
+                )
+        );
     }
 
 }

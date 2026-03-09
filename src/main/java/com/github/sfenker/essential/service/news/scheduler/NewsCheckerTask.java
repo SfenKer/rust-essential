@@ -14,8 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
-import static com.github.sfenker.essential.builder.ComponentContainerBuilder.componentContainerBuilder;
-import static java.lang.String.format;
+import static com.github.sfenker.essential.utility.DiscordUtility.*;
 import static java.util.Optional.ofNullable;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static net.dv8tion.jda.api.components.buttons.Button.link;
@@ -47,19 +46,20 @@ public class NewsCheckerTask {
         if (channel == null)
             return;
 
-        channel.sendMessageComponents(
-                componentContainerBuilder()
-                    .section(
-                        fromUrl(guild.getJDA().getSelfUser().getAvatarUrl()),
-                        format("### %s", news.title),
-                        news.description
+        channel.sendMessageComponents(container(
+                section(
+                    fromUrl(guild.getJDA().getSelfUser().getAvatarUrl()),
+                    textDisplay(
+                        """
+                        ### :newspaper: %s
+                        %s
+                        """, news.title, news.description
                     )
-                    .gallery(news.thumbnail)
-                    .actionRow(
-                        link(news.url, "Read More")
-                    )
-                    .build()
-            )
+                ),
+                actionRow(
+                    link(news.url, "Read More")
+                )
+            ))
             .useComponentsV2()
             .queue();
 

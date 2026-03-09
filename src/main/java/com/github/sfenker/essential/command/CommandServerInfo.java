@@ -8,6 +8,8 @@ import io.github.kaktushose.jdac.annotations.interactions.*;
 import io.github.kaktushose.jdac.dispatching.events.interactions.AutoCompleteEvent;
 import io.github.kaktushose.jdac.dispatching.events.interactions.CommandEvent;
 import lombok.extern.slf4j.Slf4j;
+import net.dv8tion.jda.api.components.container.ContainerChildComponent;
+import net.dv8tion.jda.api.components.thumbnail.Thumbnail;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.InetSocketAddress;
@@ -15,8 +17,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
+import java.util.stream.Stream;
 
-import static com.github.sfenker.essential.builder.ComponentContainerBuilder.componentContainerBuilder;
+import static com.github.sfenker.essential.utility.DiscordUtility.*;
 import static com.github.sfenker.essential.utility.StringUtility.formatDuration;
 import static com.github.sfenker.essential.wrapper.RustMapsWrapper.mapImageAsync;
 import static com.google.common.collect.ImmutableSet.of;
@@ -33,7 +36,7 @@ import static java.util.concurrent.CompletableFuture.completedFuture;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static java.util.stream.Collectors.*;
 import static java.util.stream.IntStream.rangeClosed;
-import static net.dv8tion.jda.api.components.thumbnail.Thumbnail.fromUrl;
+import static net.dv8tion.jda.api.components.thumbnail.Thumbnail.fromFile;
 import static net.dv8tion.jda.api.interactions.IntegrationType.GUILD_INSTALL;
 import static net.dv8tion.jda.api.interactions.IntegrationType.USER_INSTALL;
 import static org.apache.commons.lang3.function.Failable.run;
@@ -80,15 +83,14 @@ public class CommandServerInfo {
                 var serverInfoResult = entry.getKey();
                 var serverRulesResult = entry.getValue();
 
-                var logo = ofNullable(serverRulesResult.get("logoimage"))
-                    .orElse(jdaEvent.getJDA().getSelfUser().getAvatarUrl());
-
-                var builder = componentContainerBuilder()
-                    .section(
-                        fromUrl(logo),
-                        "### :desktop: Server Information",
-                        format(
+                var serverInfoSection =
+                    section(
+                        ofNullable(serverRulesResult.get("logoimage"))
+                            .map(Thumbnail::fromUrl)
+                            .orElse(fromFile(logoAsFileUpload())),
+                        textDisplay(
                             """
+                            ### :desktop: Server Information
                             **Name:** ``%s``
                             **Description:**
                             ```
@@ -98,10 +100,12 @@ public class CommandServerInfo {
                             serverInfoResult.getName(),
                             readServerDescription(serverRulesResult)
                         )
-                    )
-                    .textDisplay("### :bar_chart: Server Statistics")
-                    .textDisplay(
+                    );
+
+                var serverStats =
+                    textDisplay(
                         """
+                        ### :bar_chart: Server Statistics
                         **Players:** ``%d/%d``
                         **Uptime:** ``%s``
                         """,
@@ -113,24 +117,37 @@ public class CommandServerInfo {
                         )))
                     );
 
-                if (serverInfoResult.getMapName().equals("Procedural Map")) {
-                    var mapSize = parseInt(serverRulesResult.get("world.size"));
-                    var mapSeed = parseLong(serverRulesResult.get("world.seed"));
-                    return mapImageAsync(mapSize, mapSeed).thenApply(url -> {
-                        builder.textDisplay("### :map: Server Map")
-                            .textDisplay(
-                                "Preview of ``%s`` map from that server.",
-                                serverInfoResult.getMapName()
-                            )
-                            .gallery(url);
-                        return builder;
-                    });
-                }
 
-                return completedFuture(builder);
+                var mapSize = parseInt(serverRulesResult.get("world.size"));
+                var mapSeed = parseLong(serverRulesResult.get("world.seed"));
+
+                var mapSectionAvailable = serverInfoResult.getMapName()
+                    .equals("Procedural Map");
+
+                return completedFuture(container(
+                    Stream.of(
+                        serverInfoSection,
+                        serverStats,
+                        (mapSectionAvailable) ?
+                            textDisplay(
+                                """
+                                ### :world_map: Server Map
+                                Preview of ``%s`` map from that server.
+                                """, serverInfoResult.getMapName()
+                            ) : null,
+                        (mapSectionAvailable) ?
+                            mapImageAsync(mapSize, mapSeed)
+                                .thenApply((url) ->
+                                    mediaGallery(mediaGalleryItem(url))
+                                ) : null
+                    )
+                        .filter(Objects::nonNull)
+                        .map(ContainerChildComponent.class::cast)
+                        .toList()
+                ));
 
             })
-            .whenComplete((builder, throwable) -> {
+            .whenComplete((container, throwable) -> {
 
                 run(client::close);
 
@@ -138,12 +155,14 @@ public class CommandServerInfo {
 
                     log.error("Error occurred while fetching server info for {}:{}", host, port, throwable);
                     jdaEvent.getHook()
-                        .editOriginalComponents(
-                            componentContainerBuilder()
-                                .textDisplay("### :warning: Error Occurred")
-                                .textDisplay("An error occurred while fetching information about the server.")
-                                .build()
-                        )
+                        .editOriginalComponents(container(
+                            textDisplay(
+                                """
+                                ### :warning: Error Occurred
+                                An error occurred while fetching information about the server.
+                                """
+                            )
+                        ))
                         .useComponentsV2()
                         .queue();
                     return;
@@ -151,7 +170,7 @@ public class CommandServerInfo {
                 }
 
                 jdaEvent.getHook()
-                    .editOriginalComponents(builder.build())
+                    .editOriginalComponents(container)
                     .useComponentsV2()
                     .queue();
 

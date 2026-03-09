@@ -6,6 +6,8 @@ import net.dv8tion.jda.api.components.container.Container;
 import net.dv8tion.jda.api.components.container.ContainerChildComponent;
 import net.dv8tion.jda.api.components.label.Label;
 import net.dv8tion.jda.api.components.label.LabelChildComponent;
+import net.dv8tion.jda.api.components.mediagallery.MediaGallery;
+import net.dv8tion.jda.api.components.mediagallery.MediaGalleryItem;
 import net.dv8tion.jda.api.components.section.Section;
 import net.dv8tion.jda.api.components.section.SectionAccessoryComponent;
 import net.dv8tion.jda.api.components.section.SectionContentComponent;
@@ -15,6 +17,8 @@ import net.dv8tion.jda.api.components.textinput.TextInput;
 import net.dv8tion.jda.api.components.textinput.TextInputStyle;
 import net.dv8tion.jda.api.utils.FileUpload;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
 
 import static com.github.sfenker.essential.utility.StreamUtility.resourceStream;
 import static net.dv8tion.jda.api.components.textdisplay.TextDisplay.ofFormat;
@@ -56,6 +60,12 @@ public class DiscordUtility {
         return Container.of(component, components);
     }
 
+    public static @NotNull Container container(
+        @NotNull Collection<ContainerChildComponent> components
+    ) {
+        return Container.of(components);
+    }
+
     public static @NotNull ActionRow actionRow(
         @NotNull ActionRowChildComponent component,
         @NotNull ActionRowChildComponent... components
@@ -82,6 +92,19 @@ public class DiscordUtility {
         @NotNull LabelChildComponent labelChildComponent
     ) {
         return Label.of(string, labelChildComponent);
+    }
+
+    public static @NotNull MediaGallery mediaGallery(
+        @NotNull MediaGalleryItem mediaGalleryItem,
+        @NotNull MediaGalleryItem... mediaGalleryItems
+    ) {
+        return MediaGallery.of(mediaGalleryItem, mediaGalleryItems);
+    }
+
+    public static @NotNull MediaGalleryItem mediaGalleryItem(
+        @NotNull String url
+    ) {
+        return MediaGalleryItem.fromUrl(url);
     }
 
 }

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.github.sfenker.essential.Constants.gitHash;
 import static com.github.sfenker.essential.Constants.projectVersion;
-import static com.github.sfenker.essential.builder.ComponentContainerBuilder.componentContainerBuilder;
+import static com.github.sfenker.essential.utility.DiscordUtility.*;
 import static com.github.sfenker.essential.utility.StringUtility.formatDuration;
 import static com.github.sfenker.essential.utility.SystemUtility.cpuUsage;
 import static com.github.sfenker.essential.utility.SystemUtility.memoryUsage;
@@ -19,12 +19,10 @@ import static java.lang.management.ManagementFactory.getRuntimeMXBean;
 import static java.time.Duration.between;
 import static java.time.Instant.now;
 import static java.time.Instant.ofEpochMilli;
-import static java.util.Arrays.asList;
 import static net.dv8tion.jda.api.components.buttons.Button.link;
-import static net.dv8tion.jda.api.components.thumbnail.Thumbnail.fromUrl;
+import static net.dv8tion.jda.api.components.thumbnail.Thumbnail.fromFile;
 import static net.dv8tion.jda.api.interactions.IntegrationType.GUILD_INSTALL;
 import static net.dv8tion.jda.api.interactions.IntegrationType.USER_INSTALL;
-import static org.apache.commons.lang3.StringUtils.join;
 
 @Interaction
 public class CommandAbout {
@@ -37,65 +35,53 @@ public class CommandAbout {
     public void executeDefault(
         @NotNull CommandEvent event
     ) {
-        event.jdaEvent()
-            .replyComponents(
-                componentContainerBuilder()
-                    .section(
-                        fromUrl(event.getJDA().getSelfUser().getAvatarUrl()),
-                        "### :tools: Rust Essential",
-                        "Rust Essential is a project that provides many features like News, Raid Cost Calculator and more features that will be great for your Rust Community discord server."
-                    )
-                    .textDisplay("### :receipt: General Information")
-                    .textDisplay(
-                        join(asList(
-                            "**Version:** ``%s (git/%s)``",
-                            "**JVM Version:** ``%s (%s)``"
-                        ), "\n"),
+        event.with()
+            .ephemeral(true)
+            .reply(container(
+                section(
+                    fromFile(logoAsFileUpload()),
+                    textDisplay(
+                        """
+                        ### :tools: Rust Essential
+                        Rust Essential is a project that provides many features like News, Raid Cost Calculator and more features that will be great for your Rust Community discord server.
+
+                        ### :receipt: General Information
+                        **Version:** ``%s (git/%s)``
+                        **JVM Version:** ``%s (%s)``
+
+                        ### :robot: Bot Information
+                        **Shard:** ``#%d``
+                        **Uptime:** ``%s``
+                        **Latency:** ``%.0fms``
+                        **Guilds:** ``%d guilds``
+                        **Users:** ``%d users``
+
+                        ### :desktop: Hardware Information
+                        **CPU Usage:** ``%.2f%%``
+                        **Memory Usage:** ``%d MiB``
+
+                        ### :technologist: Source Code and License
+                        This project is open source and licensed under [AGPL v3](https://en.wikipedia.org/wiki/GNU_Affero_General_Public_License) license.
+                        You can find the source code on GitHub and also join our Discord server to contribute or ask for help.
+                        """,
                         projectVersion, gitHash,
                         getProperty("java.version"),
-                        getProperty("java.vendor")
-                    )
-                    .textDisplay("### :robot: Bot Information")
-                    .textDisplay(
-                        join(asList(
-                            "**Shard:** ``%d``",
-                            "**Uptime:** ``%s``",
-                            "**Latency:** ``%.0fms``",
-                            "**Guilds:** ``%d guilds``",
-                            "**Users:** ``%d users``"
-                        ), "\n"),
+                        getProperty("java.vendor"),
                         event.getJDA().getShardInfo()
                             .getShardId(),
                         formatDuration(between(ofEpochMilli(startTime), now())),
                         this.shardManager.getAverageGatewayPing(),
                         this.shardManager.getGuildCache().size(),
-                        this.shardManager.getUserCache().size()
-                    )
-                    .textDisplay("### :desktop: Hardware Information")
-                    .textDisplay(
-                        join(asList(
-                            "**CPU Usage:** ``%.2f%%``",
-                            "**Memory Usage:** ``%d MiB``"
-                        ), "\n"),
+                        this.shardManager.getUserCache().size(),
                         cpuUsage(),
                         memoryUsage()
                     )
-                    .textDisplay("### :technologist: Source Code and License")
-                    .textDisplay(join(
-                        new String[] {
-                            "This project is open source and licensed under [AGPL v3](https://en.wikipedia.org/wiki/GNU_Affero_General_Public_License) license.",
-                            "You can find the source code on GitHub and also join our Discord server to contribute or ask for help."
-                        }, "\n"
-                    ))
-                    .actionRow(
-                        link("https://github.com/SfenKer/rust-essential", "GitHub Repository"),
-                        link("https://discord.com/invite/C8dF6zkYff", "Discord Server")
-                    )
-                    .build()
-            )
-            .useComponentsV2()
-            .setEphemeral(true)
-            .queue();
+                ),
+                actionRow(
+                    link("https://discord.com/invite/C8dF6zkYff", "Discord Server"),
+                    link("https://github.com/SfenKer/rust-essential", "GitHub Repository")
+                )
+            ));
     }
 
     static final Long startTime =

@@ -10,8 +10,9 @@ import io.github.kaktushose.jdac.dispatching.events.interactions.CommandEvent;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.jetbrains.annotations.NotNull;
 
-import static com.github.sfenker.essential.builder.ComponentContainerBuilder.componentContainerBuilder;
 import static com.github.sfenker.essential.command.internal.ErrorMessageFactoryImpl.exceptionMessageTemplate;
+import static com.github.sfenker.essential.utility.DiscordUtility.container;
+import static com.github.sfenker.essential.utility.DiscordUtility.textDisplay;
 import static net.dv8tion.jda.api.Permission.MANAGE_SERVER;
 import static net.dv8tion.jda.api.Permission.MESSAGE_SEND;
 import static net.dv8tion.jda.api.interactions.IntegrationType.GUILD_INSTALL;
@@ -38,12 +39,15 @@ public class CommandConfiguration {
         if (!checkPermission(channel, event.getGuild().getSelfMember(), MESSAGE_SEND)) {
             event.with()
                 .ephemeral(true)
-                .reply(
-                    componentContainerBuilder()
-                        .textDisplay("### :warning: Error Occurred")
-                        .textDisplay("Bot doesn't have permissions to send messages in that channel.")
-                        .build()
-                );
+                .reply(container(
+                    textDisplay(
+                        """
+                        ### :warning: Error Occurred
+                        I don't have permission to send messages in %s channel.
+                        Please make sure I have the required permissions and try again.
+                        """, channel.getAsMention()
+                    )
+                ));
             return;
         }
 
@@ -60,12 +64,14 @@ public class CommandConfiguration {
             .thenRun(
                 () ->
                     jdaEvent.getHook()
-                        .editOriginalComponents(
-                            componentContainerBuilder()
-                                .textDisplay("### :tools: Configuration")
-                                .textDisplay("Channel %s was set as news channel.", channel.getAsMention())
-                                .build()
-                        )
+                        .editOriginalComponents(container(
+                            textDisplay(
+                                """
+                                ### :tools: Configuration
+                                Channel %s was set as news channel.
+                                """, channel.getAsMention()
+                            )
+                        ))
                         .useComponentsV2()
                         .queue()
             )
