@@ -47,6 +47,7 @@ dependencies {
     /* Serialization & Data */
     implementation(libs.gson)
     implementation(libs.guava)
+    implementation(libs.caffeine)
 
     /* Database */
     implementation(libs.hikaricp)
@@ -61,9 +62,7 @@ dependencies {
     implementation(libs.unirest.java.core)
     implementation(libs.unirest.modules.gson)
     implementation(libs.logback.classic)
-
-    /* Misc */
-    implementation(libs.source.query)
+    implementation(libs.apache.commons.lang3)
 
     /* Lombok */
     compileOnly(libs.lombok)

@@ -5,6 +5,7 @@ import com.github.sfenker.essential.listener.GuildActionListener;
 import com.github.sfenker.essential.scheduler.factory.SchedulerFactory;
 import com.github.sfenker.essential.service.news.NewsService;
 import com.github.sfenker.essential.service.news.entity.NewsHistoryEntity;
+import com.github.sfenker.essential.service.server.ServerInfoService;
 import com.github.sfenker.essential.settings.GuildSettingsManager;
 import com.github.sfenker.essential.settings.entity.GuildSettingsEntity;
 import com.google.inject.Injector;
@@ -113,6 +114,9 @@ public class Entrypoint {
     final NewsService newsService =
         new NewsService(this.sessionFactory, this.schedulerFactory);
 
+    final ServerInfoService serverInfoService =
+        new ServerInfoService();
+
     final Injector injector =
         createInjector(
             (binder) -> {
@@ -125,6 +129,9 @@ public class Entrypoint {
 
                 binder.bind(NewsService.class)
                     .toInstance(this.newsService);
+
+                binder.bind(ServerInfoService.class)
+                    .toInstance(this.serverInfoService);
 
                 binder.bind(GuildSettingsManager.class)
                     .toInstance(this.guildSettingsManager);
