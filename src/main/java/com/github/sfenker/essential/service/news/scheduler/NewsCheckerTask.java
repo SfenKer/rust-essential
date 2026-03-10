@@ -56,6 +56,7 @@ public class NewsCheckerTask {
                         """, news.title, news.description
                     )
                 ),
+                mediaGallery(mediaGalleryItem(news.thumbnail)),
                 actionRow(
                     link(news.url, "Read More")
                 )

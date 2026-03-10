@@ -88,14 +88,14 @@ public class ErrorMessageFactoryImpl implements ErrorMessageFactory {
                 An unexpected exception was thrown while executing that interaction.
                 """
             ),
-                textDisplay(
-                    """
-                    ### :scroll: Stacktrace
-                    ```
-                    %s
-                    ```
-                    """, throwableToString(throwable)
-                )
+            textDisplay(
+                """
+                ### :scroll: Stacktrace
+                ```
+                %s
+                ```
+                """, throwableToString(throwable)
+            )
         );
     }
 
