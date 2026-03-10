@@ -27,7 +27,7 @@ public class GuildActionListener extends ListenerAdapter {
     ) {
         log.info("Application left from '{}' guild.", event.getGuild().getName());
         this.guildSettingsManager.get(event.getGuild().getIdLong())
-            .thenApply(this.guildSettingsManager::drop);
+            .thenAccept(this.guildSettingsManager::drop);
     }
 
 }

@@ -31,7 +31,7 @@ public class News {
 
         checkArgument(
             matcher.matches(),
-            "Invalid News Decription: %s",
+            "Invalid News Description: %s",
             description
         );
 

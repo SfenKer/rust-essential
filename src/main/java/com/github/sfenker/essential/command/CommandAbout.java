@@ -44,22 +44,18 @@ public class CommandAbout {
                         """
                         ### :tools: Rust Essential
                         Rust Essential is a project that provides many features like News, Raid Cost Calculator and more features that will be great for your Rust Community discord server.
-
                         ### :receipt: General Information
                         **Version:** ``%s (git/%s)``
                         **JVM Version:** ``%s (%s)``
-
                         ### :robot: Bot Information
                         **Shard:** ``#%d``
                         **Uptime:** ``%s``
                         **Latency:** ``%.0fms``
                         **Guilds:** ``%d guilds``
                         **Users:** ``%d users``
-
                         ### :desktop: Hardware Information
                         **CPU Usage:** ``%.2f%%``
                         **Memory Usage:** ``%d MiB``
-
                         ### :technologist: Source Code and License
                         This project is open source and licensed under [AGPL v3](https://en.wikipedia.org/wiki/GNU_Affero_General_Public_License) license.
                         You can find the source code on GitHub and also join our Discord server to contribute or ask for help.
