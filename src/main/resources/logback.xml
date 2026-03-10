@@ -1,5 +1,5 @@
 <configuration>
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/latest.log</file>
         <encoder>
             <pattern>[%d{HH:mm:ss}] [%level] [%-36logger{36}]: %msg%n</pattern>
@@ -9,14 +9,14 @@
             <maxHistory>30</maxHistory>
         </rollingPolicy>
     </appender>
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="Terminal" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>[%d{HH:mm:ss}] [%level] [%-36logger{36}]: %msg%n</pattern>
         </encoder>
     </appender>
     <root level="info">
-        <appender-ref ref="FILE" />
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="File" />
+        <appender-ref ref="Terminal" />
     </root>
     <logger name="com.ibasco.agql.core" level="OFF" />
 </configuration>

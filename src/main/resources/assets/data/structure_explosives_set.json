@@ -1,0 +1,783 @@
+[
+  {
+    "id": "sulphur",
+    "name": "Any Explosives",
+    "structures": [
+      {
+        "id": "wood",
+        "name": "Wooden Wall",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 3,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "stone",
+        "name": "Stone Wall",
+        "costs": {
+          "rocket": 4,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "metal",
+        "name": "Sheet Metal Wall",
+        "costs": {
+          "rocket": 8,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "high_quality_metal",
+        "name": "Armored Wall",
+        "costs": {
+          "rocket": 16,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "metal_shop_front",
+        "name": "Metal Shop Front",
+        "costs": {
+          "rocket": 6,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "wooden_door",
+        "name": "Wooden Door",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 19
+        }
+      },
+      {
+        "id": "sheet_metal_door",
+        "name": "Sheet Metal Door",
+        "costs": {
+          "rocket": 1,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 8
+        }
+      },
+      {
+        "id": "armored_door",
+        "name": "Armored Door",
+        "costs": {
+          "rocket": 1,
+          "bomb": 2,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "garage_door",
+        "name": "Garage Door",
+        "costs": {
+          "rocket": 3,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "ladder_hatch",
+        "name": "Ladder Hatch",
+        "costs": {
+          "rocket": 1,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 8
+        }
+      },
+      {
+        "id": "wooden_window_bars",
+        "name": "Wooden Window Bars",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 50
+        }
+      },
+      {
+        "id": "metal_window_bars",
+        "name": "Metal Window Bars",
+        "costs": {
+          "rocket": 4,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "vending_machine",
+        "name": "Vending Machine",
+        "costs": {
+          "rocket": 2,
+          "bomb": 2,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "external_wooden_wall",
+        "name": "External Wooden Wall",
+        "costs": {
+          "rocket": 2,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 4
+        }
+      },
+      {
+        "id": "external_stone_wall",
+        "name": "External Stone Wall",
+        "costs": {
+          "rocket": 4,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "rocket",
+    "name": "Rocket",
+    "structures": [
+      {
+        "id": "wood",
+        "name": "Wooden Wall",
+        "costs": {
+          "rocket": 2,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "stone",
+        "name": "Stone Wall",
+        "costs": {
+          "rocket": 4,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "metal",
+        "name": "Sheet Metal Wall",
+        "costs": {
+          "rocket": 8,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "high_quality_metal",
+        "name": "Armored Wall",
+        "costs": {
+          "rocket": 16,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "metal_shop_front",
+        "name": "Metal Shop Front",
+        "costs": {
+          "rocket": 6,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "wooden_door",
+        "name": "Wooden Door",
+        "costs": {
+          "rocket": 1,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "sheet_metal_door",
+        "name": "Sheet Metal Door",
+        "costs": {
+          "rocket": 2,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "armored_door",
+        "name": "Armored Door",
+        "costs": {
+          "rocket": 5,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "garage_door",
+        "name": "Garage Door",
+        "costs": {
+          "rocket": 3,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "ladder_hatch",
+        "name": "Ladder Hatch",
+        "costs": {
+          "rocket": 2,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "wooden_window_bars",
+        "name": "Wooden Window Bars",
+        "costs": {
+          "rocket": 2,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "metal_window_bars",
+        "name": "Metal Window Bars",
+        "costs": {
+          "rocket": 4,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "vending_machine",
+        "name": "Vending Machine",
+        "costs": {
+          "rocket": 10,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "external_wooden_wall",
+        "name": "External Wooden Wall",
+        "costs": {
+          "rocket": 3,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "external_stone_wall",
+        "name": "External Stone Wall",
+        "costs": {
+          "rocket": 4,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "timed_explosive_charge",
+    "name": "Timed Explosive Charge",
+    "structures": [
+      {
+        "id": "wood",
+        "name": "Wooden Wall",
+        "costs": {
+          "rocket": 0,
+          "bomb": 1,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "stone",
+        "name": "Stone Wall",
+        "costs": {
+          "rocket": 0,
+          "bomb": 2,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "metal",
+        "name": "Sheet Metal Wall",
+        "costs": {
+          "rocket": 0,
+          "bomb": 4,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "high_quality_metal",
+        "name": "Armored Wall",
+        "costs": {
+          "rocket": 0,
+          "bomb": 8,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "metal_shop_front",
+        "name": "Metal Shop Front",
+        "costs": {
+          "rocket": 0,
+          "bomb": 3,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "wooden_door",
+        "name": "Wooden Door",
+        "costs": {
+          "rocket": 0,
+          "bomb": 1,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "sheet_metal_door",
+        "name": "Sheet Metal Door",
+        "costs": {
+          "rocket": 0,
+          "bomb": 1,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "armored_door",
+        "name": "Armored Door",
+        "costs": {
+          "rocket": 0,
+          "bomb": 3,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "garage_door",
+        "name": "Garage Door",
+        "costs": {
+          "rocket": 0,
+          "bomb": 2,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "ladder_hatch",
+        "name": "Ladder Hatch",
+        "costs": {
+          "rocket": 0,
+          "bomb": 1,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "wooden_window_bars",
+        "name": "Wooden Window Bars",
+        "costs": {
+          "rocket": 0,
+          "bomb": 1,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "metal_window_bars",
+        "name": "Metal Window Bars",
+        "costs": {
+          "rocket": 0,
+          "bomb": 2,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "vending_machine",
+        "name": "Vending Machine",
+        "costs": {
+          "rocket": 0,
+          "bomb": 3,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "external_wooden_wall",
+        "name": "External Wooden Wall",
+        "costs": {
+          "rocket": 0,
+          "bomb": 2,
+          "satchel": 0,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "external_stone_wall",
+        "name": "External Stone Wall",
+        "costs": {
+          "rocket": 0,
+          "bomb": 2,
+          "satchel": 0,
+          "explosive": 0
+        }
+      }
+    ]
+  },
+
+  {
+    "id": "satchel_explosive_charge",
+    "name": "Satchel Explosive Charge",
+    "structures": [
+      {
+        "id": "wood",
+        "name": "Wooden Wall",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 3,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "stone",
+        "name": "Stone Wall",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 10,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "metal",
+        "name": "Sheet Metal Wall",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 23,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "high_quality_metal",
+        "name": "Armored Wall",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 45,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "metal_shop_front",
+        "name": "Metal Shop Front",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 18,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "wooden_door",
+        "name": "Wooden Door",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 2,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "sheet_metal_door",
+        "name": "Sheet Metal Door",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 4,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "armored_door",
+        "name": "Armored Door",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 15,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "garage_door",
+        "name": "Garage Door",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 9,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "ladder_hatch",
+        "name": "Ladder Hatch",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 4,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "wooden_window_bars",
+        "name": "Wooden Window Bars",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 3,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "metal_window_bars",
+        "name": "Metal Window Bars",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 12,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "vending_machine",
+        "name": "Vending Machine",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 15,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "external_wooden_wall",
+        "name": "External Wooden Wall",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 6,
+          "explosive": 0
+        }
+      },
+      {
+        "id": "external_stone_wall",
+        "name": "External Stone Wall",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 10,
+          "explosive": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "explosive_ammo",
+    "name": "Explosive Ammo",
+    "structures": [
+      {
+        "id": "wood",
+        "name": "Wooden Wall",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 43
+        }
+      },
+      {
+        "id": "stone",
+        "name": "Stone Wall",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 202
+        }
+      },
+      {
+        "id": "metal",
+        "name": "Sheet Metal Wall",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 466
+        }
+      },
+      {
+        "id": "high_quality_metal",
+        "name": "Armored Wall",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 902
+        }
+      },
+      {
+        "id": "metal_shop_front",
+        "name": "Metal Shop Front",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 306
+        }
+      },
+      {
+        "id": "wooden_door",
+        "name": "Wooden Door",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 18
+        }
+      },
+      {
+        "id": "sheet_metal_door",
+        "name": "Sheet Metal Door",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 66
+        }
+      },
+      {
+        "id": "armored_door",
+        "name": "Armored Door",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 250
+        }
+      },
+      {
+        "id": "garage_door",
+        "name": "Garage Door",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 151
+        }
+      },
+      {
+        "id": "ladder_hatch",
+        "name": "Ladder Hatch",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 64
+        }
+      },
+      {
+        "id": "wooden_window_bars",
+        "name": "Wooden Window Bars",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 50
+        }
+      },
+      {
+        "id": "metal_window_bars",
+        "name": "Metal Window Bars",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 211
+        }
+      },
+      {
+        "id": "vending_machine",
+        "name": "Vending Machine",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 500
+        }
+      },
+      {
+        "id": "external_wooden_wall",
+        "name": "External Wooden Wall",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 94
+        }
+      },
+      {
+        "id": "external_stone_wall",
+        "name": "External Stone Wall",
+        "costs": {
+          "rocket": 0,
+          "bomb": 0,
+          "satchel": 0,
+          "explosive": 178
+        }
+      }
+    ]
+  }
+]
