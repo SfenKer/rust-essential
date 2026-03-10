@@ -13,20 +13,22 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static com.github.sfenker.essential.utility.ReflectionUtility.supplyMethod;
 import static com.github.sfenker.essential.utility.ReflectionUtility.writeField;
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.Lists.cartesianProduct;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
 import static java.util.Arrays.stream;
 import static java.util.concurrent.Executors.newScheduledThreadPool;
 import static java.util.function.UnaryOperator.identity;
 import static java.util.stream.Collectors.toMap;
+import static java.util.stream.IntStream.range;
 
 /*
  * Actually this is a concept, but probably
@@ -64,10 +66,9 @@ public class SchedulerFactory {
     }
 
     public void build() {
-
         this.tasks.stream()
             .collect(toMap(
-                (clazz) -> clazz,
+                identity(),
                 this::initScheduledTask
             ))
             .forEach(
@@ -78,7 +79,6 @@ public class SchedulerFactory {
                         clazz.getAnnotation(Scheduler.class).unit()
                     )
             );
-
     }
 
     @SneakyThrows
@@ -128,7 +128,19 @@ public class SchedulerFactory {
                 identity()
             ));
 
+        var idx = range(0, method.getParameters().length)
+            .filter(
+                (i) ->
+                    method.getParameters()[i].getType() == Integer.class
+            )
+            .findFirst()
+            .orElse(-1);
+
         var parameters = stream(method.getParameters())
+            .filter(
+                (parameter) ->
+                    parameter.getType() != Integer.class
+            )
             .map(
                 (parameter) ->
                     (Supplier) () -> supplyMethod(
@@ -138,6 +150,7 @@ public class SchedulerFactory {
             )
             .toList();
 
+        final var itCounter = new AtomicInteger();
         return () -> {
 
             var raw = parameters.stream()
@@ -150,28 +163,24 @@ public class SchedulerFactory {
                         switch (object) {
 
                             case Collection<?> collection ->
-                                copyOf(
-                                    collection.stream()
-                                        .map(
-                                            (item) ->
-                                                (item instanceof CompletableFuture<?> completableFuture) ?
-                                                    completableFuture.join() : item
-                                        )
-                                        .filter(Objects::nonNull)
-                                        .toList()
-                                );
+                                collection.stream()
+                                    .map(
+                                        (item) ->
+                                            (item instanceof CompletableFuture<?> completableFuture) ?
+                                                completableFuture.join() : item
+                                    )
+                                    .filter(Objects::nonNull)
+                                    .toList();
 
                             case Stream<?> stream ->
-                                copyOf(
-                                    stream
-                                        .map(
-                                            (item) ->
-                                                (item instanceof CompletableFuture<?> completableFuture) ?
-                                                    completableFuture.join() : item
-                                        )
-                                        .filter(Objects::nonNull)
-                                        .toList()
-                                );
+                                stream
+                                    .map(
+                                        (item) ->
+                                            (item instanceof CompletableFuture<?> completableFuture) ?
+                                                completableFuture.join() : item
+                                    )
+                                    .filter(Objects::nonNull)
+                                    .toList();
 
                             default ->
                                 throw new IllegalStateException("Unsupported Type: " + object.getClass().getName());
@@ -181,10 +190,16 @@ public class SchedulerFactory {
                 .toList();
 
             cartesianProduct(args)
-                .forEach(
-                    (arguments) ->
-                        supplyMethod(method, instance, arguments.toArray())
-                );
+                .forEach((arguments) -> {
+
+                    var argList = newArrayList(arguments);
+
+                    if (idx != -1)
+                        argList.add(idx, itCounter.getAndIncrement());
+
+                    supplyMethod(method, instance, argList.toArray());
+
+                });
 
         };
 

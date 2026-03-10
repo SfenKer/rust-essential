@@ -17,9 +17,11 @@ import java.util.stream.Stream;
 import static com.github.sfenker.essential.utility.DiscordUtility.*;
 import static java.util.Optional.ofNullable;
 import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static net.dv8tion.jda.api.components.buttons.Button.link;
 import static net.dv8tion.jda.api.components.thumbnail.Thumbnail.fromUrl;
 
+@SuppressWarnings("ConstantConditions")
 @Scheduler(period = 5, unit = MINUTES)
 public class NewsCheckerTask {
 
@@ -34,36 +36,35 @@ public class NewsCheckerTask {
 
     @Entrypoint
     void entrypoint(
+        @NotNull Integer it,
         @NotNull News news,
         @NotNull Guild guild
     ) {
-
-        var settings = this.guildSettingsManager.get(guild.getIdLong())
-            .join();
-
-        assert settings.newsChannelId != null;
-        var channel = guild.getTextChannelById(settings.newsChannelId);
-        if (channel == null)
-            return;
-
-        channel.sendMessageComponents(container(
-                section(
-                    fromUrl(guild.getJDA().getSelfUser().getAvatarUrl()),
-                    textDisplay(
-                        """
-                        ### :newspaper: %s
-                        %s
-                        """, news.title, news.description
-                    )
-                ),
-                mediaGallery(mediaGalleryItem(news.thumbnail)),
-                actionRow(
-                    link(news.url, "Read More")
-                )
-            ))
-            .useComponentsV2()
-            .queue();
-
+        this.guildSettingsManager.get(guild.getIdLong())
+            .thenApply(
+                (settings) ->
+                    guild.getTextChannelById(settings.newsChannelId)
+            )
+            .thenAccept(
+                (channel) ->
+                    channel.sendMessageComponents(container(
+                            section(
+                                fromUrl(guild.getJDA().getSelfUser().getAvatarUrl()),
+                                textDisplay(
+                                    """
+                                    ### :newspaper: %s
+                                    %s
+                                    """, news.title, news.description
+                                )
+                            ),
+                            mediaGallery(mediaGalleryItem(news.thumbnail)),
+                            actionRow(
+                                link(news.url, "Read More")
+                            )
+                        ))
+                        .useComponentsV2()
+                        .queueAfter(it / 2, SECONDS)
+            );
     }
 
     @ParameterSupplier(type = News.class)
