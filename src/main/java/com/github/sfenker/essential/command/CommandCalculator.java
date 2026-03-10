@@ -20,6 +20,7 @@ import static io.github.kaktushose.jdac.dispatching.reply.Component.button;
 import static io.github.kaktushose.jdac.dispatching.reply.Component.stringSelect;
 import static java.lang.Integer.parseInt;
 import static java.util.Arrays.stream;
+import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
 import static java.util.Optional.ofNullable;
 import static net.dv8tion.jda.api.components.buttons.ButtonStyle.SUCCESS;
@@ -91,6 +92,7 @@ public class CommandCalculator {
                                     .setUniqueId(STRUCTURE_COMPONENT_ID)
                                     .setMaxValues(builder.getMaxValues())
                                     .setPlaceholder(builder.getPlaceholder())
+                                    .setDisabled(true)
                                     .addOptions(
                                         structureExplosivesSetRegistry()
                                             .stream()
@@ -108,7 +110,14 @@ public class CommandCalculator {
                                     )
                         )
                 ),
-                actionRow(button("provideAmountButton"))
+                actionRow(
+                    button("provideAmountButton")
+                        .modify(
+                            (builder) ->
+                                builder.withDisabled(this.session.currentStructure == null)
+                                    .withUniqueId(PROVIDE_AMOUNT_COMPONENT_ID)
+                        )
+                )
             ));
     }
 
@@ -143,7 +152,35 @@ public class CommandCalculator {
                             .orElseThrow()
             );
 
-        event.deferEdit();
+        event.jdaEvent()
+            .editComponents(
+                event.jdaEvent()
+                    .getMessage()
+                    .getComponentTree()
+                    .replace(byUniqueId(
+                        EXPLOSIVES_COMPONENT_ID, (component) ->
+                            ((StringSelectMenu) component).createCopy()
+                                .setDefaultValues(this.session.currentExplosivesSet.id)
+                                .build()
+                    ))
+                    .replace(byUniqueId(
+                        STRUCTURE_COMPONENT_ID, (component) ->
+                            ((StringSelectMenu) component).createCopy()
+                                .setDefaultValues(
+                                    ofNullable(this.session.currentStructure)
+                                        .map(
+                                            (structure) ->
+                                                structure.id
+                                        )
+                                        .map(List::of)
+                                        .orElse(emptyList())
+                                )
+                                .setDisabled(this.session.currentExplosivesSet == null)
+                                .build()
+                    ))
+            )
+            .useComponentsV2()
+            .queue();
 
     }
 
@@ -155,7 +192,7 @@ public class CommandCalculator {
     ) {
 
         ofNullable(this.session.currentExplosivesSet)
-            .ifPresentOrElse(
+            .ifPresent(
                 (_) ->
                     this.session.currentStructure =
                         stream(this.session.currentExplosivesSet.structures)
@@ -165,24 +202,36 @@ public class CommandCalculator {
                                         .equals(structure.id)
                             )
                             .findFirst()
-                            .orElseThrow(),
-                () ->
-                    event.with()
-                        .ephemeral(true)
-                        .reply(
-                            container(
-                                textDisplay(
-                                    """
-                                    ### :warning: Error Occurred
-                                    You must select explosives set before selecting structure.
-                                    """
-                                )
-                            )
-                        )
+                            .orElseThrow()
             );
 
-        if (!event.jdaEvent().isAcknowledged())
-            event.deferEdit();
+        event.jdaEvent()
+            .editComponents(
+                event.jdaEvent()
+                    .getMessage()
+                    .getComponentTree()
+                    .replace(byUniqueId(
+                        STRUCTURE_COMPONENT_ID, (component) ->
+                            ((StringSelectMenu) component).createCopy()
+                                .setDefaultValues(
+                                    ofNullable(this.session.currentStructure)
+                                        .map(
+                                            (structure) ->
+                                                structure.id
+                                        )
+                                        .map(List::of)
+                                        .orElse(emptyList())
+                                )
+                                .build()
+                    ))
+                    .replace(byUniqueId(
+                        PROVIDE_AMOUNT_COMPONENT_ID, (component) ->
+                            ((net.dv8tion.jda.api.components.buttons.Button) component)
+                                .withDisabled(this.session.currentStructure == null)
+                    ))
+            )
+            .useComponentsV2()
+            .queue();
 
     }
 
@@ -285,7 +334,7 @@ public class CommandCalculator {
                                 decimalFormat.format(session.totalSulphurNeeded()),
                                 customEmoji("rust", "sulphur")
                                     .getFormatted(), stringBuilder
-                            )
+                            ).withUniqueId(HEADER_COMPONENT_ID)
                         ))
                         .replace(byUniqueId(
                             EXPLOSIVES_COMPONENT_ID, (component) ->
@@ -321,5 +370,6 @@ public class CommandCalculator {
     static final Integer HEADER_COMPONENT_ID = 69;
     static final Integer STRUCTURE_COMPONENT_ID = 420;
     static final Integer EXPLOSIVES_COMPONENT_ID = 2137;
+    static final Integer PROVIDE_AMOUNT_COMPONENT_ID = 4096;
 
 }
