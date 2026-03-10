@@ -20,7 +20,10 @@ public class SystemUtility {
         sleep(500);
         var snapAfter = operatingSystem.getCurrentProcess();
 
-        return snapAfter.getProcessCpuLoadBetweenTicks(snapNow);
+        return (snapAfter.getProcessCpuLoadBetweenTicks(snapNow) * 100) /
+            systemInfo.getHardware()
+                .getProcessor()
+                .getLogicalProcessorCount();
 
     }
 
