@@ -9,12 +9,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 import static com.github.benmanes.caffeine.cache.Caffeine.newBuilder;
+import static com.github.sfenker.essential.utility.NetworkUtility.resolveHost;
 import static com.github.sfenker.essential.wrapper.BattleMetricsWrapper.serverInfo;
 import static com.google.common.collect.ImmutableMap.of;
 import static java.lang.Long.parseLong;
 import static java.time.Duration.ofMinutes;
 import static java.time.Duration.ofSeconds;
 import static java.util.Optional.ofNullable;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 public class ServerInfoService {
 
@@ -27,10 +29,14 @@ public class ServerInfoService {
     public @NotNull CompletableFuture<ServerInfoResponse> queryServerInfo(
         @NotNull String address
     ) {
-        return this.serverInfoResponseCache.get(
-            address, (string, _) ->
-                supplyServerInfo(string)
-        );
+        return supplyAsync(() -> resolveHost(address))
+            .thenCompose(
+                (resolvedAddress) ->
+                    this.serverInfoResponseCache.get(
+                        resolvedAddress, (string, _) ->
+                            supplyServerInfo(string)
+                    )
+            );
     }
 
     @NotNull CompletableFuture<ServerInfoResponse> supplyServerInfo(
