@@ -56,8 +56,12 @@ jobs:
     steps:
       - name: 'Checkout Repository'
         uses: 'actions/checkout@v6'
+      - name: "Repository Owner"
+        run: |
+          REPOSITORY_OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          echo "REPOSITORY_OWNER=$REPOSITORY_OWNER" >> $GITHUB_ENV
       - name: 'Download Artifact'
-        uses: 'actions/download-artifact@v7'
+        uses: 'actions/download-artifact@v4'
         with:
           name: 'Built Artifact'
           path: '.'
@@ -67,7 +71,7 @@ jobs:
         uses: 'docker/login-action@v3'
         with:
           registry: 'ghcr.io'
-          username: '${{ github.repository_owner }}'
+          username: '${{ env.REPOSITORY_OWNER }}'
           password: '${{ secrets.GITHUB_TOKEN }}'
       - name: 'Build & Push Docker image'
         uses: 'docker/build-push-action@v6'
@@ -75,5 +79,5 @@ jobs:
           context: '.'
           push: 'true'
           tags: |
-            ghcr.io/${{ github.repository_owner }}/rust-essential:latest
-            ghcr.io/${{ github.repository_owner }}/rust-essential:${{ github.ref_name }}
+            ghcr.io/${{ env.REPOSITORY_OWNER }}/rust-essential:latest
+            ghcr.io/${{ env.REPOSITORY_OWNER }}/rust-essential:${{ github.ref_name }}
