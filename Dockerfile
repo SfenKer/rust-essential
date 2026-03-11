@@ -11,9 +11,4 @@ ENV DISCORD_TOKEN=MISSING_TOKEN
 ENV BATTLEMETRICS_API_KEY=MISSING_KEY
 
 # Start
-CMD [
-    "java",
-    "--enable-native-access=ALL-UNNAMED",
-    "-jar",
-    "/app/rust-essential.jar"
-]
+CMD [ "java", "--enable-native-access=ALL-UNNAMED", "-jar", "/app/rust-essential.jar" ]
