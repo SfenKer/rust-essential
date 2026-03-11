@@ -12,7 +12,7 @@ plugins {
 }
 
 project.group = "com.github.sfenker.essential"
-project.version = "2.0.0"
+project.version = "2.0.1"
 
 val versionDetails: Closure<VersionDetails> by extra
 fun projectVersion(): String = format("%s (git/%s)", project.version, versionDetails().gitHash)
