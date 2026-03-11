@@ -61,7 +61,7 @@ jobs:
           REPOSITORY_OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
           echo "REPOSITORY_OWNER=$REPOSITORY_OWNER" >> $GITHUB_ENV
       - name: 'Download Artifact'
-        uses: 'actions/download-artifact@v4'
+        uses: 'actions/download-artifact@v8'
         with:
           name: 'Built Artifact'
           path: '.'
