@@ -19,7 +19,7 @@ public class BattleMetricsWrapper {
         @NotNull Map<String, Object> queryParameters
     ) {
         return get(BMW_API_ENDPOINT_SERVERS)
-            .header(AUTHORIZATION, format("Bearer %s", getenv("BATTLE_METRICS_API_KEY")))
+            .header(AUTHORIZATION, format("Bearer %s", getenv("BATTLEMETRICS_API_KEY")))
             .header(ACCEPT, JSON)
             .header(USER_AGENT, BMW_API_USER_AGENT)
             .queryString(queryParameters)
