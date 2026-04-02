@@ -1,5 +1,5 @@
 [versions]
-jda-core = "6.4.0"
+jda-core = "6.4.1"
 jda-commands = "5.0.0-SNAPSHOT"
 
 gson = "2.13.2"
