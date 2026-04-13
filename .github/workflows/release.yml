@@ -26,7 +26,7 @@ jobs:
       - name: 'Build (Gradle)'
         run: './gradlew build'
       - name: 'Update Release with Built Artifact'
-        uses: 'softprops/action-gh-release@v2'
+        uses: 'softprops/action-gh-release@v3'
         with:
           files: 'build/libs/*.jar'
         env:
@@ -45,7 +45,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Update Release Changelog'
-        uses: 'softprops/action-gh-release@v2'
+        uses: 'softprops/action-gh-release@v3'
         with:
           generate_release_notes: true
         env:
