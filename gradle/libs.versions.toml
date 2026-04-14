@@ -6,7 +6,7 @@ gson = "2.13.2"
 guava = "33.5.0-jre"
 caffeine = "3.2.3"
 
-sqlite = "3.51.3.0"
+sqlite = "3.53.0.0"
 hikaricp = "7.0.2"
 hibernate = "7.3.1.Final"
 jakarta = "3.2.0"
