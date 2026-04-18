@@ -1,6 +1,6 @@
 [versions]
 jda-core = "6.4.1"
-jda-commands = "5.0.0-SNAPSHOT"
+jda-commands = "5.0.0"
 
 gson = "2.13.2"
 guava = "33.6.0-jre"
