@@ -2,7 +2,7 @@ package com.github.sfenker.essential.utility;
 
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
-import oshi.SystemInfo;
+import oshi.ffm.SystemInfo;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -34,7 +34,7 @@ public class SystemUtility {
     @SneakyThrows
     public static @NotNull Long memoryUsage() {
         return systemInfo.getOperatingSystem().getCurrentProcess()
-            .getResidentSetSize() / (1024 * 1024);
+            .getResidentMemory() / (1024 * 1024);
     }
 
     static final SystemInfo systemInfo =
