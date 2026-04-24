@@ -8,7 +8,7 @@ plugins {
     id("java")
     id("net.kyori.blossom") version "2.2.0"
     id("com.palantir.git-version") version "5.0.0"
-    id("org.springframework.boot") version "4.1.0-M4"
+    id("org.springframework.boot") version "4.1.0-RC1"
 }
 
 project.group = "com.github.sfenker.essential"
