@@ -8,7 +8,7 @@ caffeine = "3.2.4"
 
 sqlite = "3.53.0.0"
 hikaricp = "7.0.2"
-hibernate = "7.3.2.Final"
+hibernate = "7.3.3.Final"
 jakarta = "3.2.0"
 
 oshi = "7.0.0"
