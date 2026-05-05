@@ -12,7 +12,7 @@ hibernate = "7.3.3.Final"
 jakarta = "3.2.0"
 
 oshi = "7.0.0"
-unirest = "4.8.1"
+unirest = "4.9.0"
 logback = "1.5.32"
 apache-commons = "3.20.0"
 
